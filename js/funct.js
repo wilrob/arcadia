@@ -203,7 +203,6 @@ function switchInfo(i) {
         // On masque toutes les icones infos sauf celui sélectionné
         if (elem.id != 'info' + i) {
             elem.setAttribute("src", "icons/information.png");
-            elem.parentElement.parentElement.style.border = 'none';
         }
     });
 
@@ -261,28 +260,31 @@ function getLocation(n) {
 function displayMap(n) {
     // Récupération hauteur du détail pour l'appliquer à la carte
     let divHeight = document.getElementById('detail' + n).style.height;
-    document.getElementById('map' + n).setAttribute('style', 'height: ' + divHeight);
+    let divMap = document.getElementById('map' + n);
+    if(divMap) {
+        divMap.setAttribute('style', 'height: ' + divHeight);
 
-    var Icon = L.icon({
-        iconUrl: 'icons/marker.png',
-        iconSize: [32, 32], // size of the icon
-        iconAnchor: [5, 31], // point of the icon which will correspond to marker's location
-    });
+        var Icon = L.icon({
+            iconUrl: 'icons/marker.png',
+            iconSize: [32, 32], // size of the icon
+            iconAnchor: [5, 31], // point of the icon which will correspond to marker's location
+        });
 
-    if (lat[n]) {
-        // Détruit la map si elle exite déjà
-        var container = L.DomUtil.get('map' + n);
-        if (container != null) {
-            container._leaflet_id = null;
+        if (lat[n]) {
+            // Détruit la map si elle exite déjà
+            var container = L.DomUtil.get('map' + n);
+            if (container != null) {
+                container._leaflet_id = null;
+            }
+
+            // Crée la map
+            let map = L.map('map' + n).setView([lat[n], lon[n]], 10);
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 20,
+            }).addTo(map);
+
+            L.marker([lat[n], lon[n]], { icon: Icon }).addTo(map);
         }
-
-        // Crée la map
-        let map = L.map('map' + n).setView([lat[n], lon[n]], 10);
-
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 20,
-        }).addTo(map);
-
-        L.marker([lat[n], lon[n]], { icon: Icon }).addTo(map);
     }
 }

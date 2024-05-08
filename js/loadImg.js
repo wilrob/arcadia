@@ -1,13 +1,13 @@
 /**
  * FONCTION D'AFFICHAGE DES FICHIERS PHOTOS
- * Liste les fichiers Ã Â  afficher
+ * Liste les fichiers à  afficher
  * 
  * data : objet (dir, tri, search, typeAlbum)
- * dirImage : rÃ©pertoire des photos
+ * dirImage : répertoire des photos
  * img : objet image
- * lastImage : numÃ©ro du dernier fichier Ã Â  afficher
+ * lastImage : numéro du dernier fichier àÂ  afficher
  * nbImage : nombre total de fichiers
- * imageList : tableau des fichiers Ã  afficher
+ * imageList : tableau des fichiers à afficher
 */
 async function loadImg(data) {
     let dir = data.dir;
@@ -15,8 +15,8 @@ async function loadImg(data) {
     let typeAlbum = data.typeAlbum;
     /**
      * Lecture du dir images
-     * On rÃ©cupÃ¨re la liste des fichiers avec loadXMLDoc
-     * Le rÃ©sultat est placÃ© dans 'contents'
+     * On récupère la liste des fichiers avec loadXMLDoc
+     * Le résultat est placé dans 'contents'
     */
     var dirImage = dir + "/";
     // Liste les fichiers de dirImage
@@ -33,7 +33,7 @@ async function loadImg(data) {
         // Tableau des noms de fichiers (dans balise <a>)
         let img = xmlDoc.getElementsByTagName("a");
         /**
-         * RÃ©cupÃ©ration des fichiers images du dossier
+         * Récupération des fichiers images du dossier
         */
         let imageList = new Array();
         for (item of img) {
@@ -41,7 +41,7 @@ async function loadImg(data) {
             // Nom du fichier image dans href de la balise <a>
             let image = item.getAttribute("href");
 
-            // Suppression espace au dÃ©but du nom
+            // Suppression espace au début du nom
             //imgName = image.replace(/\s+/g, "");
             if (image.substring(0, 1) == ' ') {
                 imgName = image.substring(1);
@@ -49,17 +49,17 @@ async function loadImg(data) {
                 imgName = image;
             }
 
-            // On vÃ©rifie que c'est un fichier image
+            // On vérifie que c'est un fichier image
             let imageReg = /\.(gif|jpg|jpeg|tiff|png)$/i;
 
             if (imageReg.test(imgName) == true) {
                 imageList.push(imgName);
             }
         };
-        // Nb totale d'images dans le rÃ©pertoire
+        // Nb totale d'images dans le répertoire
         let nbImages = imageList.length;
         document.getElementById('directory').append(nbImages + ' photos');
-        // Nom de la derniÃ¨re image utilisÃ©e pour lancer le tri Ã  la fin du traitement
+        // Nom de la dernière image utilisée pour lancer le tri à la fin du traitement
         let lastImage = imageList[nbImages - 1];
 
         //Initialisation du pourcentage de chargement
@@ -71,19 +71,19 @@ async function loadImg(data) {
         imageList.forEach((imgName, i) => {
             /**
              * Chargement des photos, lecture XMP et affichage DIV
-             * dirImage : rÃ©pertoire deu fichier
+             * dirImage : répertoire deu fichier
              * img : objet image
-             * i : numÃ©ro du fichier
+             * i : numéro du fichier
              * 
              * Lis le fichier EXIF de la photo
-             * et crÃ©e un div contenant la photo
+             * et crée un div contenant la photo
              * et ses infos
              * VARIABLES
-             * dirImage : rÃ©pertoires des images
+             * dirImage : répertoires des images
              * imgName : nom du fichier photo
              * imageUrl : adresse de l'image
              * photo : ligne HTML d'affichage de la photo
-             * display : block ou none (none par dÃ©faut)
+             * display : block ou none (none par défaut)
             */
             let imageUrl = dirImage + imgName;
 
@@ -112,7 +112,7 @@ async function loadImg(data) {
                  * F number : exifTag.FNumber;
                  * ISO : exifTag.ISO
                  * Vitesse : exifTag.ExposureTime
-                 * Focale Ã©qu. 35mm : exifTag.FocalLengthIn35mmFilm
+                 * Focale équ. 35mm : exifTag.FocalLengthIn35mmFilm
                  * description : exifTag.description
                  * titre : exifTag.title
                  * credit : exifTag.Credit
@@ -128,21 +128,21 @@ async function loadImg(data) {
                         exifTag = {};
                         emptyTag = 'Aucune donn&eacute;e sur la photo<br />';
                     }
-                    // DonnÃ©es EXIF photos
+                    // Données EXIF photos
                     let WidthxHeight = typeof exifTag.ExifImageHeight !== 'undefined' && typeof exifTag.ExifImageWidth !== 'undefined' ? exifTag.ExifImageWidth + ' &times ' + exifTag.ExifImageHeight + '&nbsp;&nbsp;&nbsp;&nbsp;' : '';
                     let FNumber = typeof exifTag.FNumber !== 'undefined' ? '&#x192;' + exifTag.FNumber + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' : '';
                     let ISO = typeof exifTag.ISO !== 'undefined' ? 'ISO ' + exifTag.ISO + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' : '';
                     let vitesse = typeof exifTag.ExposureTime !== 'undefined' ? '1/' + parseInt(1 / exifTag.ExposureTime) + ' s' : '';
                     let focale = typeof exifTag.FocalLengthIn35mmFormat !== 'undefined' ? exifTag.FocalLengthIn35mmFormat + ' mm&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' : '';
 
-                    // DonnÃ©e objectif
+                    // Donnée objectif
                     let objectif = ISO != '' || FNumber != '' || vitesse != '' || focale != '' ? ISO + focale + FNumber + vitesse : 'Aucune donn&eacute;e sur l\'objectif';
 
-                    // DonnÃ©es GPS
+                    // Données GPS
                     lat[i] = typeof exifTag.latitude !== 'undefined' ? parseFloat(exifTag.latitude, 6) : null;
                     lon[i] = typeof exifTag.longitude !== 'undefined' ? parseFloat(exifTag.longitude, 6) : null;
 
-                    // VisibilitÃ© de l'image par dÃ©faut
+                    // Visibilité de l'image par défaut
                     let display = 'none';
 
                     /**
@@ -164,7 +164,7 @@ async function loadImg(data) {
                     let droits = copy + credit;
 
                     /**
-                     * MATERIEL : marque et modÃ¨le
+                     * MATERIEL : marque et modèle
                      * Element exif : Make & Midel
                     */
                     let camera = typeof exifTag.Make != "undefined" ? exifTag.Make : null;
@@ -182,7 +182,7 @@ async function loadImg(data) {
                     titre += description ? '<div class="desc">' + description + '</div>' : '';
 
                     /**
-                     * CREATEUR = crÃ©ateur de la photo
+                     * CREATEUR = créateur de la photo
                      * Element exif : creator ou Artist
                     */
                     let createur;
@@ -195,7 +195,7 @@ async function loadImg(data) {
                     }
 
                     /**
-                     * DATE = date de crÃ©ation
+                     * DATE = date de création
                      * Element exif : CreateDate
                     */
                     let dateFR = '';
@@ -223,8 +223,8 @@ async function loadImg(data) {
                     // Tableau contenant les tags et les personnes
                     let tagAndPersonArray = new Array();
 
-                    // Ligne HTML des libellÃ©s
-                    // Titre des libellÃ©s
+                    // Ligne HTML des libellés
+                    // Titre des libellés
                     let titreLabel = 'LibellÃƒÂ© : ';
                     let libelles = '';
                     if (typeof exifTag.subject !== "undefined") {
@@ -236,7 +236,7 @@ async function loadImg(data) {
                         // Tags subjectTag dans tagArray
                         let tagArray = new Array();
                         subjectTag.forEach((element) => tagArray.push(element));
-                        // Tri de tagArray par ordre alphabÃ©tique, insensible Ã  la casse
+                        // Tri de tagArray par ordre alphabétique, insensible à la casse
                         tagArray.sort((a, b) => {
                             if (a.toLowerCase() > b.toLowerCase()) {
                                 return 1;
@@ -251,7 +251,7 @@ async function loadImg(data) {
                             // On range le tag dans le tableau tag + personnes
                             let spaceItem = item.replaceAll(' ', '_');
                             tagAndPersonArray.push(spaceItem);
-                            // On crÃ©e la ligne HTML de tag
+                            // On crée la ligne HTML de tag
                             if (tag != '') {
                                 tag += '<span style="color: #d34d1d">, </span>';
                                 titreLabel = 'Libell&eacute;s : '
@@ -273,7 +273,7 @@ async function loadImg(data) {
                         let personTag = exifTag.PersonInImage;
 
                         let perArray = new Array();
-                        // On vÃ©rifie si l'objet est un texte ou un tableau
+                        // On vérifie si l'objet est un texte ou un tableau
                         if (!Array.isArray(personTag)) {
                             // Si texte, on l'ajoute au tableau
                             perArray.push(personTag);
@@ -295,7 +295,7 @@ async function loadImg(data) {
                                 person += '<span style="color: #d34d1d">, </span>';
                                 titreSujet = 'Sujets : ';
                             }
-                            // On crÃ©e la ligne HTML de personnes
+                            // On crée la ligne HTML de personnes
                             person += '<a href="' + index + '?tag=' + item + '">' + decode_utf8(item) + '</a>';
                         });
                         personnes = '<p class="tag">' + titreSujet + person + '</p>';
@@ -304,15 +304,15 @@ async function loadImg(data) {
                     /**
                      * Comparaison de la recherche avec le tableau des Tags + Personnes
                      */
-                    // On crÃ©e un tableau avec les diffÃ©rents mots de la recherche (search)
+                    // On crée un tableau avec les différents mots de la recherche (search)
                     let tagArray = search.split(' ');
 
                     let nbOccurence = 0;
-                    // Pour chaque Ã©lÃ©mÃ©nt du tableau des personnes et des tags
+                    // Pour chaque élémént du tableau des personnes et des tags
                     tagAndPersonArray.forEach((item) => {
                         // Pour chaque mot de la recherche
                         tagArray.forEach((tagItem) => {
-                            // On vÃ©rifie l'Ã©quivalence
+                            // On vérifie l'équivalence
                             if (tagItem.toLowerCase() == item.toLowerCase()) {
                                 nbOccurence++;
                             }
@@ -342,7 +342,7 @@ async function loadImg(data) {
                         }
                         // Image HTML
                         //let classPhoto = typeAlbum == 'blog' ? 'photo' : 'photoMini';
-                        let photo = '<a href="' + imageUrl + '" data-fancybox="gallery"><img id="img' + i + '" alt="' + imgName + '" class="' + classPhoto + '" src="' + imageUrl + '" onmouseover="displayBig(this, \'' + imageUrl + '\');" /></a>';
+                        let photo = '<a href="' + imageUrl + '" data-fancybox="gallery"><img id="img' + i + '" alt="' + imgName + '" class="' + classPhoto + '" src="' + imageUrl + '" /></a>';
                         // Initialisation valeur du div pour affichage de la carte initMap
                         let iconInfo = '<div onclick="togglePublication(\'publication' + i + '\'); switchInfo(' + i + '); displayMap(' + i + ');getLocation(' + i + ');"><img class="info" id="info' + i + '" title="Afficher les infos" src="icons/information.png" width="16" /></div>';
                         photo += iconInfo;
@@ -351,11 +351,11 @@ async function loadImg(data) {
                          *  <div class="dataXMP">
                          *      <div class="detail" id="detail99">
                          *          <div class="cadre">Auteur, fichier, date, copyright</div>
-                         *          <div class="cadre">DonnÃ©es appareil photo</div>
+                         *          <div class="cadre">Données appareil photo</div>
                          *          <div class="cadre">Localisation</div>
                          *          <div class="cadre">Carte</div>
                          *      </div>
-                         *      <div class="tagMosaic">LibellÃ©s et personnes</div>
+                         *      <div class="tagMosaic">Libellés et personnes</div>
                          *  </div>
                          */
                         let details = '<div class="dataXMP">';
@@ -374,24 +374,26 @@ async function loadImg(data) {
                         details += '</div>';
                         details += lat[i] ? '<div id="loc' + i + '" class="cadre"></div>' : '';
                         details += '</div>';
-                        details += lat[i] ? '<div id="map' + i + '" class="cadre map"></div>' : '';
+                        details += lat[i] ? '<div id="map' + i + '" class="map"></div>' : '';
                         details += '</div>';
                         // Tag en version mosaique
                         details += '<div class="tagMosaic">' + libelles + personnes + '</div>';
 
-                        // Infos affichÃ©es en version blog (nom fichier ou date en fonction du tri alphabetique ou date)
+                        // Infos affichées en version blog (nom fichier ou date en fonction du tri alphabetique ou date)
                         let infos = '<div class="plusinfo"><div class="titreName">' + decode_utf8(imgName) + '</div><div class="titreDate">' + dateFR + '</div></div>';
 
                         // Affichage des infos de la photo
-                        publication = '<div id="publication' + i + '" class="publication" style="display: none;">' + titre + details + '</div>';
+                        // Bouton de fermeture
+                        let closeButton = '<a class="closeInfos" onclick="togglePublication(\'publication' + i + '\'); switchInfo(' + i + ')"><img src="icons/close-red.png" width="16" /></a>';
+                        publication = '<div id="publication' + i + '" class="publication" style="display: none;">' + closeButton + '<div class="cadre">' + titre + '</div>' + details + '</div>';
                         // Tag en version Blog sous la photo
                         publication += '<div class="tagBlog">' + libelles + personnes + '</div>';
 
-                        // On crÃ©e la DIV contenant la photo avec la class Blog ou Mosaic
+                        // On crée la DIV contenant la photo avec la class Blog ou Mosaic
                         let newImage = '<div class="' + classDivImage + '">' + photo + titre + infos + '</div>';
                         let contents = newImage + publication;
 
-                        // CrÃ©ation du bloc Photo
+                        // Création du bloc Photo
                         myDiv = new Div();
                         myDiv.name = 'photo' + i;
                         myDiv.id = timeStamp;
@@ -402,12 +404,12 @@ async function loadImg(data) {
                         myDiv.position = 'inner';
                         myDiv.show();
 
-                        // Nb de fichiers affichÃ©s dans <span id="resultat">
+                        // Nb de fichiers affichés dans <span id="resultat">
                         let divResult = document.getElementById("resultat");
-                        // Si le rÃ©sultat est un texte, on met le compteur Ã  0, puis on l'incrÃ©mente
+                        // Si le résultat est un texte, on met le compteur à 0, puis on l'incrémente
                         let resultat = isNaN(divResult.innerHTML) ? 0 : parseInt(divResult.innerHTML);
                         resultat++;
-                        // On renvoie le rÃ©sultat
+                        // On renvoie le résultat
                         divResult.innerHTML = resultat;
 
                         // Pourcentage de chargement
@@ -417,7 +419,7 @@ async function loadImg(data) {
                         percent.innerText = percentValue + "%";
 
                     }
-                    // Si on est arrivÃ© Ã  la derniÃ¨re image, on trie les photos
+                    // Si on est arrivé à la dernière image, on trie les photos
                     if (imgName == lastImage) {
                         let attribute = data.tri == 'numeric' ? 'id' : 'name';
                         tri('central', attribute);
