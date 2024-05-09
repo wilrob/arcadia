@@ -27,13 +27,13 @@ The top right menu contains the following:
 <li>a search field for tags contained in photos</li>
 </ul>
 
-#### Blog
+### Blog
 In this mode, each photo is displayed with the title, description and tags contained in the photo (Exif or XMP metadata).
 
-#### Mosaic
+### Mosaic
 In this mode, photos are displayed in mosaic thumbnails without information.
 
-#### Metadata
+### Metadata
 An icon &#9432; at the left bottom of each photo allows you to display additional information contained in the photo:
 <ul>
 <li>camera brand: exifTag.Make</li>
@@ -57,5 +57,5 @@ An icon &#9432; at the left bottom of each photo allows you to display additiona
 <li>persons: exifTag.PersonInImage</li>
 </ul>
 
-#### Alternative display
+### Alternative display
 By clicking on a photo, you open the Fancybox script which displays the album horizontally and allows you to see the photos in their original format.
