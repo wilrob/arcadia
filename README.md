@@ -5,16 +5,16 @@ As well as <a href="https://github.com/fancyapps/fancybox">fancybox</a> for disp
 Photos are displayed in blog or mosaic format.<br /><br />
 The first thing to do is to place one or more folders containing photos in the "albums" directory.<br /><br/>
 There is already a background image and a title configured by default.<br />
-To change the background image, simply place a new image in the "styles/images" directory, then modify the following line in index.html: <br />
+To change the background image, simply place a new image in the <code>styles/images</code> directory, then modify the following line in index.html: <br />
     <code>// Background image
     const bgImage = 'styles/images/image_fond.jpg'</code><br /><br />
-To modify the title, simply modify the following line in index.html:
+To modify the title, simply modify the following line in index.html:<br />
     <code>//Title
     const topTitle = 'Et in arcadia ego';</code><br /><br />
 
 The top right menu contains the following:
 <ul>
-<li>a drop-down menu to choose the album to display<li>
+<li>a drop-down menu to choose the album to display</li>
 <li>a button to sort photos alphabetically or by date</li>
 <li>a button to reverse the display direction of photos (from A to Z or from the most recent to the oldest)</li>
 <li>a button to choose the type of display (blog or mosaic)</li>
@@ -45,4 +45,4 @@ An icon (i) allows you to display additional information contained in the photo 
 <li>persons: exifTag.PersonInImage</li>
 </ul>
 In mosaic mode, the tags and persons are displayed in the info panel.<br /><br />
-
+By clicking on a photo, you open the Fancybox script which displays the album horizontally and allows you to see the photos in their original format.
