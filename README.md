@@ -36,26 +36,15 @@ In this mode, photos are displayed in mosaic thumbnails without information.
 ### Metadata
 An icon &#9432; at the left bottom of each photo allows you to display additional information contained in the photo:
 <ul>
-<li>camera brand: exifTag.Make</li>
-<li>camera model: exifTag.Model</li>
-<li>photo width: exifTag.ExifImageWidth</li>
-<li>photo height: exifTag.ExifImageHeight</li> <li>mimeType (jpeg, png, etc.)</li>
-<li>latitude : exifTag.GPSLatitude</li>
-<li>longitude : exifTag.GPSLongitude</li>
-<li>description : exifTag.ImageDescription</li>
-<li>aperture : exifTag.FNumber</li>
-<li>ISO: exifTag.ISO</li>
-<li>speed: exifTag.ExposureTime</li>
-<li>focal equ. 35mm: exifTag.FocalLengthIn35mmFilm</li>
-<li>description: exifTag.description</li>
-<li>title: exifTag.title</li>
-<li>credit: exifTag.Credit</li>
-<li>copyright: exifTag.rights</li>
-<li>creator: exifTag.creator</li>
-<li>date: exifTag.CreateDate</li>
-<li>tags: exifTag.subject</li>
-<li>persons: exifTag.PersonInImage</li>
+    <li>title and description</li>
+    <li>author, file name, date</li>
+    <li>credit and rights</li>
+    <li>camera brand and Model</li>
+    <li>photo width x height, size, mimeType (jpeg, png, etc.)</li>
+    <li>ISO, focal, apeture, speed</li>
+    <li>a map if latitude and longitude are defined</li>
+    <li>tags and persons</li>
 </ul>
 
-### Alternative display
-By clicking on a photo, you open the Fancybox script which displays the album horizontally and allows you to see the photos in their original format.
+### Fancybox display
+By clicking on the photo, you display it in the original format. You can view the album in horizontal mode.
