@@ -344,7 +344,7 @@ async function loadImg(data) {
                         //let classPhoto = typeAlbum == 'blog' ? 'photo' : 'photoMini';
                         let photo = '<a href="' + imageUrl + '" data-fancybox="gallery"><img id="img' + i + '" alt="' + imgName + '" class="' + classPhoto + '" src="' + imageUrl + '" /></a>';
                         // Initialisation valeur du div pour affichage de la carte initMap
-                        let iconInfo = '<div onclick="togglePublication(\'publication' + i + '\'); switchInfo(' + i + '); displayMap(' + i + ');getLocation(' + i + ');" class="hint--bottom" aria-label="Show info"><img class="info" id="info' + i + '" title="Show info" src="icons/information.png" width="16" /></div>';
+                        let iconInfo = '<div onclick="togglePublication(\'publication' + i + '\'); switchInfo(' + i + '); displayMap(' + i + ');getLocation(' + i + ');"><img class="info" id="info' + i + '" title="Show info" src="icons/information.png" width="16" /></div>';
                         photo += iconInfo;
 
                         /**  Cadre Information Photo
