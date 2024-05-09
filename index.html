@@ -56,10 +56,39 @@
   <!-- INFOS IMAGE MOSAIQUE -->
   <div id="info-mosaic"></div>
   
+  <!-- Arrow to scroll up to the top of the page -->
+  <img id="toTop" onclick="globalThis.scrollTo({ top: 0, left: 0, behavior: 'smooth' });" src="icons/double-arrow-top-icon.png" width="32" />
+
   <!-- CONSOLE -->
   <p id="xmp-code"></p>
 
   <script>
+    // When the user scrolls down 800px from the top of the document, show the button
+    window.onscroll = function() {
+      let myButton = document.getElementById('toTop');
+      if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+        myButton.style.display = "block";
+      } else {
+        myButton.style.display = "none";
+      }
+    };
+
+    /** PARAMETRES UTILISATEUR
+     * topTitle : titre de l'album affiche en haut de page
+     * bgImage : Image de fond
+     * imageDir : Repertoire contenant les dossiers de photos
+     * indexPage : Page de debut
+     */
+    // Title
+    const topTitle = 'Et in arcadia ego';
+    // Background image
+    const bgImage = 'styles/images/image_fond.jpg'
+    // photos directory
+    const imageDir = './albums';
+    // index page
+    const index = 'index.html';
+
+    // Fancybox image display settings
     Fancybox.bind('[data-fancybox]', {
       Images: {
         initialSize: "fit",
@@ -69,37 +98,34 @@
       },
     });
 
-    // Répertoire images
-    const imageDir = './albums';
-    // Titre
-    const titreBandeau = 'Et in arcadia ego';
-    // Page index
-    const index = 'index.html';
-    // Nombre de fichiers à  afficher
-    const limit = 25;
-
-    // Variables latitude et longitude de localisation
+    // latitude & longitude init
     var lat = new Array();
     var lon = new Array();
 
+    // Affiche l'image de fond
+    let bodyBackground = document.querySelector('body');
+    bodyBackground.style.backgroundImage= 'url(' + bgImage + ')';
+    bodyBackground.style.backgroundRepeat =  'no-repeat';
+    bodyBackground.style.backgroundAttachment =  'fixed';
+    document.getElementById('hautdepage').style.backgroundImage= 'url(' + bgImage + ')';
+ 
     // Affiche le titre
-    document.getElementById('hautdepage').innerHTML = '<a href="' + index + '">' + titreBandeau + '</a>';
+    document.getElementById('hautdepage').innerHTML = '<a href="' + index + '">' + topTitle + '</a>';
 
 
     /*********************************************************************/
-    /* Affichage des répertoires
+    /* Affichage du MENU
     /*********************************************************************/
     let albumList = '';
     const liste = new Map();
 
-    // Liste le contenu du répertoire imageDir
+    // Liste le contenu du repertoire imageDir
     loadFiles(imageDir).then((listDir) => {
       parserDir = new DOMParser();
       xmlDocDir = parserDir.parseFromString(listDir, "text/html");
-      // Liste du contenu des répertoire sous forme de HTMLcollection
+      // Liste du contenu des repertoire sous forme de HTMLcollection
       rep = xmlDocDir.getElementsByTagName("a");
-
-      // Boucle pour créer la liste des répertoires
+      // Boucle pour creer la liste des repertoires
       for (i = 1; i < rep.length; i++) {
         // Supprime les espaces et le / dans le nom
         dirName = rep[i].childNodes[0].nodeValue.replace(/\//g, '');
@@ -113,28 +139,30 @@
         }
       };
 
-      // Répertoire par défaut (permier valeur de map)
+      // Repertoire par defaut (permier valeur de map)
       var getDir = liste.keys().next().value;
 
-      /* Récupération paramètre GET dans l'URL
+      /* Recuperation parametre GET dans l'URL
       */
       const queryString = window.location.search;
       const urlParams = new URLSearchParams(queryString);
 
-      /* data : Object contenant :
-      /* le dossier d'image (dir)
-      /* le champ de recherche (search)
-      /* le choix du tri (numeric ou alphabetic)
-      /* le type d'affichage (blog ou mosaic)
+      /** data : Object contenant :
+       * le dossier d'image (dir)
+       * le champ de recherche (search)
+       * le choix du tri : numerique (id) ou alphabetique (name)
+       * sens du tri : de A a Z ou du plus recent au plus ancien (down), inversement (up)
+       * le type d'affichage (blog ou mosaic)
       **/
       let data = {
         dir: '',
         search: '',
-        tri: 'numeric',
+        tri: 'id',
+        sens: 'down',
         typeAlbum: 'blog'
       };
 
-      // Récupération paramètre URL 'dir'
+      // Recuperation parametre URL 'dir'
       if(urlParams.get('dir')) {
         getDir = urlParams.get('dir');
         setCookie('dir', getDir, 3);
@@ -144,27 +172,34 @@
       data.dir = imageDir + '/' + getDir;
 
 
-      // Récupération paramètre URL 'tag'
+      // Recuperation parametre URL 'tag'
       let tagUrl = urlParams.get('tag');
       // On remplace les espaces par _
       let search = tagUrl ? tagUrl.replaceAll(' ', '_') : 'all';
 
-      // Récupération paramètre URL 'search'
+      // Recuperation parametre URL 'search'
       if (urlParams.get('search')) {
         // On remplace les , par des espaces
         search = urlParams.get('search').replaceAll(',', ' ');
-        // On supprime les espaces doubles, ainsi que les espaces au début et en fin de recherche
+        // On supprime les espaces doubles, ainsi que les espaces au debut et en fin de recherche
         search = search.replace(/^\s+|\s+$|\s+(?=\s)/g, '');
       }
       data.search = search;
-
-      // Récupération paramètre URL 'tri'
-      if (typeof getCookie('tri') !== 'undefined') {
-        let getTri = getCookie('tri');
-        data.tri = getTri;
+     
+      // Recuperation parametre URL 'tri'
+      if (getCookie('tri')) {
+        data.tri = getCookie('tri');
+      } else {
+        setCookie('tri', data.tri, 3);
       }
-
-      // Récupération paramètre URL style d'affichage ('blog' ou 'mosaic')
+      
+      if(getCookie('sens')) {
+        data.sens = getCookie('sens');
+      } else {
+        setCookie('sens', data.sens, 3);
+      }
+      
+      // Recuperation parametre URL style d'affichage ('blog' ou 'mosaic')
       if (urlParams.get('album')) {
         let typeAlbum = urlParams.get('album');
         setCookie('album', typeAlbum, 3);
@@ -175,9 +210,9 @@
       }
 
       /*********************************************************************/
-      /* Selection des répertoires
+      /* Selection des repertoires
       /*********************************************************************/
-      // Affichage de la liste des répertoires photos dans albums
+      // Affichage de la liste des repertoires photos dans albums
       liste.forEach((value, index) => {
         albumList += '<option value="' + index + '"';
         if (index == getDir) {
@@ -186,13 +221,13 @@
         albumList += '>' + value + '</option>';
       });
 
-      // Formulaire de sélection du dossier images
+      // Formulaire de selection du dossier images
       let dirForm = '<form action="index.html" method="get" onchange="this.submit()">';
       dirForm += '<img src="icons/dossier.png" class="icon" width="16" /> ';
       dirForm += '<select name="dir">' + albumList + '</select>';
       dirForm += '</form>';
 
-      // Affichage menu déroulant des répertoires
+      // Affichage menu deroulant des repertoires
       myDir = new Div();
       myDir.type = 'p';
       myDir.id = 'directory';
@@ -203,35 +238,31 @@
       myDir.show();
 
       /*********************************************************************/
-      /* Création des liens de navigation de pages
+      /* Creation des liens de navigation de pages
       /*********************************************************************/
 
-      // navLink : boutons de sélection d'affichage (tri par date ou nom et affichage en blog ou mosaique)
+      // navLink : boutons de selection d'affichage (tri par date ou nom et affichage en blog ou mosaique)
       // Icone devant les boutons de tri et d'affichage
       let navLink = '<img src="icons/photoset.png" class="icon" width=20" />&nbsp;';
 
       // Boutons de TRI
-      // Paramètres globaux utilisés aussi dans la fonction 'tri'
-      globalThis.numericButton = '<button class="hint--bottom" aria-label="Trier par date"  onclick="tri(\'central\', \'id\');"><img src="icons/sortnumericdown.png" class="icon" height="20" /></button>';
-      globalThis.alphabeticButton = '<button class="hint--bottom" aria-label="Trier par nom" onclick="tri(\'central\', \'name\');"><img src="icons/sortalphabeticdown.png" class="icon" height="20" /></button>';
-      let triButton = data.tri == 'numeric' ? globalThis.alphabeticButton : globalThis.numericButton;
-      navLink += '<span id="boutontri">' + triButton + '</span>&nbsp;&nbsp;&nbsp;&nbsp';
+      // Parametres globaux utilises aussi dans la fonction 'tri'
+      // Fleches de sens de tri (UP/DOWN)
+      globalThis.arrowDown = '<button class="hint--bottom" aria-label="First on top"  onclick="divOrder( 0, \'down\');"><img src="icons/arrowDown.png" class="icon" height="20" /></button>';
+      globalThis.arrowUp = '<button class="hint--bottom" aria-label="Last on top"  onclick="divOrder(0, \'up\');"><img src="icons/arrowUp.png" class="icon" height="20" /></button>';
+      // Icone DATE ou NOM
+      globalThis.numericButton = '<button class="hint--bottom" aria-label="Order by date"  onclick="divOrder(\'id\', 0);"><img src="icons/calendar.png" class="icon" height="20" /></button>';
+      globalThis.alphabeticButton = '<button class="hint--bottom" aria-label="Order by name" onclick="divOrder(\'name\', 0);"><img src="icons/alpha.png" class="icon" height="20" /></button>';
+      // Creation des boutons
+      let triButton = data.tri == 'id' ? globalThis.alphabeticButton : globalThis.numericButton;
+      let sensButton = data.sens == 'down' ? globalThis.arrowUp : globalThis.arrowDown;
+      navLink += '<span id="boutontri">' + triButton + '</span>&nbsp;&nbsp;<span id="sens">' + sensButton + '</span>&nbsp;&nbsp;';
 
       // Boutons mosaique ou blog
-      globalThis.blogButton = '<button id="buttonBlog" class="hint--bottom" aria-label="Mode blog" onclick="toggleDisplay(\'blog\');"><img src="icons/icon-blog.png" class="icon" width="20" /></button>';
-      globalThis.mosaicButton = '<button id="buttonMosaic" class="hint--bottom" aria-label="Mode mosaique" onclick="toggleDisplay(\'mosaic\');"><img src="icons/thumbnail-icon-18.jpg.png" class="icon" width="20" /></button>';
+      globalThis.blogButton = '<button id="buttonBlog" class="hint--bottom" aria-label="Blog" onclick="toggleDisplay(\'blog\');"><img src="icons/icon-blog.png" class="icon" width="20" /></button>';
+      globalThis.mosaicButton = '<button id="buttonMosaic" class="hint--bottom" aria-label="Mosaic" onclick="toggleDisplay(\'mosaic\');"><img src="icons/thumbnail-icon-18.jpg.png" class="icon" width="20" /></button>';
       let displayButton = data.typeAlbum == 'blog' ? globalThis.mosaicButton : globalThis.blogButton;
       navLink += '<span id="boutondisplay">' + displayButton + '</span>';
-
-      // Formulaire de recherche
-      navLink += '<form id="page" action="' + document.URL + '" method="GET">';
-      // Renvoie le nom du dossier
-      navLink += '</select><input type="text" value="' + getDir + '" name="dir" hidden="hidden" /><br />';
-      // Renvoie les tags
-      navLink += tagUrl ? '<input name="tag" value="' + tagUrl + '" hidden />' : '';
-      // Renvoie la recherche
-      navLink += search ? '<input name="search" value="' + search + '" hidden />' : '';
-      navLink += '</form>';
 
       /*********************************************************************/
       /* Affichage liens de navigation
@@ -251,7 +282,7 @@
       /*********************************************************************/
       let searchForm = '<form name="recherche" action="index.html" method="GET">';
       searchForm += '<img src="icons/search.png" class="icon" width="16" />';
-      searchForm += '<input name="search" placeholder="recherche" value="" size="20" required />';
+      searchForm += '<input name="search" placeholder="words separated by a space" value="" size="20" required />';
       searchForm += '<input type="text" value="' + getDir + '" name="dir" hidden="hidden" /> ';
       searchForm += '<input type="submit" value="OK" />';
       searchForm += '</form>';
@@ -273,7 +304,7 @@
         // Affichage des recherche avec lien de suppression
         searchArray = search.split(' ');
         searchArray.forEach((item) => {
-          // Supprime le tag et recrée le search dans l'url sans le tag présent
+          // Supprime le tag et recree le search dans l'url sans le tag present
           let newSearchArray = searchArray.filter((it) => it !== item)
           let newSearch = newSearchArray.join(' ');
           let searchUrl = newSearch !== '' ? newSearch : 'all';

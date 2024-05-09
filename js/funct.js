@@ -1,4 +1,4 @@
-/* Création d'une DIV par image
+/* Creation d'une DIV par image
 /* txt : texte de l'image
 /* display : block ou none
 */
@@ -38,7 +38,7 @@ class Div {
     }
 }
 
-/* Chargement du contenu du répertoire dir contenant les photos
+/* Chargement du contenu du repertoire dir contenant les photos
 /* Renvoie une page HTML avec un tableau contenant les noms des fichiers
 */
 async function loadFiles(dir) {
@@ -53,7 +53,7 @@ async function getFileStats(url) {
         fileBlob = res.blob();
         return fileBlob;
     }).then((fileBlob) => {
-        // Récupère les données dans un tableau type (type[0] = mimetype, type[1] = nb d'octets)
+        // Recupere les donnees dans un tableau type (type[0] = mimetype, type[1] = nb d'octets)
         let type = fileBlob.type.split('/');
         let file = Array();
         file[1] = type[1];
@@ -63,7 +63,7 @@ async function getFileStats(url) {
 }
 
 /* Decode et encode UTF-8
-/* convertit les caractère spéciaux en caractères lisibles
+/* convertit les caractere speciaux en caracteres lisibles
 */
 function decode_utf8(string) {
     try {
@@ -80,62 +80,98 @@ function encode_utf8(string) {
     return encodeURIComponent(string); 
 }
 
-// Tri les div affichées dans le div, <div id="timestamp" name="photoN">PHOTO</div>)
-// attribute = 'id' => Tri par date
-// attribute = 'name' => Tri par nom
-async function tri(div, attribute) {
-    var main = document.getElementById(div);
-    [].map.call(main.children, Object).sort((a, b) => {
-        // We call localeCompare to compare a and b naturally.
-        return a.getAttribute(attribute).localeCompare(b.getAttribute(attribute), undefined, {
-            // We set numeric to true to compare the numerical part of a and b .
-            numeric: true,
-            // sensitivity is set to 'base' to compare the case and the alphabet.
-            sensitivity: 'base'
-        })
-    }).forEach(function (elem) {
-        main.appendChild(elem);
-    });
-    // Inversion du bouton de tri
+/**
+ * Tri les div affichees dans le div, <div id="timestamp" name="photoN">PHOTO</div>)
+ * attribute = 'id' => Tri par date
+ * attribute = 'name' => Tri par nom
+ * sens = 'up' => Du plus ancien au plus recent ou de Z a A
+ * sens = 'down' => // Du plus recent au plus ancien ou de A a Z
+ */ 
+async function divOrder( tri, sens ) {
+    if(tri != 0) {
+        elemTri = tri;
+        setCookie('tri', tri, 3);
+    } else {
+        elemTri = getCookie('tri');
+    }
+    if(sens != 0) {
+        elemSens = sens;
+        setCookie('sens', sens, 3);
+    } else {
+        getCookie('sens')
+    }
+    
+    var main = document.getElementById('central');
+    if(elemSens == 'down') {      // Du plus recent au plus ancien ou de A a Z
+        [].map.call(main.children, Object).sort((a, b) => {
+            // We call localeCompare to compare a and b naturally.
+            return a.getAttribute(elemTri).localeCompare(b.getAttribute(elemTri), undefined, {
+                ignorePunctuation: true,
+                // We set numeric to true to compare the numerical part of a and b .
+                numeric: true,
+                // sensitivity is set to 'base' to compare the case and the alphabet.
+                sensitivity: 'base'
+            })
+        }).forEach(function (elem) {
+            main.appendChild(elem);
+        });
+    } else {  // Du plus ancien au plus recent ou de Z a A
+        [].map.call(main.children, Object).sort((a, b) => {
+            // We call localeCompare to compare a and b naturally.
+            return a.getAttribute(elemTri).toLowerCase().localeCompare(b.getAttribute(elemTri).toLowerCase(), undefined, {
+                ignorePunctuation: true,
+                // We set numeric to true to compare the numerical part of a and b .
+                numeric: true,
+                // sensitivity is set to 'base' to compare the case and the alphabet.
+                sensitivity: 'base'
+            })
+        }).reverse().forEach(function (elem) {
+            main.appendChild(elem);
+        });
+    }
+    
+    // Inversion des boutons de tri
     let triButton = document.getElementById('boutontri');
-    if (attribute == 'name') {
+    if (elemTri == 'name') {
         triButton.innerHTML = globalThis.numericButton;
         showClass('titreName');
         hideClass('titreDate');
-        // Enregistrement cookie
-        setCookie('tri', 'alphabetic', 3);
     } else {
         triButton.innerHTML = globalThis.alphabeticButton;
         showClass('titreDate');
         hideClass('titreName');
-        // Enregistrement cookie
-        setCookie('tri', 'numeric', 3);
-    };
+    }
+    let sensButton = document.getElementById('sens');
+    if (elemSens == 'down') {
+        sensButton.innerHTML = globalThis.arrowUp;
+    } else {
+        sensButton.innerHTML = globalThis.arrowDown;
+    }
 }
 
-// Masque tous les éléments contenant la classe 'classe'
+// Masque tous les elements contenant la classe 'classe'
 function hideClass(classe) {
     document.querySelectorAll('.' + classe).forEach(function (el) {
         el.style.display = 'none';
     });
 }
-// Affiche tous les éléments contenant la classe 'classe'
+// Affiche tous les elements contenant la classe 'classe'
 function showClass(classe) {
     document.querySelectorAll('.' + classe).forEach(function (el) {
         el.style.display = 'block';
     });
 }
 
-// Masque l'élément id
+// Masque l'element id
 function hideDiv(id) {
     document.getElementById(id).style.display = 'none'; 
 }
-// Affiche l'élément id
+// Affiche l'element id
 function showDiv(id) {
     document.getElementById(id).style.display = 'block'; 
 }
 
-// Inverse la visibilité de tous les éléments contenant la classe 'classe'
+// Inverse la visibilite de tous les elements contenant la classe 'classe'
 function toggleClass(classe) {
     document.querySelectorAll('.' + classe).forEach(function (el) {
         if (el.style.display == 'none') {
@@ -146,10 +182,10 @@ function toggleClass(classe) {
     });
 }
 
-// Inverse la visibilité de la publication d'une div
+// Inverse la visibilite de la publication d'une div
 function togglePublication(div) {
     document.querySelectorAll('.publication').forEach(function (elem) {
-        // On masque toutes les div infos sauf celui sélectionné
+        // On masque toutes les div infos sauf celui selectionne
         if (elem.id != div) {
             elem.style.display = 'none';
         }
@@ -197,10 +233,10 @@ function toggleDisplay(type) {
 // Remplacer boutons
 //let triButton = document.getElementById('boutontri');
 
-// Toggle pour afficher/masquer le détail de la photo
+// Toggle pour afficher/masquer le detail de la photo
 function switchInfo(i) {
     document.querySelectorAll('.info').forEach(function (elem) {
-        // On masque toutes les icones infos sauf celui sélectionné
+        // On masque toutes les icones infos sauf celui selectionne
         if (elem.id != 'info' + i) {
             elem.setAttribute("src", "icons/information.png");
         }
@@ -258,7 +294,7 @@ function getLocation(n) {
 
 // On initialise une carte dans chaque div photo
 function displayMap(n) {
-    // Récupération hauteur du détail pour l'appliquer à la carte
+    // Recuperation hauteur du detail pour l'appliquer a la carte
     let divHeight = document.getElementById('detail' + n).style.height;
     let divMap = document.getElementById('map' + n);
     if(divMap) {
@@ -271,13 +307,13 @@ function displayMap(n) {
         });
 
         if (lat[n]) {
-            // Détruit la map si elle exite déjà
+            // Detruit la map si elle exite deja
             var container = L.DomUtil.get('map' + n);
             if (container != null) {
                 container._leaflet_id = null;
             }
 
-            // Crée la map
+            // Cree la map
             let map = L.map('map' + n).setView([lat[n], lon[n]], 10);
 
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -288,3 +324,5 @@ function displayMap(n) {
         }
     }
 }
+
+  
