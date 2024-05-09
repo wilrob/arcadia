@@ -39,12 +39,14 @@ An icon &#9432; at the left bottom of each photo allows you to display additiona
     <li>title and description</li>
     <li>author, file name, date</li>
     <li>credit and rights</li>
-    <li>camera brand and Model</li>
+    <li>camera brand and model</li>
     <li>photo width x height, size, mimeType (jpeg, png, etc.)</li>
-    <li>ISO, focal, apeture, speed</li>
-    <li>a map if latitude and longitude are defined</li>
+    <li>ISO, focal, aperture, speed</li>
+    <li>a map (OpenStreeMaps) if latitude and longitude are defined</li>
     <li>tags and persons</li>
 </ul>
+
+Metadata can be added or edited using tools such as Photoshop or <a href="https://exiftool.org/gui/" target="_blank">exiftool</a>
 
 ### Fancybox display
 By clicking on the photo, you display it in the original format. You can view the album in horizontal mode.
