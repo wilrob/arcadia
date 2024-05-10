@@ -38,16 +38,16 @@ In this mode, each photo is displayed with the title, description and tags conta
 In this mode, photos are displayed in mosaic thumbnails without information.
 
 ### Metadata
-An icon &#9432; at the left bottom of each photo allows you to display additional information contained in the photo:
+In the two modes above, an icon &#9432; at the left bottom of each photo allows you to display information from photo metadata, such as:
 <ul>
     <li>title and description</li>
+    <li>tags and persons</li>
     <li>author, file name, date</li>
     <li>credit and rights</li>
-    <li>camera brand and model</li>
+    <li>equipment and model</li>
     <li>photo width x height, size, mimeType (jpeg, png, etc.)</li>
     <li>ISO, focal, aperture, speed</li>
-    <li>a map (OpenStreeMaps) if latitude and longitude are defined</li>
-    <li>tags and persons</li>
+    <li>a map (OpenStreeMaps)</li>
 </ul>
 
 Metadata can be added or edited using tools such as Photoshop or <a href="https://exiftool.org/gui/" target="_blank">exiftool</a>
