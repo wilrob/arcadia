@@ -22,11 +22,11 @@ To change the title and the background image, simply place a new image in the <c
 ## Use
 The top right menu contains the following:
 <ul>
-<li>a drop-down menu [<img src="icons/dossier.png" width="16" />] to choose the album to display</li>
-<li>a button to sort photos alphabetically [<img src="icons/alpha.png" width="16" />] or by date [<img src="icons/calendar.png" width="16" />]</li>
-<li>a button to reverse the display direction of photos [<img src="icons/arrowDown.png" width="16" />] (A to Z and from the most recent to the oldest) or [<img src="icons/arrowUp.png" width="16" />] (Z to A or from the oldest to the most recent)</li>
-<li>a button to choose the type of display [<img src="icons/icon-blog.png" width="16" />] blog or [<img src="icons/thumbnail-icon-18.jpg.png" width="16" />] mosaic</li>
-<li>a search field [<img src="icons/search.png" width="16" />] for tags contained in photos</li>
+<li>a drop-down menu <img src="icons/dossier.png" width="16" /> to choose the album to display</li>
+<li>a button to sort photos alphabetically <img src="icons/alpha.png" width="16" /> or by date <img src="icons/calendar.png" width="16" /></li>
+<li>a button to reverse the display direction of photos <img src="icons/arrowDown.png" width="16" /> (A to Z and from the most recent to the oldest) or <img src="icons/arrowUp.png" width="16" /> (Z to A or from the oldest to the most recent)</li>
+<li>a button to choose the type of display <img src="icons/icon-blog.png" width="16" /> blog or <img src="icons/thumbnail-icon-18.jpg.png" width="16" /> mosaic</li>
+<li>a search field <img src="icons/search.png" width="16" /> for tags contained in photos</li>
 </ul>
 
 ### Blog
