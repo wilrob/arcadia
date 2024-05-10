@@ -23,10 +23,10 @@ To change the title and the background image, simply place a new image in the <c
 The top right menu contains the following:
 <ul>
 <li>a drop-down menu to choose the album to display</li>
-<li>a button <img src="icons/alpha.png" width="16" /> or <img src="icons/calendar.png" width="16" /> to sort photos alphabetically or by date</li>
-<li>a button <img src="icons/arrowUp.png" width="16" /> or <img src="icons/arrowDown.png" width="16" /> to reverse the display direction of photos (A to Z and from the most recent to the oldest or vice versa)</li>
-<li>a button to choose the type of display (<img src="icons/icon-blog.png" width="16" /> blog or <img src="icons/thumbnail-icon-18.jpg.png" width="16" /> mosaic)</li>
-<li>a search field for tags contained in photos</li>
+<li>a button to sort photos alphabetically <img src="icons/alpha.png" width="16" /> or by date <img src="icons/calendar.png" width="16" /></li>
+<li>a button to reverse the display direction of photos <img src="icons/arrowDown.png" width="16" /> (A to Z and from the most recent to the oldest) or <img src="icons/arrowUp.png" width="16" /> (Z to A or from the oldest to the most recent)</li>
+<li>a button to choose the type of display <img src="icons/icon-blog.png" width="16" /> blog or <img src="icons/thumbnail-icon-18.jpg.png" width="16" /> mosaic</li>
+<li>a search field <img src="icons/search.png" width="16" /> for tags contained in photos</li>
 </ul>
 
 ### Blog
@@ -36,7 +36,7 @@ In this mode, each photo is displayed with the title, description and tags conta
 In this mode, photos are displayed in mosaic thumbnails without information.
 
 ### Metadata
-An icon <img src="icons/information.png" width="16" /> at the left bottom of each photo allows you to display additional information contained in the photo:
+An icon &#9432; at the left bottom of each photo allows you to display additional information contained in the photo:
 <ul>
     <li>title and description</li>
     <li>author, file name, date</li>
