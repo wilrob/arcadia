@@ -73,16 +73,14 @@
       }
     };
 
-    /** PARAMETRES UTILISATEUR
-     * topTitle : titre de l'album affiche en haut de page
-     * bgImage : Image de fond
-     * imageDir : Repertoire contenant les dossiers de photos
-     * indexPage : Page de debut
-     */
+    /** USERS SETTINGS  */
     // Title
     const topTitle = 'Et in arcadia ego';
     // Background image
     const bgImage = 'styles/images/image_fond.jpg'
+
+
+    /** CONFIGURATION */
     // photos directory
     const imageDir = 'albums';
     // index page
@@ -125,17 +123,22 @@
       xmlDocDir = parserDir.parseFromString(listDir, "text/html");
       // Liste du contenu des repertoire sous forme de HTMLcollection
       rep = xmlDocDir.getElementsByTagName("a");
-      // Boucle pour creer la liste des repertoires
-      for (i = 1; i < rep.length; i++) {
-        // Supprime les espaces et le / dans le nom
-        dirName = rep[i].childNodes[0].nodeValue.replace(/\//g, '');
 
-        if (dirName.substring(0, 1) == ' ') {
-          dirName = dirName.substring(1);
-        }
-        // Si le nom ne commence pas par un point, on l'enregistre
-        if (dirName.substring(0, 1) != '.') {
-          liste.set(dirName, dirName);
+     // Boucle pour creer la liste des repertoires
+     for (i = 1; i < rep.length; i++) {
+        let file = rep[i].childNodes[0].nodeValue;
+        // Elimine les fichiers ne finissant pas par / (dossier)
+        if(file.substring(file.length - 1) == '/') {
+            // Supprime les espaces et le / dans le nom
+            let dirName = file.replace(/\//g, '');
+
+            if (dirName.substring(0, 1) == ' ') {
+              dirName = dirName.substring(1);
+            }
+            // Si le nom ne commence pas par un point, on l'enregistre
+            if (dirName.substring(0, 1) != '.') {
+              liste.set(dirName, dirName);
+            }
         }
       };
 
