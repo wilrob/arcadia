@@ -377,7 +377,7 @@ async function loadImg(data) {
                         details += lat[i] ? '<div id="map' + i + '" class="map"></div>' : '';
                         details += '</div>';
                         // Tag en version mosaique
-                        details += '<div class="tagMosaic">' + libelles + personnes + '</div>';
+                       // details += '<div class="tagMosaic">' + libelles + personnes + '</div>';
 
                         // Infos affichees en version blog (nom fichier ou date en fonction du tri alphabetique ou date)
                         let infos = '<div class="plusinfo"><div class="titreName">' + decode_utf8(imgName) + '</div><div class="titreDate">' + dateFR + '</div></div>';
@@ -385,9 +385,9 @@ async function loadImg(data) {
                         // Affichage des infos de la photo
                         // Bouton de fermeture
                         let closeButton = '<a class="closeInfos" onclick="togglePublication(\'publication' + i + '\'); switchInfo(' + i + ')"><img src="icons/close-red.png" width="16" /></a>';
-                        publication = '<div id="publication' + i + '" class="publication" style="display: none;">' + closeButton + '<div class="cadre">' + titre + '</div>' + details + '</div>';
+                        publication = '<div id="publication' + i + '" class="publication" style="display: none;">' + closeButton + '<div class="cadre">' + titre + '<div class="tagMosaic" style="display:none;">' + libelles + personnes + '</div></div>' + details + '</div>';
                         // Tag en version Blog sous la photo
-                        publication += '<div class="tagBlog">' + libelles + personnes + '</div>';
+                        publication += '<div class="tagBlog" style="display:none;">' + libelles + personnes + '</div>';
 
                         // On cree la DIV contenant la photo avec la class Blog ou Mosaic
                         let newImage = '<div class="' + classDivImage + '">' + photo + titre + infos + '</div>';
@@ -427,8 +427,10 @@ async function loadImg(data) {
                         // Masque les dic tagMosaic ou tagBlog en fonction de l'affichage
                         if (typeAlbum == 'blog') {
                             hideClass('tagMosaic');
+                            showClass('tagBlog');
                         } else if (typeAlbum == 'mosaic') {
                             hideClass('tagBlog');
+                            showClass('tagMosaic');
                         }
                         // On supprime la barre de progression
                         let body = document.getElementsByTagName('body')[0];
