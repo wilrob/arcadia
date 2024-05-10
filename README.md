@@ -3,7 +3,9 @@ This photo album in plain javascript allows you to display the contents of photo
 It uses <a href="https://github.com/MikeKovarik/exifr">exifr</a> to display the metadata contained in each photo.
 As well as <a href="https://fancyapps.com/fancybox/">fancybox</a> for displaying photos in original format.<br />
 Photos are displayed in blog or mosaic format.
-
+<br /><br />
+Try it yourself - <a href="http://arcadia.lbpu3811.odns.fr" target="_blank">demo</a>
+<br />
 ## Installation
 Copy all the directories and files on your server location.
 Then place one or more folders containing photos in the <code>albums</code> directory.
