@@ -32,10 +32,10 @@ The top right menu contains the following:
 </ul>
 
 ### Blog
-In this mode, each photo is displayed with the title, description and tags contained in the photo (Exif or XMP metadata).
+In this mode, each photo is displayed with the title, description and tags from the photo metadata.
 
 ### Mosaic
-In this mode, photos are displayed in mosaic thumbnails without information.
+In this mode, photos are displayed in mosaic thumbnails.
 
 ### Metadata
 In the two modes above, an icon &#9432; at the left bottom of each photo allows you to display information from photo metadata, such as:
@@ -53,4 +53,4 @@ In the two modes above, an icon &#9432; at the left bottom of each photo allows 
 Metadata can be added or edited using tools such as Photoshop or <a href="https://exiftool.org/gui/" target="_blank">exiftool</a>
 
 ### Fancybox display
-By clicking on the photo, you display it in the original format. You can view the album in horizontal mode.
+By clicking on the photo, you enlarge the photo at its original format.
