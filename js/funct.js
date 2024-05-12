@@ -294,11 +294,21 @@ function getLocation(n) {
 
 // On initialise une carte dans chaque div photo
 function displayMap(n) {
-    // Recuperation hauteur du detail pour l'appliquer a la carte
-    let divHeight = document.getElementById('detail' + n).style.height;
+    // Div de la map
     let divMap = document.getElementById('map' + n);
+ 
     if(divMap) {
-        divMap.setAttribute('style', 'height: ' + divHeight);
+        // Calcul de la hauteur de la map pour qu'elle atteigne le bas de page
+        let divDetail = document.getElementById('loc' + n);
+        // Objet avec les dimensions de divDetail
+        var domRect = divDetail.getBoundingClientRect();
+        // Différence entre la taille de la fenêtre et le bas de divDetail
+        var spaceBelow = window.innerHeight - domRect.bottom;
+        console.log(domRect.bottom)
+        // Hauteur de la div Map = spaceBelow - 15px (5 en haut et 10 en bas)
+        let mapHeight = spaceBelow - 35;
+
+        divMap.setAttribute('style', 'height: ' + mapHeight + 'px');
 
         var Icon = L.icon({
             iconUrl: 'icons/marker.png',
