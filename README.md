@@ -1,6 +1,6 @@
 # arcadia
 This photo album in plain javascript allows you to display the contents of your photo folders as well as the metadata contained in each photo<br />
-Photos are displayed in blog or mosaic format.
+Photos can be displayed as a blog or thumbnail mosaic.
 <br /><br />
 Try it yourself - <a href="http://arcadia.lbpu3811.odns.fr" target="_blank">demo</a>
 <br />
@@ -36,7 +36,7 @@ In this mode, each photo is displayed with the title, description and tags from 
 In this mode, photos are displayed in mosaic thumbnails.
 
 ### Metadata
-In the two modes above, by clicking on &#9432; at the left bottom of each photo, you will display an information panel with photo metadata, such as:
+In each display mode, by clicking on &#9432; at the left bottom of each photo, you will display an information panel with photo metadata, such as:
 <ul>
     <li>title and description</li>
     <li>tags and persons</li>
@@ -48,10 +48,10 @@ In the two modes above, by clicking on &#9432; at the left bottom of each photo,
     <li>location & map (OpenStreeMaps)</li>
 </ul>
 
-Metadata can be added or edited using tools such as Photoshop or <a href="https://exiftool.org/gui/" target="_blank">exiftool</a>
+Metadata can be added or edited using tools such as Photoshop or <a href="https://exiftool.org/gui/" target="_blank">exiftool</a>.
 
 ### Fancybox display
-By clicking on the photo, you enlarge the photo at its original format.
+Click on a photo to view it in its original format.
 
 ## Credits
 I used the awesome EXIF reading library <b><a href="https://github.com/MikeKovarik/exifr">exifr</a></b> to read photo metadata.<br />
