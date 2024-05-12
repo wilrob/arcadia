@@ -324,7 +324,7 @@ function displayMap(n) {
             }
 
             // Cree la map
-            let map = L.map('map' + n).setView([lat[n], lon[n]], 10);
+            let map = L.map('map' + n).setView([lat[n], lon[n]], 9);
 
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 maxZoom: 20,
