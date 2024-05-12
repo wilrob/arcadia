@@ -55,4 +55,4 @@ Click on a photo to view it in its original format.
 
 ## Credits
 I used the awesome EXIF reading library <b><a href="https://github.com/MikeKovarik/exifr">exifr</a></b> to read photo metadata.<br />
-As well as the very nice interface <b><a href="https://fancyapps.com/fancybox/">fancybox</a></b>, to display the photos in their original format.
+As well as the very nice interface <b><a href="https://fancyapps.com/fancybox/">fancybox</a></b> to display the photos in their original format.
