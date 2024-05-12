@@ -406,11 +406,15 @@ async function loadImg(data) {
 
                         // Nb de fichiers affiches dans <span id="resultat">
                         let divResult = document.getElementById("resultat");
+                        let photoText = 'photo';
                         // Si le resultat est un texte, on met le compteur a 0, puis on l'incremente
-                        let resultat = isNaN(divResult.innerHTML) ? 0 : parseInt(divResult.innerHTML);
+                        let resultat = parseInt(divResult.innerHTML);
                         resultat++;
                         // On renvoie le resultat
-                        divResult.innerHTML = resultat;
+                        if(resultat > 1) {
+                            photoText += 's';
+                        }
+                        divResult.innerHTML = resultat + ' '  + photoText;
 
                         // Pourcentage de chargement
                         let percent = document.getElementById('pourcent');
