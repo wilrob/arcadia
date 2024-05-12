@@ -56,3 +56,9 @@ Click on a photo to view it in its original format.
 ## Credits
 I used the awesome EXIF reading library <b><a href="https://github.com/MikeKovarik/exifr">exifr</a></b> to read photo metadata.<br />
 As well as the very nice interface <b><a href="https://fancyapps.com/fancybox/">fancybox</a></b> to display the photos in their original format.
+
+## Contributing
+
+Contributions are welcome. Suggestions, bug, etc.<br />
+
+The next step is to edit the XMP information online. If anyone knows how to save an xmp file to a photo, I'm really interested. THANKS.
