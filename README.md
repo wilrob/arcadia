@@ -1,7 +1,5 @@
 # arcadia
-This photo album in plain javascript allows you to display the contents of photo folders.<br />
-It uses <a href="https://github.com/MikeKovarik/exifr">exifr</a> to display the metadata contained in each photo.
-As well as <a href="https://fancyapps.com/fancybox/">fancybox</a> for displaying photos in original format.<br />
+This photo album in plain javascript allows you to display the contents of your photo folders as well as the metadata contained in each photo<br />
 Photos are displayed in blog or mosaic format.
 <br /><br />
 Try it yourself - <a href="http://arcadia.lbpu3811.odns.fr" target="_blank">demo</a>
@@ -54,3 +52,7 @@ Metadata can be added or edited using tools such as Photoshop or <a href="https:
 
 ### Fancybox display
 By clicking on the photo, you enlarge the photo at its original format.
+
+## Credits
+I used the awesome EXIF reading library <b><a href="https://github.com/MikeKovarik/exifr">exifr</a></b> to read photo metadata.<br />
+As well as the very nice interface <b><a href="https://fancyapps.com/fancybox/">fancybox</a></b>, to display the photos in their original format.
