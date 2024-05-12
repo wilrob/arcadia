@@ -306,7 +306,7 @@ function displayMap(n) {
         var spaceBelow = window.innerHeight - domRect.bottom;
         console.log(domRect.bottom)
         // Hauteur de la div Map = spaceBelow - 15px (5 en haut et 10 en bas)
-        let mapHeight = spaceBelow - 35;
+        let mapHeight = spaceBelow - 45;
 
         divMap.setAttribute('style', 'height: ' + mapHeight + 'px');
 
