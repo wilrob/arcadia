@@ -57,7 +57,7 @@
   <div id="info-mosaic"></div>
   
   <!-- Arrow to scroll up to the top of the page -->
-  <img id="toTop" onclick="globalThis.scrollTo({ top: 0, left: 0, behavior: 'smooth' });" src="icons/double-arrow-top-icon.png" width="32" />
+  <img id="toTop" onclick="globalThis.scrollTo({ top: 0, left: 0, behavior: 'smooth' });" src="icones/double-arrow-top-icon.png" width="32" />
 
   <!-- CONSOLE -->
   <p id="xmp-code"></p>
@@ -73,9 +73,10 @@
       }
     };
 
-    /** USERS SETTINGS  */
+    /** USER SETTINGS  */
     // Title
-    const topTitle = 'Et in arcadia ego';
+    const fixedTitle = 'Et in arcadia ego';
+    const setFixedTitle = 0 // Set to 1 if you want to display the fixedTitle
     // Background image
     const bgImage = 'styles/images/arcadia.jpg'
 
@@ -108,9 +109,7 @@
     bodyBackground.style.webkitBackgroundSize = 'cover';
     document.getElementById('hautdepage').style.backgroundImage= 'url(' + bgImage + ')';
  
-    // Affiche le titre
-    document.getElementById('hautdepage').innerHTML = '<a href="' + index + '">' + topTitle + '</a>';
-
+    
 
     /*********************************************************************/
     /* Affichage du MENU
@@ -175,7 +174,16 @@
       } 
       data.dir = imageDir + '/' + getDir;
 
-
+      // Title
+      let setTitle = document.getElementById('hautdepage');
+      if(setFixedTitle == 1) {
+        // Tile: fixed title defined in User Settings
+        setTitle.innerHTML = '<a href="' + index + '">' + fixedTitle + '</a>';
+      } else {
+        // Title: photo directory's name
+        setTitle.innerHTML = '<a href="' + index + '">' + getDir + '</a>';
+      }
+      
       // Recuperation parametre URL 'tag'
       let tagUrl = urlParams.get('tag');
       // On remplace les espaces par _
@@ -226,8 +234,8 @@
       });
 
       // Formulaire de selection du dossier images
-      let dirForm = '<form action="index.html" method="get" onchange="this.submit()">';
-      dirForm += '<img src="icons/dossier.png" class="icon" width="16" /> ';
+      let dirForm = '<form action="' + index + '" method="get" onchange="this.submit()">';
+      dirForm += '<img src="icones/dossier.png" class="icon" width="16" /> ';
       dirForm += '<select name="dir">' + albumList + '</select>';
       dirForm += '</form>';
 
@@ -247,24 +255,24 @@
 
       // navLink : boutons de selection d'affichage (tri par date ou nom et affichage en blog ou mosaique)
       // Icone devant les boutons de tri et d'affichage
-      let navLink = '<img src="icons/photoset.png" class="icon" width=20" />&nbsp;';
+      let navLink = '<img src="icones/photoset.png" class="icon" width=20" />&nbsp;';
 
       // Boutons de TRI
       // Parametres globaux utilises aussi dans la fonction 'tri'
       // Fleches de sens de tri (UP/DOWN)
-      globalThis.arrowDown = '<button class="hint--bottom" aria-label="First on top"  onclick="divOrder( 0, \'down\');"><img src="icons/arrowDown.png" class="icon" height="20" /></button>';
-      globalThis.arrowUp = '<button class="hint--bottom" aria-label="Last on top"  onclick="divOrder(0, \'up\');"><img src="icons/arrowUp.png" class="icon" height="20" /></button>';
+      globalThis.arrowDown = '<button class="hint--bottom" aria-label="First on top"  onclick="divOrder( 0, \'down\');"><img src="icones/arrowDown.png" class="icon" height="20" /></button>';
+      globalThis.arrowUp = '<button class="hint--bottom" aria-label="Last on top"  onclick="divOrder(0, \'up\');"><img src="icones/arrowUp.png" class="icon" height="20" /></button>';
       // Icone DATE ou NOM
-      globalThis.numericButton = '<button class="hint--bottom" aria-label="Order by date"  onclick="divOrder(\'id\', 0);"><img src="icons/calendar.png" class="icon" height="20" /></button>';
-      globalThis.alphabeticButton = '<button class="hint--bottom" aria-label="Order by name" onclick="divOrder(\'name\', 0);"><img src="icons/alpha.png" class="icon" height="20" /></button>';
+      globalThis.numericButton = '<button class="hint--bottom" aria-label="Order by date"  onclick="divOrder(\'id\', 0);"><img src="icones/calendar.png" class="icon" height="20" /></button>';
+      globalThis.alphabeticButton = '<button class="hint--bottom" aria-label="Order by name" onclick="divOrder(\'name\', 0);"><img src="icones/alpha.png" class="icon" height="20" /></button>';
       // Creation des boutons
       let triButton = data.tri == 'id' ? globalThis.alphabeticButton : globalThis.numericButton;
       let sensButton = data.sens == 'down' ? globalThis.arrowUp : globalThis.arrowDown;
       navLink += '<span id="boutontri">' + triButton + '</span>&nbsp;&nbsp;<span id="sens">' + sensButton + '</span>&nbsp;&nbsp;';
 
       // Boutons mosaique ou blog
-      globalThis.blogButton = '<button id="buttonBlog" class="hint--bottom" aria-label="Blog" onclick="toggleDisplay(\'blog\');"><img src="icons/icon-blog.png" class="icon" width="20" /></button>';
-      globalThis.mosaicButton = '<button id="buttonMosaic" class="hint--bottom" aria-label="Mosaic" onclick="toggleDisplay(\'mosaic\');"><img src="icons/thumbnail-icon-18.jpg.png" class="icon" width="20" /></button>';
+      globalThis.blogButton = '<button id="buttonBlog" class="hint--bottom" aria-label="Blog" onclick="toggleDisplay(\'blog\');"><img src="icones/icon-blog.png" class="icon" width="20" /></button>';
+      globalThis.mosaicButton = '<button id="buttonMosaic" class="hint--bottom" aria-label="Mosaic" onclick="toggleDisplay(\'mosaic\');"><img src="icones/thumbnail-icon-18.jpg.png" class="icon" width="20" /></button>';
       let displayButton = data.typeAlbum == 'blog' ? globalThis.mosaicButton : globalThis.blogButton;
       navLink += '<span id="boutondisplay">' + displayButton + '</span>';
 
@@ -284,8 +292,8 @@
       /*********************************************************************/
       /* Formulaire du lien de recherche
       /*********************************************************************/
-      let searchForm = '<form name="recherche" action="index.html" method="GET">';
-      searchForm += '<img src="icons/search.png" class="icon" width="16" />';
+      let searchForm = '<form name="recherche" action="' + index + '" method="GET">';
+      searchForm += '<img src="icones/search.png" class="icon" width="16" />';
       searchForm += '<input name="search" placeholder="words separated by a space" value="" size="20" required />';
       searchForm += '<input type="text" value="' + getDir + '" name="dir" hidden="hidden" /> ';
       searchForm += '<input type="submit" value="OK" />';
