@@ -1,5 +1,5 @@
 # arcadia
-This photo album in plain javascript allows you to display the contents of your photo folders as well as the metadata contained in each photo<br />
+This photo album in plain javascript allows you to display the contents of your photo folders as well as the metadata contained in each photo, using exifr<br />
 Photos can be displayed as a blog or thumbnail mosaic.
 <br /><br />
 Try it yourself - <a href="http://arcadia.lbpu3811.odns.fr" target="_blank">demo</a>
