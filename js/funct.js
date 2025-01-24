@@ -236,19 +236,19 @@ function toggleDisplay(type) {
 // Toggle pour afficher/masquer le detail de la photo
 function switchInfo(i) {
     document.querySelectorAll('.info').forEach(function (elem) {
-        // On masque toutes les icones infos sauf celui selectionne
+        // On masque toutes les icons infos sauf celui selectionne
         if (elem.id != 'info' + i) {
-            elem.setAttribute("src", "icones/information.png");
+            elem.setAttribute("src", "icons/information.png");
         }
     });
 
     // Change l'icone information de gris en bleu
     let img = document.getElementById('info' + i);
-    if (img.getAttribute("src") == "icones/information.png") {
-        img.setAttribute("src", "icones/information-on.png");
+    if (img.getAttribute("src") == "icons/information.png") {
+        img.setAttribute("src", "icons/information-on.png");
         img.setAttribute("title", "Masquer les infos");
     } else {
-        img.setAttribute("src", "icones/information.png");
+        img.setAttribute("src", "icons/information.png");
         img.setAttribute("title", "Afficher les infos");
     }
 }
@@ -311,7 +311,7 @@ function displayMap(n) {
         divMap.setAttribute('style', 'height: ' + mapHeight + 'px');
 
         var Icon = L.icon({
-            iconUrl: 'icones/marker.png',
+            iconUrl: 'icons/marker.png',
             iconSize: [32, 32], // size of the icon
             iconAnchor: [5, 31], // point of the icon which will correspond to marker's location
         });
