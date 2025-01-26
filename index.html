@@ -114,9 +114,11 @@
     /*********************************************************************/
     /* Affichage du MENU
     /*********************************************************************/
+    // albumList : les répertoires de photos
     let albumList = '';
     const liste = new Map();
-    let url = 0;
+    // dirOK : variable servant à vérifier que le répertoire contenu dans getCookie('dir') existe
+    let dirOK = 0;
 
     // Liste le contenu du repertoire imageDir
     loadFiles(imageDir).then((listDir) => {
@@ -142,7 +144,7 @@
             }
             // On vérifie que le répertoire contenu dans les cookies existe
             if(getCookie('dir') && getCookie('dir') == dirName) {
-              url = 1;
+              dirOK = 1;
             }
         }
       };
@@ -174,7 +176,7 @@
       if(urlParams.get('dir')) {
         getDir = urlParams.get('dir');
         setCookie('dir', getDir, 3);
-      } else if (getCookie('dir') && typeof getCookie('dir') !== 'undefined' && url==1) {
+      } else if (getCookie('dir') && typeof getCookie('dir') !== 'undefined' && dirOK==1) {
         getDir = getCookie('dir');
       } 
       data.dir = imageDir + '/' + getDir;
