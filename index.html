@@ -111,15 +111,13 @@
     bodyBackground.style.webkitBackgroundSize = 'cover';
     document.getElementById('hautdepage').style.backgroundImage= 'url(' + bgImage + ')';
  
-    
-
     /*********************************************************************/
     /* Affichage du MENU
     /*********************************************************************/
-    // albumList : les répertoires de photos
+    // albumList : les rÃ©pertoires de photos
     let albumList = '';
     const liste = new Map();
-    // dirOK : variable servant à vérifier que le répertoire contenu dans getCookie('dir') existe
+    // dirOK : variable servant Ã  vÃ©rifier que le rÃ©pertoire contenu dans getCookie('dir') existe
     let dirOK = 0;
 
     // Liste le contenu du repertoire imageDir
@@ -144,7 +142,7 @@
             if (dirName.substring(0, 1) != '.') {
               liste.set(dirName, dirName);
             }
-            // On vérifie que le répertoire contenu dans les cookies existe
+            // On vÃ©rifie que le rÃ©pertoire contenu dans les cookies existe
             if(getCookie('dir') && getCookie('dir') == dirName) {
               dirOK = 1;
             }
