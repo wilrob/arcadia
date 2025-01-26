@@ -84,7 +84,10 @@ input {
     /*box-shadow: -1px -1px 3px #999;*/
     opacity: 0.8;
 }
+/* texte clignotant */
+@keyframes blink {50% { color: transparent }}
 #pourcent {
+    animation: 1.5s blink infinite;
     position: absolute;
     left: 0;
     top: 300px;

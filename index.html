@@ -116,6 +116,7 @@
     /*********************************************************************/
     let albumList = '';
     const liste = new Map();
+    let url = 0;
 
     // Liste le contenu du repertoire imageDir
     loadFiles(imageDir).then((listDir) => {
@@ -138,6 +139,10 @@
             // Si le nom ne commence pas par un point, on l'enregistre
             if (dirName.substring(0, 1) != '.') {
               liste.set(dirName, dirName);
+            }
+            // On vérifie que le répertoire contenu dans les cookies existe
+            if(getCookie('dir') && getCookie('dir') == dirName) {
+              url = 1;
             }
         }
       };
@@ -169,7 +174,7 @@
       if(urlParams.get('dir')) {
         getDir = urlParams.get('dir');
         setCookie('dir', getDir, 3);
-      } else if (getCookie('dir') && typeof getCookie('dir') !== 'undefined') {
+      } else if (getCookie('dir') && typeof getCookie('dir') !== 'undefined' && url==1) {
         getDir = getCookie('dir');
       } 
       data.dir = imageDir + '/' + getDir;
