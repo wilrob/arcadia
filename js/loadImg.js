@@ -189,21 +189,14 @@ async function loadImg(data) {
                     // Pour chaque element du tableau des personnes et des tags
                     tagArray.forEach((tagItem) => {
                         // On verifie l'equivalence
-                        if (exifTag.title.value && exifTag.title.value.toLowerCase().includes(tagItem)) {
+                        if ((exifTag.title.value && exifTag.title.value.toLowerCase().includes(tagItem)) || (description && description.toLowerCase().includes(tagItem))) {
                             nbOccurence++;
                         }
-                        if(description && description.toLowerCase().includes(tagItem)) {
-                            nbOccurence++;
-                        }
-                        });
-                        // Si le nombre de tag+personne de la photo correspond au nombre de recherche, on affiche la photo
-                        if (nbOccurence >= tagArray.length) {
-                            display = 'block';
-                        }
-                    
-                    /*if ((exifTag.title.value && exifTag.title.value.toLowerCase().includes(search)) || (description && description.toLowerCase().includes(search)) || search == 'all') {
+                    });
+                    // Si le nombre de tag+personne de la photo correspond au nombre de recherche, on affiche la photo
+                    if (nbOccurence >= tagArray.length) {
                         display = 'block';
-                    }*/
+                    }
 
                     /**
                      * CREATEUR = createur de la photo
