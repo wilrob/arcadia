@@ -11,7 +11,7 @@
 */
 async function loadImg(data) {
     var dir = data.dir;
-    var search = data.search;
+    var search = data.search.toLowerCase();
     var typeAlbum = data.typeAlbum;
     var tri = data.tri;
     var sens = data.sens;
@@ -60,7 +60,7 @@ async function loadImg(data) {
         };
         // Nb totale d'images dans le repertoire
         let nbImages = imageList.length;
-        document.getElementById('directory').append(nbImages + ' photos');
+        document.getElementById('directory').append(nbImages + getMessage("pictures"));
         // Nom de la derniere image utilisee pour lancer le tri a la fin du traitement
         let lastImage = imageList[nbImages - 1];
 
@@ -126,7 +126,7 @@ async function loadImg(data) {
                     let emptyTag = null;
                     if (typeof exifTag == 'undefined') {
                         exifTag = {};
-                        emptyTag = 'Aucune donn&eacute;e sur la photo<br />';
+                        emptyTag = getMessage("noDataPhoto") + '<br />';
                     }
                     // Donnees EXIF photos
                     let WidthxHeight = typeof exifTag.ExifImageHeight !== 'undefined' && typeof exifTag.ExifImageWidth !== 'undefined' ? exifTag.ExifImageWidth + ' &times ' + exifTag.ExifImageHeight + '&nbsp;&nbsp;&nbsp;&nbsp;' : '';
@@ -136,7 +136,7 @@ async function loadImg(data) {
                     let focale = typeof exifTag.FocalLengthIn35mmFormat !== 'undefined' ? exifTag.FocalLengthIn35mmFormat + ' mm&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' : '';
 
                     // Donnees objectif
-                    let objectif = ISO != '' || FNumber != '' || vitesse != '' || focale != '' ? ISO + focale + FNumber + vitesse : 'Aucune donn&eacute;e sur l\'objectif';
+                    let objectif = ISO != '' || FNumber != '' || vitesse != '' || focale != '' ? ISO + focale + FNumber + vitesse : getMessage("noDataLens");
 
                     // Donnees GPS
                     lat[i] = typeof exifTag.latitude !== 'undefined' ? parseFloat(exifTag.latitude, 6) : null;
@@ -169,7 +169,7 @@ async function loadImg(data) {
                     */
                     let camera = typeof exifTag.Make != "undefined" ? exifTag.Make : null;
                     let model = typeof exifTag.Model != "undefined" ? exifTag.Model : null;
-                    let materiel = camera || model ? camera + ' ' + model : 'Aucune donn&eacute;e sur l\'appareil';
+                    let materiel = camera || model ? camera + ' ' + model : getMessage("noDataDevice");
 
                     /** 
                      * TITRE = titre de la photo
@@ -180,16 +180,40 @@ async function loadImg(data) {
                         titre = '<div class="titre">' + decode_utf8(exifTag.title.value) + '</div>';
                     }
                     titre += description ? '<div class="desc">' + description + '</div>' : '';
+                    
+                    // Si search est contenu dans le titre ou la description, on affiche
+                    // On cree un tableau avec les differents mots de la recherche (search)
+                    let tagArray = search.split(separator);
+
+                    let nbOccurence = 0;
+                    // Pour chaque element du tableau des personnes et des tags
+                    tagArray.forEach((tagItem) => {
+                        // On verifie l'equivalence
+                        if (exifTag.title.value && exifTag.title.value.toLowerCase().includes(tagItem)) {
+                            nbOccurence++;
+                        }
+                        if(description && description.toLowerCase().includes(tagItem)) {
+                            nbOccurence++;
+                        }
+                        });
+                        // Si le nombre de tag+personne de la photo correspond au nombre de recherche, on affiche la photo
+                        if (nbOccurence >= tagArray.length) {
+                            display = 'block';
+                        }
+                    
+                    /*if ((exifTag.title.value && exifTag.title.value.toLowerCase().includes(search)) || (description && description.toLowerCase().includes(search)) || search == 'all') {
+                        display = 'block';
+                    }*/
 
                     /**
                      * CREATEUR = createur de la photo
                      * Element exif : creator ou Artist
                     */
                     let createur;
-                    let artist = typeof exifTag.creator !== "undefined" ? decode_utf8(exifTag.creator) : 'Auteur inconnu';
+                    let artist = typeof exifTag.creator !== "undefined" ? decode_utf8(exifTag.creator) : getMessage("noAuthor");
 
                     // Display si tag ok
-                    if (artist && (artist == search || search == 'all')) {
+                    if (artist && (artist.toLowerCase() == search || search == 'all')) {
                         display = 'block';
                         createur = '<span><img src="icons/utilisateur.png" style="vertical-align: bottom" height="20" /> ' + decode_utf8(artist) + '</span>';
                     }
@@ -206,8 +230,8 @@ async function loadImg(data) {
                         day: "numeric",
                     };
                     if (typeof exifTag.CreateDate !== "undefined") {
-                        let myDate = new Date(exifTag.CreateDate).toLocaleDateString('fr', options);
-                        let myHour = new Date(exifTag.CreateDate).toLocaleTimeString('fr');
+                        let myDate = new Date(exifTag.CreateDate).toLocaleDateString(userLang, options);
+                        let myHour = new Date(exifTag.CreateDate).toLocaleTimeString(userLang);
                         dateFR = myDate + ' ' + myHour;
 
                         /* TIMESTAMP from Date
@@ -225,7 +249,7 @@ async function loadImg(data) {
 
                     // Ligne HTML des libelles
                     // Titre des libelles
-                    let titreLabel = 'Tags: ';
+                    let titreLabel = getMessage("tags");
                     let libelles = '';
                     if (typeof exifTag.subject !== "undefined") {
                         if (exifTag.subject.constructor !== Array) {
@@ -254,7 +278,7 @@ async function loadImg(data) {
                             // On cree la ligne HTML de tag
                             if (tag != '') {
                                 tag += '<span style="color: #d34d1d">, </span>';
-                                titreLabel = 'Tags: '
+                                titreLabel = getMessage("tags")
                             }
                             tag += '<a href="' + index + '?tag=' + item + '">' + decode_utf8(item) + '</a>';
                         });
@@ -267,7 +291,7 @@ async function loadImg(data) {
                     */
                     // Ligne HTML des personnes
                     // Titre des personnes
-                    let titreSujet = 'Person: ';
+                    let titreSujet = getMessage("persons");
                     let personnes = '';
                     if (typeof exifTag.PersonInImage !== "undefined") {
                         let personTag = exifTag.PersonInImage;
@@ -293,7 +317,7 @@ async function loadImg(data) {
                             tagAndPersonArray.push(spaceItem);
                             if (person != '') {
                                 person += '<span style="color: #d34d1d">, </span>';
-                                titreSujet = 'Persons: ';
+                                titreSujet = getMessage("persons");
                             }
                             // On cree la ligne HTML de personnes
                             person += '<a href="' + index + '?tag=' + item + '">' + decode_utf8(item) + '</a>';
@@ -305,9 +329,9 @@ async function loadImg(data) {
                      * Comparaison de la recherche avec le tableau des Tags + Personnes
                      */
                     // On cree un tableau avec les differents mots de la recherche (search)
-                    let tagArray = search.split(' ');
+                    //let tagArray = search.split(';');
 
-                    let nbOccurence = 0;
+                    nbOccurence = 0;
                     // Pour chaque element du tableau des personnes et des tags
                     tagAndPersonArray.forEach((item) => {
                         // Pour chaque mot de la recherche
@@ -344,7 +368,7 @@ async function loadImg(data) {
                         //let classPhoto = typeAlbum == 'blog' ? 'photo' : 'photoMini';
                         let photo = '<a href="' + imageUrl + '" data-fancybox="gallery"><img id="img' + i + '" alt="' + imgName + '" class="' + classPhoto + '" src="' + imageUrl + '" /></a>';
                         // Initialisation valeur du div pour affichage de la carte initMap
-                        let iconInfo = '<div onclick="togglePublication(\'publication' + i + '\'); switchInfo(' + i + '); displayMap(' + i + ');getLocation(' + i + ');"><img class="info" id="info' + i + '" title="Show info" src="icons/information.png" width="16" /></div>';
+                        let iconInfo = '<div onclick="togglePublication(\'publication' + i + '\'); switchInfo(' + i + '); displayMap(' + i + ');getLocation(' + i + ');"><img class="info" id="info' + i + '" title="' + getMessage("showInfo") + '" src="icons/information.png" width="16" /></div>';
                         photo += iconInfo;
 
                         /**  Cadre Information Photo

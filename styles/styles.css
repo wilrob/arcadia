@@ -114,6 +114,14 @@ input {
     opacity: 0.5;
     z-index: 99;
 }
+#webtree {
+    display:block;
+    position: fixed;
+    top: 100px;
+    left: 10px;
+    border: none;
+    text-align: center;
+}
 .auteur {
     text-align: center;
 }

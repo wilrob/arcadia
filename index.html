@@ -49,7 +49,7 @@
     <!-- PHOTOS -->
     <div id="central"></div>
     <!-- % CHARGEMENT -->
-    <div id="pourcent">Loading...</div>
+    <div id="pourcent"></div>
   </div>
   <!-- RECHERCHE & LIENS -->
   <div id="menu">
@@ -64,7 +64,24 @@
   <!-- CONSOLE -->
   <p id="xmp-code"></p>
 
+  <!-- <RETOUR> -->
+  <!--<div id="webtree"><a href="index.html"><img src="icons/arbre-genealogique.png" /><br />Arbre<br />g&eacute;n&eacute;nalogique</a></div>-->
+
+
   <script>
+     /** SETTINGS  */
+    // Title
+    const fixedTitle = 'Et in arcadia ego';
+    const setFixedTitle = 0 // Set to 1 if you want to display the fixedTitle
+    // Background image
+    const bgImage = 'styles/images/arcadia.jpg';
+    // photos directory
+    const imageDir = 'albums';
+    // index page
+    const index = 'index.html';
+    // Search text separator
+    const separator = ';';
+
     // When the user scrolls down 800px from the top of the document, show the button
     window.onscroll = function() {
       let myButton = document.getElementById('toTop');
@@ -75,19 +92,62 @@
       }
     };
 
-    /** USER SETTINGS  */
-    // Title
-    const fixedTitle = 'Et in arcadia ego';
-    const setFixedTitle = 0 // Set to 1 if you want to display the fixedTitle
-    // Background image
-    const bgImage = 'styles/images/arcadia.jpg'
+    /** Détection de la langue */
+    const browserLang = navigator.language || navigator.userLanguage; // FR-fr ou US-en
+    const userLang = browserLang.split('-')[0]; //fr ou en
+    console.log(userLang)
+    // Tableau contenant les messages par langue
+    const messages = {
+      fr: {
+        loading: "Chargement...",
+        searchInput: "mots s&eacute;par&eacute;s par ;",
+        showInfo: "Afficher les infos",
+        hideInfo: "Masquer les infos",
+        tags: "Libell&eacute;s : ",
+        orderByDate: "Trier par date",
+        orderByName: "Trier par nom",
+        lastOnTop: "Dernier en haut",
+        firstOnTop: "Premier en haut",
+        mosaic: "Mosa&iuml;que",
+        blog: "Blog",
+        person: "Personne : ",
+        persons: "Personnes : ",
+        pictures: " photos",
+        noDataDevice: "Aucune donn&eacute;e sur l\'appareil",
+        noAuthor: "Auteur inconnu",
+        noDataPhoto: "Aucune donn&eacute;e sur la photo",
+        noDataLens: "Aucune donn&eacute;e sur l\'objectif",
+      },
+      en: {
+        loading: "Loading...",
+        searchInput: "words separated by ;",
+        showInfo: "Display info",
+        hideInfo: "Hide info",
+        tags: "Tags: ",
+        orderByDate: "Order by date",
+        orderByName: "Order by nom",
+        lastOnTop: "Last on top",
+        firstOnTop: "First on top",
+        mosaic: "Mosaic",
+        blog: "Blog",
+        person: "Person: ",
+        pictures: " pictures",
+        persons: "Persons: ",
+        noDataDevice: "No data on device",
+        noAuthor: "Author unknown",
+        noDataPhoto: "No data on the photo",
+        noDataLens: "No data on the lens",
+      },
+    };
 
-
-    /** CONFIGURATION */
-    // photos directory
-    const imageDir = 'albums';
-    // index page
-    const index = 'index.html';
+    // Fonction pour récupérer un message dans la bonne langue
+    function getMessage(key) {
+      const lang = messages[userLang] ? userLang : "en"; // Si la langue n'est pas supportée, on utilise "en"
+      return messages[lang][key] || `Message not found for key: ${key}`;
+    }
+    
+    /** Affichage chargement... / Loading... */
+    document.getElementById("pourcent").innerHTML = getMessage("loading");
 
     // Fancybox image display settings
     Fancybox.bind('[data-fancybox]', {
@@ -194,14 +254,19 @@
       // Recuperation parametre URL 'tag'
       let tagUrl = urlParams.get('tag');
       // On remplace les espaces par _
-      let search = tagUrl ? tagUrl.replaceAll(' ', '_') : 'all';
+      let search = tagUrl ? tagUrl.replaceAll(separator, '_') : 'all';
 
       // Recuperation parametre URL 'search'
       if (urlParams.get('search')) {
         // On remplace les , par des espaces
-        search = urlParams.get('search').replaceAll(',', ' ');
+        search = urlParams.get('search').replaceAll(',', separator);
+        // On supprime les espaces avant et après le séparateur
+        const regex = new RegExp(`\\s*${separator}\\s*`, 'g');
+        search = urlParams.get('search').replaceAll(regex, separator);
         // On supprime les espaces doubles, ainsi que les espaces au debut et en fin de recherche
         search = search.replace(/^\s+|\s+$|\s+(?=\s)/g, '');
+        search = search.trim();
+        console.log(search);
       }
       data.search = search;
      
@@ -267,19 +332,19 @@
       // Boutons de TRI
       // Parametres globaux utilises aussi dans la fonction 'tri'
       // Fleches de sens de tri (UP/DOWN)
-      globalThis.arrowDown = '<button class="hint--bottom" aria-label="First on top"  onclick="divOrder( 0, \'down\');"><img src="icons/arrowDown.png" class="icon" height="20" /></button>';
-      globalThis.arrowUp = '<button class="hint--bottom" aria-label="Last on top"  onclick="divOrder(0, \'up\');"><img src="icons/arrowUp.png" class="icon" height="20" /></button>';
+      globalThis.arrowDown = '<button class="hint--bottom" aria-label="' + getMessage("firstOnTop") + '"  onclick="divOrder( 0, \'down\');"><img src="icons/arrowDown.png" class="icon" height="20" /></button>';
+      globalThis.arrowUp = '<button class="hint--bottom" aria-label="' + getMessage("lastOnTop") + '"  onclick="divOrder(0, \'up\');"><img src="icons/arrowUp.png" class="icon" height="20" /></button>';
       // Icone DATE ou NOM
-      globalThis.numericButton = '<button class="hint--bottom" aria-label="Order by date"  onclick="divOrder(\'id\', 0);"><img src="icons/calendar.png" class="icon" height="20" /></button>';
-      globalThis.alphabeticButton = '<button class="hint--bottom" aria-label="Order by name" onclick="divOrder(\'name\', 0);"><img src="icons/alpha.png" class="icon" height="20" /></button>';
+      globalThis.numericButton = '<button class="hint--bottom" aria-label="' + getMessage("orderByDate") + '"  onclick="divOrder(\'id\', 0);"><img src="icons/calendar.png" class="icon" height="20" /></button>';
+      globalThis.alphabeticButton = '<button class="hint--bottom" aria-label="' + getMessage("orderByName") + '" onclick="divOrder(\'name\', 0);"><img src="icons/alpha.png" class="icon" height="20" /></button>';
       // Creation des boutons
       let triButton = data.tri == 'id' ? globalThis.alphabeticButton : globalThis.numericButton;
       let sensButton = data.sens == 'down' ? globalThis.arrowUp : globalThis.arrowDown;
       navLink += '<span id="boutontri">' + triButton + '</span>&nbsp;&nbsp;<span id="sens">' + sensButton + '</span>&nbsp;&nbsp;';
 
       // Boutons mosaique ou blog
-      globalThis.blogButton = '<button id="buttonBlog" class="hint--bottom" aria-label="Blog" onclick="toggleDisplay(\'blog\');"><img src="icons/icon-blog.png" class="icon" width="20" /></button>';
-      globalThis.mosaicButton = '<button id="buttonMosaic" class="hint--bottom" aria-label="Mosaic" onclick="toggleDisplay(\'mosaic\');"><img src="icons/thumbnail-icon-18.jpg.png" class="icon" width="20" /></button>';
+      globalThis.blogButton = '<button id="buttonBlog" class="hint--bottom" aria-label="' + getMessage("blog") + '" onclick="toggleDisplay(\'blog\');"><img src="icons/icon-blog.png" class="icon" width="20" /></button>';
+      globalThis.mosaicButton = '<button id="buttonMosaic" class="hint--bottom" aria-label="' + getMessage("mosaic") + '" onclick="toggleDisplay(\'mosaic\');"><img src="icons/thumbnail-icon-18.jpg.png" class="icon" width="20" /></button>';
       let displayButton = data.typeAlbum == 'blog' ? globalThis.mosaicButton : globalThis.blogButton;
       navLink += '<span id="boutondisplay">' + displayButton + '</span>';
 
@@ -301,7 +366,7 @@
       /*********************************************************************/
       let searchForm = '<form name="recherche" action="' + index + '" method="GET">';
       searchForm += '<img src="icons/search.png" class="icon" width="16" />';
-      searchForm += '<input name="search" placeholder="words separated by a space" value="" size="20" required />';
+      searchForm += '<input name="search" placeholder="' + getMessage("searchInput") + '" value="" size="20" required />';
       searchForm += '<input type="text" value="' + getDir + '" name="dir" hidden="hidden" /> ';
       searchForm += '<input type="submit" value="OK" />';
       searchForm += '</form>';
@@ -321,14 +386,15 @@
       let searchText = '';
       if (search != 'all') {
         // Affichage des recherche avec lien de suppression
-        searchArray = search.split(' ');
+        searchArray = search.split(separator);
+        //console.log(searchArray)
         searchArray.forEach((item) => {
           // Supprime le tag et recree le search dans l'url sans le tag present
           let newSearchArray = searchArray.filter((it) => it !== item)
-          let newSearch = newSearchArray.join(' ');
+          let newSearch = newSearchArray.join(separator);
           let searchUrl = newSearch !== '' ? newSearch : 'all';
           // Remplace les _ par un espace
-          searchText = decode_utf8(item.replaceAll('_', ' '));
+          searchText = decode_utf8(item.replaceAll('_', separator));
           mySearch = new Div();
           mySearch.type = 'span';
           mySearch.container = 'resultat';

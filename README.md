@@ -13,13 +13,20 @@ By default, the title is the name of the directory selected. If you want to disp
 <br />
 There is already a background image by default.<br />
 To change the background image, simply place a new image in the <code>styles/images</code> directory, then modify the following lines in index.html: <br />
+
 <code>
-/** USERS SETTINGS  */
+/** SETTINGS  */
 // Fixed Title
 const fixedTitle = 'MY TITLE';
 const setFixedTitle = 0 // Set to 1 if you want to display the fixedTitle
 // Background image
 const bgImage = 'styles/images/MY_BACKGROUND_IMAGE.jpg'
+// photos directory
+const imageDir = 'albums';
+// index page
+const index = 'index.html';
+// Search text separator
+const separator = ';';
 </code>
 
 ## Use

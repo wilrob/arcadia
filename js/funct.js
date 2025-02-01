@@ -246,10 +246,10 @@ function switchInfo(i) {
     let img = document.getElementById('info' + i);
     if (img.getAttribute("src") == "icons/information.png") {
         img.setAttribute("src", "icons/information-on.png");
-        img.setAttribute("title", "Masquer les infos");
+        img.setAttribute("title", getMessage("hideInfo"));
     } else {
         img.setAttribute("src", "icons/information.png");
-        img.setAttribute("title", "Afficher les infos");
+        img.setAttribute("title", getMessage("showInfo"));
     }
 }
 
