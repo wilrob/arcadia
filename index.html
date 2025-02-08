@@ -49,8 +49,11 @@
     <!-- PHOTOS -->
     <div id="central"></div>
     <!-- % CHARGEMENT -->
-    <div id="pourcent"></div>
+    <div id="pourcent">
+      <img src="styles/images/loading.gif" width="150" />
+    </div>
   </div>
+
   <!-- RECHERCHE & LIENS -->
   <div id="menu">
     <p id="foundFiles" class="menu"><span id="resultat">0</span></p>
@@ -147,7 +150,8 @@
     }
     
     /** Affichage chargement... / Loading... */
-    document.getElementById("pourcent").innerHTML = getMessage("loading");
+    //document.getElementById("pourcent").innerHTML = getMessage("loading");
+
 
     // Fancybox image display settings
     Fancybox.bind('[data-fancybox]', {

@@ -84,17 +84,13 @@ input {
     /*box-shadow: -1px -1px 3px #999;*/
     opacity: 0.8;
 }
-/* texte clignotant */
-@keyframes blink {50% { color: transparent }}
 #pourcent {
-    animation: 1.5s blink infinite;
     position: absolute;
     left: 0;
     top: 300px;
     right: 300px;
-    width: 700px;
     margin: auto;
-    font-size: 5em;
+    font-size: 6em;
     font-weight: bold;
     font-family: 'Arial Bold', Arial, sans-serif;
     color: #f4f0ec;
