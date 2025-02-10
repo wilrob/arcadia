@@ -83,7 +83,7 @@
     // index page
     const index = 'index.html';
     // Search text separator
-    const separator = ';';
+    const separator = ' ';
 
     // When the user scrolls down 800px from the top of the document, show the button
     window.onscroll = function() {
@@ -103,7 +103,7 @@
     const messages = {
       fr: {
         loading: "Chargement...",
-        searchInput: "mots s&eacute;par&eacute;s par un "+ separator,
+        searchInput: "mots s&eacute;par&eacute;s par un espace",
         showInfo: "Afficher les infos",
         hideInfo: "Masquer les infos",
         tags: "Libell&eacute;s : ",
@@ -123,7 +123,7 @@
       },
       en: {
         loading: "Loading...",
-        searchInput: "words separated by a "+ separator,
+        searchInput: "words separated by a space",
         showInfo: "Display info",
         hideInfo: "Hide info",
         tags: "Tags: ",
