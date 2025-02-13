@@ -102,33 +102,37 @@ async function divOrder( tri, sens ) {
     }
     
     var main = document.getElementById('central');
-    if(elemSens == 'down') {      // Du plus recent au plus ancien ou de A a Z
-        [].map.call(main.children, Object).sort((a, b) => {
-            // We call localeCompare to compare a and b naturally.
-            return a.getAttribute(elemTri).localeCompare(b.getAttribute(elemTri), undefined, {
+    //if(elemSens == 'down') {      // Du plus recent au plus ancien ou de A a Z
+    [].map.call(main.children, Object)
+    .sort((a, b) => {
+        let valA = a.getAttribute(elemTri);
+        let valB = b.getAttribute(elemTri);
+
+        // Convertir en nombre si possible
+        let numA = Number(valA);
+        let numB = Number(valB);
+
+        // Vérifier si les deux valeurs sont bien des nombres (y compris négatifs)
+        let isNumA = !isNaN(numA);
+        let isNumB = !isNaN(numB);
+
+        if (isNumA && isNumB) { // Si ce sont des nombres, trier numériquement
+            // Si elemeSens = 'down' on affiche le plus ancien en premier, sinon le plus récent en premier
+            return elemSens == 'down' ? numA - numB : numB - numA;
+        } else {    // Sinon, trier comme des chaînes de caractères avec localeCompare
+            // Si elemeSens = 'down' on affiche de A à Z, sinon lde Z à A
+            return elemSens == 'down' ? valA.localeCompare(valB, undefined, {
                 ignorePunctuation: true,
-                // We set numeric to true to compare the numerical part of a and b .
                 numeric: true,
-                // sensitivity is set to 'base' to compare the case and the alphabet.
                 sensitivity: 'base'
-            })
-        }).forEach(function (elem) {
-            main.appendChild(elem);
-        });
-    } else {  // Du plus ancien au plus recent ou de Z a A
-        [].map.call(main.children, Object).sort((a, b) => {
-            // We call localeCompare to compare a and b naturally.
-            return a.getAttribute(elemTri).toLowerCase().localeCompare(b.getAttribute(elemTri).toLowerCase(), undefined, {
+            }) : valB.localeCompare(valA, undefined, {
                 ignorePunctuation: true,
-                // We set numeric to true to compare the numerical part of a and b .
                 numeric: true,
-                // sensitivity is set to 'base' to compare the case and the alphabet.
                 sensitivity: 'base'
-            })
-        }).reverse().forEach(function (elem) {
-            main.appendChild(elem);
-        });
-    }
+            }); 
+        }
+    })
+    .forEach(elem => main.appendChild(elem));
     
     // Inversion des boutons de tri
     let triButton = document.getElementById('boutontri');
