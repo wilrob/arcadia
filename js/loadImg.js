@@ -61,11 +61,18 @@ async function loadImg(data) {
         // Nb totale d'images dans le repertoire
         let nbImages = imageList.length;
         document.getElementById('directory').append(nbImages + getMessage("pictures"));
+
         // Nom de la derniere image utilisee pour lancer le tri a la fin du traitement
         let lastImage = imageList[nbImages - 1];
 
         //Initialisation du pourcentage de chargement
         document.getElementById('pourcent').max = nbImages;
+
+        // Si dossier vide on affiche 0 images
+        if(nbImages == 0) {
+            document.getElementById('pourcent').innerHTML = getMessage("dirEmpty");
+        }
+
 
         /**
          * Affichage des fichiers contenu dans le tableau imageList
@@ -152,7 +159,8 @@ async function loadImg(data) {
                     let description;
                     if (typeof exifTag.description?.value !== "undefined") {
                         description = decode_utf8(exifTag.description.value);
-                        description = description.replace(/(?:\r\n|\r|\n)/g, '<br>');
+                        // Remplacement des caractères de saut de ligne par <br />
+                        description = description.replace(/(\r\n|\r|\n|&#xA;|&#xD;)/g, '<br />');
                     }
 
                     /**
@@ -189,7 +197,7 @@ async function loadImg(data) {
                     // Pour chaque element du tableau des personnes et des tags
                     tagArray.forEach((tagItem) => {
                         // On verifie l'equivalence
-                        if ((exifTag.title.value && exifTag.title.value.toLowerCase().includes(tagItem)) || (description && description.toLowerCase().includes(tagItem))) {
+                        if ((titre && titre.toLowerCase().includes(tagItem))) {
                             nbOccurence++;
                         }
                     });
