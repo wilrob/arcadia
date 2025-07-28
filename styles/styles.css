@@ -6,6 +6,9 @@ body {
     font-family: "SegoeUi", 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     color: #3e1717;
     background-color: #f4f0ec;
+    background-image: url("images/arcadia.jpg");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
 }
 html,
 body {
@@ -26,18 +29,54 @@ a:link,
 a:visited,
 a:active {
     text-decoration: none;
-    color: #660101;
+    color: #3e1717;
 }
 a:hover {
-    color: #0000CC;
+    color: #36C;
+    text-decoration: underline;
+}
+a.external  {
+    background-image: url(images/link-external.svg);
+    background-position: center right;
+    background-repeat: no-repeat;
+    background-size: 0.857em;
+    padding-right: 1em;
+    }
+caption.titre {
+    font-size: bold;
+    text-align:center;
+    background-color:#7DA7D9;
+    color:#000000
+}
+figure {
+    border: 1px solid #ddd;
+    background-color: #eee;
+    text-align: center;
+    padding: 0.3em;
+    margin: auto;
+    margin-bottom: 1em;
+}
+figcaption {
+    font-size: 0.8em;
+    text-align: center;
+    margin: 5px 0 8px 0;
+}
+h1, h2 {
+    font-family: 'Linux Libertine','Georgia','Times','Source Serif Pro',serif;
+    font-weight: normal;
+    padding-left: 5px;
+    color: #660101;
 }
 p {
     margin: 0;
-    padding: 0.5em;;
+    padding: 5px;
 }
 select,
 input {
     vertical-align: middle;
+}
+th {
+    text-align: left;
 }
 #central {
     position: absolute;
@@ -70,6 +109,11 @@ input {
     text-decoration: none;
     color: #660101;
 }
+#lien-album {
+    position: fixed;
+    top: 25px;
+    right: 50px;
+}
 #menu {
     z-index: 99;
     position: fixed;
@@ -83,6 +127,17 @@ input {
     border: 1px solid #ccc;
     /*box-shadow: -1px -1px 3px #999;*/
     opacity: 0.8;
+}
+#poubelle {
+    display: none;
+    font-size: 0.9em;
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    width: 300px;
+    padding: 10px;
+    overflow-y: scroll;
+    z-index: 99;
 }
 #pourcent {
     position: absolute;
@@ -111,13 +166,13 @@ input {
     z-index: 99;
 }
 #webtree {
-    display:block;
+    display: block;
     position: fixed;
     top: 100px;
     left: 10px;
     border: none;
     text-align: center;
-}
+    }
 .auteur {
     text-align: center;
 }
@@ -149,7 +204,6 @@ input {
 .desc {
     width: 95%;
     margin-left: 2.5%;
-    margin-bottom:1em;
     font-size: 0.9em;
     font-style: italic;
     color: #666;
@@ -178,6 +232,19 @@ input {
 }
 .divImageMosaic > .titre, .divImageMosaic > .desc, .divImageMosaic > .plusinfo {
     display: none;
+}
+div.infobox_v3 {
+    padding: 5px;
+    width: 25em;
+    background-color: var(--couleur-fond-boite-grise,#f9f9f9);
+    border: 1px solid var(--border-color-base,#a2a9b1);
+    clear: right;
+    float: right;
+    font-size: 0.9em;
+    line-height: 1.4;
+    margin: 0 0 0.5em 1em;
+    max-width: 325px;
+    word-wrap: break-word;
 }
 .divPhoto {
     border-radius: 5px;
@@ -303,4 +370,12 @@ input {
     font-weight: 600;
     color: #660101;
     padding-bottom: 3px;
+}
+.trash {
+    position: absolute;
+    bottom: 5px;
+    left: 25px;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
 }

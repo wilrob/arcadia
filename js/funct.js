@@ -339,3 +339,19 @@ function displayMap(n) {
     }
 }
 
+function deleteImage(img) {
+    document.getElementById('textTrash').innerHTML += img + ' ';
+    document.getElementById('poubelle').style.display = 'block';
+}
+
+function copyToClipBoard() {
+    // Get the text field
+    var copyText = document.getElementById("textTrash").innerHTML;
+  
+    // Copy the text inside the text field
+    navigator.clipboard.writeText(copyText);
+    
+    // Alert the copied text
+    alert("Copied the text: " + copyText);
+  }
+

@@ -197,7 +197,7 @@ async function loadImg(data) {
                     // Pour chaque element du tableau des personnes et des tags
                     tagArray.forEach((tagItem) => {
                         // On verifie l'equivalence
-                        if ((titre && titre.toLowerCase().includes(tagItem))) {
+                        if ((titre && titre.toLowerCase().includes(tagItem)) || (description && description.toLowerCase().includes(tagItem))) {
                             nbOccurence++;
                         }
                     });
@@ -370,7 +370,12 @@ async function loadImg(data) {
                         let photo = '<a href="' + imageUrl + '" data-fancybox="gallery"><img id="img' + i + '" alt="' + imgName + '" class="' + classPhoto + '" src="' + imageUrl + '" /></a>';
                         // Initialisation valeur du div pour affichage de la carte initMap
                         let iconInfo = '<div onclick="togglePublication(\'publication' + i + '\'); switchInfo(' + i + '); displayMap(' + i + ');getLocation(' + i + ');"><img class="info" id="info' + i + '" title="' + getMessage("showInfo") + '" src="icons/information.png" width="16" /></div>';
+                        // Affichage du logo poubelle
+                        let iconTrash = '<div onclick="deleteImage(\'' +decode_utf8(imgName) +'\')"><img class="trash" id="trash' + i + '" title="' + getMessage("deleteImage") + '" src="icons/trash-can.png" width="16" /></div>';
                         photo += iconInfo;
+                        photo += iconTrash;
+
+                    
 
                         /**  Cadre Information Photo
                          *  <div class="dataXMP">
