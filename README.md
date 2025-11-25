@@ -2,7 +2,7 @@
 This photo album in plain javascript allows you to display the contents of your photo folders as well as the metadata contained in each photo, using exifr<br />
 Photos can be displayed as a blog or thumbnail mosaic.
 <br /><br />
-Try it yourself - <a href="http://arcadia.lbpu3811.odns.fr" target="_blank">demo</a>
+<!--Try it yourself - <a href="http://arcadia.lbpu3811.odns.fr" target="_blank">demo</a>-->
 <br />
 ## Installation
 Copy all the directories and files on your server location.
@@ -70,5 +70,3 @@ As well as the very nice interface <b><a href="https://fancyapps.com/fancybox/">
 ## Contributing
 
 Contributions are welcome. Suggestions, bug, etc.<br />
-
-The next step is to edit the XMP information online. If anyone knows how to save an xmp file to a photo, I'm really interested. THANKS.

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Photo Album</title>
+  <meta name="author" content="William ROBRECHT">
+  <link rel="icon" type="image/x-icon" href="icons/favicon.ico">
+
+  <!-- Appel fichier principal main.js-->
+  <script src="js/main.js" type="module" defer></script>
+
+  <!-- Load EXIF Reader (lecture des infos EXIF contenues dans la photo) -->
+  <!-- <script src="https://cdn.jsdelivr.net/npm/exifr/dist/full.umd.js"></script> -->
+  <script src="js/exifr.full.umd.js" defer></script>
+
+  
+  <!-- Fancybox -->
+  <link rel="stylesheet" href="styles/fancybox.css" />
+ 
+  <!-- Chargement des styles CSS -->
+  <link rel="stylesheet" href="styles/styles.css" />
+
+  <!-- Chargement des styles tooltips hint https://kushagra.dev/lab/hint/ -->
+  <link rel="stylesheet" href="styles/hint.css" />
+
+  <!-- Carte OpenStreetMap -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+</head>
+
+<body class="loading">
+
+  <!-- RECHERCHE & LIENS -->
+  <div id="right-column">
+    <div id="menu">
+      <p id="foundFiles" class="menu"><span id="resultat">0</span></p>
+    </div>
+    <div id="publication"></div>
+  </div>
+ 
+  <!-- LOADER  -->
+  <div id="loader">
+    <div class="spinner"></div>
+    <span id="progressText">Chargement...</span>
+  </div>
+
+  <!-- TITRE -->
+  <div id="hautdepage"></div>
+  <div style="position: relative;">
+
+    <!-- PHOTOS -->
+    <div id="central"></div>
+
+  </div>
+  <div id="cadre-info"></div>
+
+  <!-- Arrow to scroll up to the top of the page -->
+  <svg id="toTop" class="IconLarge"><use href="./icons/sprite.svg#icon-toTop"></use></svg>
+  
+
+  <!-- CONSOLE -->
+  <p id="xmp-code"></p>
+
+  <!-- Liens Home et Galerie -->
+  <div id="link"></div>
+
+  <!-- Fancybox -->
+  <script src="js/fancybox.umd.js"></script>
+</body>
+
+</html>
