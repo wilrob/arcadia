@@ -26,18 +26,92 @@ export async function renderGallery(photoData, search) {
     });
 
     myDiv.show();
-    // Affiche le nombre de résultat trouvés
+    // Affiche le nombre de resultat trouves
     displayResult();
   });
   // Affiche la page finale
   finalizeDisplay();
-  // Gestion des fichiers à supprimer
+  // Gestion des fichiers a supprimer
   copyImagesToTrash();
-  // Gestion de l'édition des EXIF
+  // Gestion de l'edition des EXIF
   editExif();
+  // GÃ¨re le click sur les tags
+  tagsManage();
+  tagsDelete();
 }
 
-// Crée data-caption à intégrer dans le lien de la photo
+function tagsManage() {
+  const links = document.querySelectorAll('.tag a'); // SÃ©lection de tous les <a>
+
+  links.forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const titleValue = link.getAttribute('title');
+
+      // Ajout du tag dans #foundFiles
+      const foundFiles = document.getElementById('foundFiles');
+
+      // NE PAS ajouter deux fois le mÃªme tag
+      if (document.querySelector('.tagDelete[title="' + titleValue + '"]')) {
+        return; // dÃ©jÃ  prÃ©sent â†’ stop
+      }
+
+      const span = document.createElement('span');
+      span.className = 'searchText';
+      span.style.cursor = 'pointer';
+      span.innerHTML = `<a href="#" class="tagDelete" title="${titleValue}">â“§ ${titleValue}</a>`;
+      foundFiles.append(span);
+
+      updateImagesVisibility();
+    });
+  });
+}
+
+function getActiveTags() {
+  return [...document.querySelectorAll('.tagDelete')]
+         .map(el => el.getAttribute('title'));
+}
+
+function updateImagesVisibility() {
+  const activeTags = getActiveTags();
+  const images = document.querySelectorAll('.divImageBlog');
+
+  images.forEach(img => {
+    const dataTags = img.getAttribute('data-tags');
+
+    // Si aucun tag actif â†’ on montre tout
+    if (activeTags.length === 0) {
+      img.parentElement.style.display = 'block';
+      return;
+    }
+
+    // image affichÃ©e si elle contient TOUS les tags actifs
+    const hasAllTags = activeTags.every(tag => dataTags.includes(tag));
+
+    img.parentElement.style.display = hasAllTags ? 'block' : 'none';
+  });
+}
+
+
+function tagsDelete() {
+  document.addEventListener('click', function(e) {
+    if (e.target.matches('.tagDelete')) {
+      e.preventDefault();
+
+      const titleValue = e.target.getAttribute('title');
+      console.log("Tag supprimÃ© :", titleValue);
+
+      // Supprime le span parent
+      e.target.closest('.searchText').remove();
+
+      // Met Ã  jour lâ€™affichage des images
+      updateImagesVisibility();
+    }
+  });
+}
+
+
+// Crï¿½e data-caption ï¿½ intï¿½grer dans le lien de la photo
 function buildExifCaption(imageName, meta) {
   const {
     titre = '', description = '', createur = '', credit = '',
@@ -118,7 +192,7 @@ function buildExifCaption(imageName, meta) {
   </div>`;
 }
 
-// Crée le bloc photo HTML
+// Cree le bloc photo HTML
 function buildPhotoHTML(imageName, url, meta, search) {
   const titre = decode_utf8(meta.titre) || '';
   const description = decode_utf8(meta.description) || '';
@@ -185,7 +259,7 @@ function matchSearch(search, titre, description, tag, personne) {
   return words.every(word => fields.some(f => f.includes(word)));
 }
 
-// Crée la ligne de Tags
+// Cree la ligne de Tags
 function buildTagsBlock(tagString, search) {
   if (!tagString) return '';
   const oldTag = search !== 'all' ? config.separator + search : '';
@@ -194,18 +268,18 @@ function buildTagsBlock(tagString, search) {
   const searchTags = search.split(';').filter(Boolean);
   const links = tags.map(tg => {
     const decoded = decode_utf8(tg);
-    // Si tg est déjà dans la liste des tags de 'search'
+    // Si tg est deja dans la liste des tags de 'search'
     if (searchTags.includes(tg)) {
       // On retourne juste du texte non cliquable
       return `#${decoded}`;
     }
     // Sinon on garde le lien cliquable
-    return `<a href="${config.index}?search=${tg}${oldTag}">#${decoded}</a>`;
+    return `<a title="${tg}" href=${config.index}?search=${tg}${oldTag}">#${decoded}</a>`;
   }).join(' ');
   return `<p class="tag"><svg class="Icon"><use href="./icons/sprite.svg#icon-tag"></use></svg>&nbsp;${links}</p>`;
 }
 
-//Crée la ligne de personnes
+//Cree la ligne de personnes
 function buildPersonsBlock(personString, search) {
   if (!personString) return '';
 
@@ -219,7 +293,7 @@ function buildPersonsBlock(personString, search) {
   return `<p class="tag"><svg class="Icon"><use href="./icons/sprite.svg#icon-person"></use></svg>&nbsp;${links}</p>`;
 }
 
-// Affiche le nombre de résultats trouvés
+// Affiche le nombre de rï¿½sultats trouvï¿½s
 function displayResult() {
   let actualCount = parseInt(config.divResult.innerHTML) || 0;
   actualCount++;
@@ -239,8 +313,3 @@ function finalizeDisplay() {
   }
   config.loader.style.display = 'none';
 }
-
-
-
-
-
