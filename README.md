@@ -9,34 +9,30 @@ Copy all the directories and files on your server location.
 Then place one or more folders containing photos in the <code>albums</code> directory.
 
 ### Settings
-By default, the title is the name of the directory selected. If you want to display a fixed title, set the variable setFixedTtitle to 1.
+You can add an background image in the <code>styles/images</code> directory. Modify the css file 'styles/styles.css': --background-image: url("images/your_image.jpg");.<br />
 <br />
-There is already a background image by default.<br />
-To change the background image, simply place a new image in the <code>styles/images</code> directory, then modify the following lines in index.html: <br />
-
+By default, the title is the name of the directory selected. If you want to display a fixed title, set the variable setFixedTtitle to 1 in 'js/config.js'.
+<br />
 <code>
 /** SETTINGS  */
-// Fixed Title
-const fixedTitle = 'MY TITLE';
+// Title
+const fixedTitle = 'my_title';
+// Enable/Disable fixed title. Set to 0 to use the photo directory name as title
 const setFixedTitle = 0 // Set to 1 if you want to display the fixedTitle
-// Background image
-const bgImage = 'styles/images/MY_BACKGROUND_IMAGE.jpg'
 // photos directory
 const imageDir = 'albums';
 // index page
-const index = 'index.html';
-// Search text separator
-const separator = ';';
+const index = 'album.html';
 </code>
 
 ## Use
 The top right menu contains the following:
 <ul>
-<li>a drop-down menu <img src="icons/dossier.jpg" width="16" /> to choose the album to display</li>
-<li>a button to sort photos alphabetically <img src="icons/alpha.jpg" width="16" /> or by date <img src="icons/calendar.jpg" width="16" /></li>
-<li>a button to reverse the order of photos <img src="icons/arrowDown.jpg" width="16" /> (A->Z or most recent to oldest) or <img src="icons/arrowUp.jpg" width="16" /> (Z->A or oldest to most recent)</li>
-<li>a button to switch the display mode <img src="icons/icon-blog.jpg" width="16" /> blog or <img src="icons/thumbnail-icon-18.jpg" width="16" /> mosaic</li>
-<li>a search field <img src="icons/search.jpg" width="16" /> to manually select one or more tags</li>
+<li>a drop-down menu to choose the album to display</li>
+<li>a button to sort photos alphabetically or by date</li>
+<li>a button to reverse the order of photos (A->Z or most recent to oldest) or (Z->A or oldest to most recent)</li>
+<li>a button to switch the display mode blog or mosaic</li>
+<li>a search field to manually select one or more tags</li>
 </ul>
 
 ### Blog
@@ -46,7 +42,7 @@ In this mode, each photo is displayed with the title, description and tags from 
 In this mode, photos are displayed in mosaic thumbnails.
 
 ### Metadata
-In each display mode, by clicking on &#9432; at the left bottom of each photo, you will display an information panel with photo metadata, such as:
+For each photo, an information panel displays the metadata:
 <ul>
     <li>title and description</li>
     <li>tags and persons</li>
@@ -61,7 +57,7 @@ In each display mode, by clicking on &#9432; at the left bottom of each photo, y
 Metadata can be added or edited using tools such as Photoshop or <a href="https://exiftool.org/gui/" target="_blank">exiftool</a>.
 
 ### Fancybox display
-Click on a photo to view it in its original format.
+Clicking on a photo will display it in the fancybox interface.
 
 ## Credits
 I used the awesome EXIF reading library <b><a href="https://github.com/MikeKovarik/exifr">exifr</a></b> to read photo metadata.<br />

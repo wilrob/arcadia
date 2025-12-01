@@ -2,7 +2,7 @@
    CLASSE DE CREATION D`UNE DIV
    ----------------------------------------------------------- */
 export class Div {
-    constructor({ type = 'div', id = '', name = '', container = '', contents = '', classe = '', position = 'inner', caption = ''
+    constructor({ type = 'div', id = '', name = '', container = '', contents = '', classe = '', position = 'inner', caption = '', display = 'block'
     } = {}) { // <= ici, le = {} évite l?erreur
         this.type = type;
         this.id = id;
@@ -12,6 +12,7 @@ export class Div {
         this.classe = classe;
         this.position = position;
         this.caption = caption;
+        this.display = display
     }
 
     show() {
@@ -20,6 +21,7 @@ export class Div {
         if (this.name) el.setAttribute('name', this.name);
         if (this.classe) el.className = this.classe;
         if (this.contents) el.innerHTML = this.contents;
+        if (this.display) el.style.display = this.display;
 
         const container = document.getElementById(this.container);
         if (!container) {
@@ -114,7 +116,7 @@ export async function divOrder(tri, sens) {
     const sensButton = document.getElementById("sens");
     if (sensButton) {
         sensButton.innerHTML =
-            elemSens === "down" ? globalThis.arrowUp : globalThis.arrowDown;
+            elemSens === "down" ? globalThis.arrowUpButton : globalThis.arrowDownButton;
     }
 
     showClass(elemTri === "name" ? "titreName" : "titreDate");
@@ -295,7 +297,6 @@ function copyToClipBoard(id) {
     navigator.clipboard.writeText(text);
     alert("Suppress command (copied to clip board)\n\n" + text);
 }
-
 
 /* Edition des métadonnées via le modal */
 export function editExif() {
@@ -553,32 +554,57 @@ export function replaceClass(class1, class2) {
    AFFICHAGE DES CARTES
    ----------------------------------------------------------- */
 /**
- * Affiche une carte Leaflet centrée sur lat/lon
+ * Affiche ou met à jour une carte Leaflet centrée sur lat/lon
  * @param {number} lat - Latitude
  * @param {number} lon - Longitude
  */
+let map = null;
+let mapMarker = null;
+const photoIcon = L.icon({
+    iconUrl: "icons/marker.png",
+    iconSize: [32, 32],
+    iconAnchor: [5, 31],
+});
+
 function displayMap(lat, lon) {
     const divMap = document.getElementById("map");
-    if (!divMap || !lat) return;
 
+    // Si pas de coordonnées ? cacher la carte
+    if (!lat || !lon) {
+        divMap.style.display = "none";
+        return;
+    }
+    divMap.style.display = "block";
+
+    // Ajuster la hauteur
     const divDetail = document.getElementById("location");
     const rect = divDetail?.getBoundingClientRect();
     const mapHeight = rect ? window.innerHeight - rect.bottom - 45 : 300;
     divMap.style.height = `${mapHeight}px`;
 
-    const container = L.DomUtil.get("map");
-    if (container) container._leaflet_id = null;
+    // --- 1) Initialisation de la carte (une seule fois) ---
+    if (!map) {
+        // Créer la carte
+        map = L.map("map").setView([lat, lon], 9);
 
-    const map = L.map("map").setView([lat, lon], 9);
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", { maxZoom: 20 }).addTo(map);
+        // Ajouter le fond de carte
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+            maxZoom: 20,
+        }).addTo(map);
 
-    const Icon = L.icon({
-        iconUrl: "icons/marker.png",
-        iconSize: [32, 32],
-        iconAnchor: [5, 31],
-    });
+        // Créer le marker
+        mapMarker = L.marker([lat, lon], { icon: photoIcon }).addTo(map);
+    }
 
-    L.marker([lat, lon], { icon: Icon }).addTo(map);
+    // --- 2) Mise à jour de la carte déjà existante ---
+    else {
+        map.setView([lat, lon], 9);
+        mapMarker.setLatLng([lat, lon]);
+        mapMarker.setIcon(photoIcon);
+    }
+
+    // Réparer l'affichage si le conteneur a changé de taille
+    setTimeout(() => map.invalidateSize(), 10);
 }
 
 /**
@@ -633,6 +659,7 @@ function displayMetaData(img) {
         //console.log(captionHTML);
 
         const publication = document.getElementById('publication');
+        const divMap = document.getElementById('map');
         const buttonBlog = document.getElementById('buttonBlog');
         const divPublication = `
         <div class="dataXMP">
@@ -700,16 +727,20 @@ function displayMetaData(img) {
                 </div>
                 ${data['map-modal'] ? `
                     <div class="cadre loc"></div>
-                    <div id="map" class="map"></div>
                 ` : ``}                        
             </div>
         </div>`;
-        publication.innerHTML = divPublication;
+
+         publication.innerHTML = divPublication;
 
         if (data['map-modal']) {
             getLocation(data['map-modal'].lat, data['map-modal'].lon);
+            divMap.style.display = 'block';
             displayMap(data['map-modal'].lat, data['map-modal'].lon);
+        } else {
+            divMap.style.display = 'none';          
         }
-        publication.style.display = 'block';
+
+       
     }
 }

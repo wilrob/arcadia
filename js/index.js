@@ -1,40 +1,40 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Div de la page index
-    const central = document.getElementById("central");
-    const head = document.getElementById("hautdepage");
+  // Div de la page index
+  const central = document.getElementById("central");
+  const head = document.getElementById("hautdepage");
 
-    // Page d'accueil par défaut
-    const home = "home.html";
+  // Page d'accueil par défaut
+  const home = "home.html";
 
-    // On récupère les paramètres de l'url
-    const params = new URLSearchParams(document.location.search);
-    const name = params.get("name");
+  // On reupere les parameres de l'url
+  const params = new URLSearchParams(document.location.search);
+  const name = params.get("name");
 
-    // Si pas page d'accueil, on ajoute l'en-tete
-    if(name) {
-        getHtmlPage(central,`./bio/${name}.html`);
-        const entete = `<div id="home"><a href="index.html" class="hint--right" aria-label="Accueil"><svg class="IconLarge"><use href="./icons/sprite.svg#icon-home"></use></svg></a></div>
+  // Si pas page d'accueil, on ajoute l'en-tete
+  if (name) {
+    getHtmlPage(central, `./bio/${name}.html`);
+    const entete = `<div id="home"><a href="index.html" class="hint--right" aria-label="Accueil"><svg class="IconLarge"><use href="./icons/sprite.svg#icon-home"></use></svg></a></div>
         <div id="lien-album"><a href="./album.html?dir=${name}" class="hint--bottom-right" aria-label="Ouvrir l'album"><svg class="IconLarge"><use href="./icons/sprite.svg#icon-album" fill="#7a1b1b"></use></svg></a></div>`;
-        head.innerHTML = entete;
-        // On rempli la div avec le fichier passé dans l'url
-    } else {
-        getHtmlPage(central, home);
-    }           
+    head.innerHTML = entete;
+    // On rempli la div avec le fichier passé dans l'url
+  } else {
+    getHtmlPage(central, home);
+  }
 });
 
-function getHtmlPage(div,page) {
-    var txtFile = new XMLHttpRequest();
-    txtFile.open("GET", `${page}`, true);
-    txtFile.overrideMimeType('text/xml; charset=iso-8859-15');
-    txtFile.onreadystatechange = function() {
-        if (txtFile.readyState === 4) {  // Makes sure the document is ready to parse.
-            if (txtFile.status === 200) {  // Makes sure it's found the file. 
-                console.log(txtFile.responseText)
-                div.innerHTML = txtFile.responseText;
-            }
-        }
+function getHtmlPage(div, page) {
+  var txtFile = new XMLHttpRequest();
+  txtFile.open("GET", `${page}`, true);
+  txtFile.overrideMimeType('text/xml; charset=iso-8859-15');
+  txtFile.onreadystatechange = function () {
+    if (txtFile.readyState === 4) {  // Makes sure the document is ready to parse.
+      if (txtFile.status === 200) {  // Makes sure it's found the file. 
+        //console.log(txtFile.responseText)
+        div.innerHTML = txtFile.responseText;
+      }
     }
-    txtFile.send(null);
+  }
+  txtFile.send(null);
 }
 
 //=====================Affichage des photos avec mouse over ============
@@ -94,7 +94,7 @@ async function traiterAlbums(dossier) {
 // === AFFICHAGE / EFFACEMENT ===
 function image_display(images) {
   const container = document.getElementById("image");
-  console.log(images[0])
+  //console.log(images[0])
   document.getElementById("image-1").src = images[0];
   document.getElementById("image-2").src = images[1];
   document.getElementById("image-3").src = images[2];

@@ -7,7 +7,6 @@ const urlParams = new URLSearchParams(queryString);
 /** SETTINGS  */
 // Title
 const fixedTitle = 'Titre fixe de mon album photo';
-// Enable/Disable fixed title. Set to 0 to use the photo directory name as title
 const setFixedTitle = 0 // Set to 1 if you want to display the fixedTitle
 // photos directory
 const imageDir = 'albums';
@@ -46,7 +45,7 @@ function getCookie(name) {
 
 let data = {
     dir: '',
-    search: 'all',
+    search: '',
     tri: 'id',
     sens: 'down',
     typeAlbum: 'blog'
@@ -57,10 +56,12 @@ let getDir = '';
 if (urlParams.get('dir')) {
     getDir = urlParams.get('dir');
     setCookie('dir', getDir, 3);
+    data.dir = imageDir + '/' + getDir;
 } else if (getCookie('dir') && typeof getCookie('dir') !== 'undefined' /*&& dirOK == 1*/) {
     getDir = getCookie('dir');
+    data.dir = imageDir + '/' + getDir;
 }
-data.dir = imageDir + '/' + getDir;
+
 
 // Recuperation parametre URL 'tri' (numérique ou alphabétique)
 if (getCookie('tri')) {
@@ -86,8 +87,6 @@ if (setFixedTitle == 1) {
     setTitle.innerHTML = `<a href="${index}">${getDir}</a>`;
 }
 
-// Recherche par defaut : all
-var search = 'all';
 // Recuperation parametre URL 'search'
 if (urlParams.get('search')) {
     // On remplace les espaces entourant le separateur par le separateur 
@@ -96,8 +95,9 @@ if (urlParams.get('search')) {
     // Supprime les espaces en debut et fin et les espaces multiples
     search = search.replace(/^\s+|\s+$|\s+(?=\s)/g, '');
     search = search.trim();
+    data.search = search;
 }
-data.search = search;
+
 
 export const config = {
     fixedTitle: fixedTitle,
@@ -109,5 +109,5 @@ export const config = {
     loader: loader,
     progressText: progressText,
     data: data,
-    getDir: getDir
+    getDir: getDir,
 }

@@ -16,10 +16,10 @@
   <!-- <script src="https://cdn.jsdelivr.net/npm/exifr/dist/full.umd.js"></script> -->
   <script src="js/exifr.full.umd.js" defer></script>
 
-  
+
   <!-- Fancybox -->
   <link rel="stylesheet" href="styles/fancybox.css" />
- 
+
   <!-- Chargement des styles CSS -->
   <link rel="stylesheet" href="styles/styles.css" />
 
@@ -39,11 +39,14 @@
   <!-- RECHERCHE & LIENS -->
   <div id="right-column">
     <div id="menu">
-      <p id="foundFiles" class="menu"><span id="resultat">0</span></p>
+      <div id="foundFiles">
+        <div id="searchTags"></div>
+        <div id="resultat"></div>
+      </div>
     </div>
     <div id="publication"></div>
+    <div id="map" class="map"></div>
   </div>
- 
   <!-- LOADER  -->
   <div id="loader">
     <div class="spinner"></div>
@@ -57,21 +60,14 @@
     <!-- PHOTOS -->
     <div id="central"></div>
 
-  </div>
-  <div id="cadre-info"></div>
+    <!-- Arrow to scroll up to the top of the page -->
+    <div id="toTop"></div>
 
-  <!-- Arrow to scroll up to the top of the page -->
-  <svg id="toTop" class="IconLarge"><use href="./icons/sprite.svg#icon-toTop"></use></svg>
-  
+    <!-- Liens Home et Galerie -->
+    <div id="link"></div>
 
-  <!-- CONSOLE -->
-  <p id="xmp-code"></p>
-
-  <!-- Liens Home et Galerie -->
-  <div id="link"></div>
-
-  <!-- Fancybox -->
-  <script src="js/fancybox.umd.js"></script>
+    <!-- Fancybox -->
+    <script src="js/fancybox.umd.js"></script>
 </body>
 
 </html>
