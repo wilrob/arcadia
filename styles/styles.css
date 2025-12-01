@@ -30,8 +30,8 @@
   --highlight-bg: #f8e5d9;
   --border-color-light: #ddd;
 
-  --background-image: url("images/arcadia.jpg");
-
+  --background-image: url("images/your_image.jpg");
+  
   /* Transitions */
   --transition-fast: 0.3s ease;
   --transition-slow: 0.6s ease;
@@ -111,6 +111,7 @@ p {
 a {
   color: var(--link-color);
   transition: color var(--transition-fast);
+  text-decoration: none;
 }
 
 a:hover {
@@ -931,6 +932,10 @@ div.infobox_v3 {
   display: none !important;
 }
 
+<<<<<<< HEAD
 .visible {
   display: block !important;
 }
+=======
+   
+>>>>>>> 69242a9590c93752ec31a3d31a49898336950b85
