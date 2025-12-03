@@ -1,5 +1,5 @@
 /**
- * * Affichage plein écran/slide Fancybox
+ * * Affichage plein ï¿½cran/slide Fancybox
 */
 export async function displayFancybox() {
     Fancybox.bind('[data-fancybox]', {
@@ -10,9 +10,9 @@ export async function displayFancybox() {
                     clickAction: "toggleCover",
                     // Zoom maximum (2x) si image plus petite que le conteneur
                     maxScale: 2,
-                    // Déplacement dans l'image avec la souris
+                    // Dï¿½placement dans l'image avec la souris
                     panMode: "mousemove",
-                    // Marge de déplacement
+                    // Marge de dï¿½placement
                     mouseMoveFactor: 1.1,
                 },
             },
@@ -32,22 +32,22 @@ export async function displayFancybox() {
                     exif: {
                         tpl: '<button class="f-button"><svg><use href="./icons/sprite.svg#icon-exif"></use></svg></button>',
                         click: () => {
-                            const exif = document.getElementsByClassName('data-caption')[0];
+                            const exif = document.querySelector('.data-caption')[0];
                             if (exif) {
                                 // Toogle de 'data-caption' et masquage de la carte
                                 exif.style.display = exif.style.display === 'block' ? 'none' : 'block';
                                 // Masquage des tags, personnes et maps
-                                const tag = document.getElementById('tag');
+                                const tag = document.querySelector('#tag');
                                 if (tag) {
                                     tag.style.display = 'none';
                                 }
-                                const personne = document.getElementById('personne');
+                                const personne = document.querySelector('#personne');
                                 if (personne) {
                                     personne.style.display = 'none';
                                 }
-                                const mapModal = document.getElementById('map-modal');
+                                const mapModal = document.querySelector('#map-modal');
                                 if (mapModal) {
-                                    document.getElementById('map-modal').style.display = 'none';
+                                    document.querySelector('#map-modal').style.display = 'none';
                                 }
                             }
                         },
