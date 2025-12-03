@@ -14,11 +14,11 @@ const imageDir = 'albums';
 const index = 'album.html';
 // Search text separator
 const separator = ';';
-// Affichage résultat nb photos trouvées
-const divResult = document.getElementById("resultat");
+// Affichage rï¿½sultat nb photos trouvï¿½es
+const divResult = document.querySelector("#resultat");
 // Loader
-const loader = document.getElementById('loader');
-const progressText = document.getElementById('progressText');
+const loader = document.querySelector('#loader');
+const progressText = document.querySelector('#progressText');
 
 function setCookie(name, value, days) {
     const d = new Date();
@@ -63,7 +63,7 @@ if (urlParams.get('dir')) {
 }
 
 
-// Recuperation parametre URL 'tri' (numérique ou alphabétique)
+// Recuperation parametre URL 'tri' (numï¿½rique ou alphabï¿½tique)
 if (getCookie('tri')) {
     data.tri = getCookie('tri');
 } else {
@@ -78,7 +78,7 @@ if (getCookie('sens')) {
 }
 
 // Title
-let setTitle = document.getElementById('hautdepage');
+let setTitle = document.querySelector('#hautdepage');
 if (setFixedTitle == 1) {
     // Tile: fixed title defined in User Settings
     setTitle.innerHTML = `<a href="${index}">${fixedTitle}</a>`;
@@ -91,7 +91,7 @@ if (setFixedTitle == 1) {
 if (urlParams.get('search')) {
     // On remplace les espaces entourant le separateur par le separateur 
     const regex = new RegExp(`\\s*${separator}\\s*`, 'g');
-    search = urlParams.get('search').replaceAll(regex, separator);
+    let search = urlParams.get('search').replaceAll(regex, separator);
     // Supprime les espaces en debut et fin et les espaces multiples
     search = search.replace(/^\s+|\s+$|\s+(?=\s)/g, '');
     search = search.trim();
