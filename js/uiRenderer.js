@@ -38,7 +38,7 @@ export async function renderGallery(photoData, search) {
   copyImagesToTrash();
   // Gestion de l'edition des EXIF
   editExif();
-  // Gère le click sur les tags et la recherche
+  // Gere le click sur les tags et la recherche
   tagsManage();
   tagsDelete();
   searchInputManage();
@@ -48,12 +48,12 @@ export async function renderGallery(photoData, search) {
   updateImagesVisibility();
 }
 /********** GESTION DES TAGS **************/
-// Gère les tags entrés dans l'url (search=tag1;tag2)
+// Gere les tags entres dans l'url (search=tag1;tag2)
 function applyUrlSearch(urlSearch) {
-    const input = document.getElementById('searchText');
+    const input = document.querySelector('#searchText');
     if (!input) return;
 
-    // Pré-remplit l'input
+    // Pre-remplit l'input
     input.value = urlSearch;
 
     // Ajoute automatiquement les tags
@@ -71,8 +71,8 @@ function debounce(fn, delay = 200) {
 
 // Gestion du champ de recherche
 function searchInputManage() {
-  const input = document.getElementById('searchText');
-  const tagsContainer = document.getElementById('searchTags');
+  const input = document.querySelector('#searchText');
+  const tagsContainer = document.querySelector('#searchTags');
 
   const performSearch = () => {
 
@@ -101,28 +101,28 @@ function searchInputManage() {
       tagsContainer.appendChild(span);
     });
 
-    updateImagesVisibility(); // met aussi à jour displayNumberPhotos
+    updateImagesVisibility(); // met aussi a jour displayNumberPhotos
   };
 
   const debouncedSearch = debounce(performSearch, 200);
   input.addEventListener('input', debouncedSearch);
 }
 
-// Vérifie que la recherche est contenue dans titre, description ou tags
+// Verifie que la recherche est contenue dans titre, description ou tags
 function matchSearch(search, titre, description, tags) {
-  // 1. Séparer les tags de recherche
+  // 1. Separer les tags de recherche
   const searchTags = search
     .toLowerCase()
     .split(config.separator)
     .map(s => s.trim())
-    .filter(Boolean);  // enlève les vides
-  // 2. Regrouper les champs où chercher
+    .filter(Boolean);  // enleve les vides
+  // 2. Regrouper les champs oa chercher
   const fields = [
     titre?.toLowerCase() || "",
     description?.toLowerCase() || "",
     tags?.toLowerCase() || ""
   ];
-  // 3. Vérifier que chaque tag figure dans au moins un champ
+  // 3. VErifier que chaque tag figure dans au moins un champ
   return searchTags.every(tag =>
     fields.some(field => field.includes(tag))
   );
@@ -136,25 +136,25 @@ function tagsManage() {
     e.preventDefault();
     const titleValue = e.target.getAttribute('title').toLowerCase();
 
-    // déjà présent ?
+    // deja present ?
     if (document.querySelector(`.tagDelete[title="${titleValue}"]`)) {
       return;
     }
 
     addTagToSearch(titleValue);
 
-    document.getElementById('searchText').value = '';
+    document.querySelector('#searchText').value = '';
   });
 }
 
-// Affiche le tags cliqué sous forme de bouton delete tag
+// Affiche le tags clique sous forme de bouton delete tag
 function addTagToSearch(tag) {
   if (!tag) return;
 
-  const container = document.getElementById('searchTags');
+  const container = document.querySelector('#searchTags');
   if (!container) return;
 
-  // éviter doublons
+  // eviter doublons
   if (document.querySelector(`.tagDelete[title="${tag}"]`)) return;
 
   const span = document.createElement('span');
@@ -166,7 +166,7 @@ function addTagToSearch(tag) {
   updateImagesVisibility();
 }
 
-// Suppression d'un tag cliqué
+// Suppression d'un tag clique
 function tagsDelete() {
   document.addEventListener('click', e => {
     if (!e.target.matches('.tagDelete')) return;
@@ -182,7 +182,7 @@ function getActiveTags() {
     .map(el => el.getAttribute('title').toLowerCase());
 }
 
-// Mise à jour de l'affichage des photos
+// Mise a jour de l'affichage des photos
 function updateImagesVisibility() {
   const activeTags = getActiveTags();
   const items = document.querySelectorAll('.divImageBlog');
@@ -205,7 +205,7 @@ function updateImagesVisibility() {
       .replace(/&amp;/g, '&')
       .toLowerCase();
 
-    // 2. Extraction titre et description par regex très simple
+    // 2. Extraction titre et description par regex tres simple
     const titreMatch = decoded.match(/<div id="titre"[^>]*>(.*?)<\/div>/s);
     const descriptionMatch = decoded.match(/<div id="description"[^>]*>(.*?)<\/div>/s);
 
@@ -227,20 +227,20 @@ function updateImagesVisibility() {
       item.parentElement.style.display = "block";
       // ajoute data-fancybox pour prise en compte dans Fancybox
       anchor.setAttribute("data-fancybox", "central");
-      // Incrémente le nb d'images affichées
+      // Incremente le nb d'images affichees
       imageCounter++;
     } else {
       item.parentElement.style.display = "none";
       anchor.removeAttribute("data-fancybox");
     }
   });
-  // Affiche le nombre d'images trouvées
+  // Affiche le nombre d'images trouvees
   displayNumberPhotos(imageCounter);
 }
 
 // Affiche le nb de photos dans 'resultat'
 function displayNumberPhotos(nbPhotos) {
-  const resultat = document.getElementById('resultat');
+  const resultat = document.querySelector('#resultat');
   if (resultat) {
     resultat.innerHTML = `${nbPhotos} ${
     nbPhotos > 1 
@@ -251,7 +251,7 @@ function displayNumberPhotos(nbPhotos) {
 
 /****************************************************************************************** */
 
-// Crée data-caption a integrer dans le lien de la photo
+// Cree data-caption a integrer dans le lien de la photo
 function buildExifCaption(imageName, meta) {
   const {
     titre = '', description = '', createur = '', credit = '',
@@ -392,27 +392,20 @@ function buildPhotoHTML(imageName, url, meta, search, dataFancybox) {
 }
 
 // Cree la ligne de Tags
-function buildTagsBlock(tagString, search) {
+function buildTagsBlock(tagString) {
   if (!tagString) return '';
   //const oldTag = search !== 'all' ? config.separator + search : '';
   const tags = tagString.split(config.separator).sort((a, b) => a.localeCompare(b, 'fr'));
-  //console.log(search);
-  const searchTags = search.split(';').filter(Boolean);
+  
   const links = tags.map(tg => {
     const decoded = decode_utf8(tg);
-    // Si tg est deja dans la liste des tags de 'search'
-    if (searchTags.includes(tg)) {
-      // On retourne juste du texte non cliquable
-      return `#${decoded}`;
-    }
-    // Sinon on garde le lien cliquable
     return `<a title="${tg}" href="#">#${decoded}</a>`;
   }).join(' ');
   return `<p class="tag"><svg class="Icon"><use href="./icons/sprite.svg#icon-tag"></use></svg>&nbsp;${links}</p>`;
 }
 
 //Cree la ligne de personnes
-function buildPersonsBlock(personString, search) {
+function buildPersonsBlock(personString) {
   if (!personString) return '';
 
   //const oldTag = search !== 'all' ? config.separator + search : '';
