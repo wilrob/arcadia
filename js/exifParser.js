@@ -6,8 +6,8 @@ import { config } from './config.js';
 import { t } from './messages.js';
 
 /**
- * Limiteur de parallélisme pour éviter de surcharger le processeur
- * Exécute les tâches par paquet de "limit"
+ * Limiteur de parallelisme pour eviter de surcharger le processeur
+ * Execute les taches par paquet de "limit"
  */
 async function runLimited(tasks, limit = 5) {
     const results = [];
@@ -17,13 +17,13 @@ async function runLimited(tasks, limit = 5) {
         let active = 0;
 
         function next() {
-            // Fin quand toutes les tâches sont lancées ET terminées
+            // Fin quand toutes les taches sont lancees ET terminees
             if (index === tasks.length && active === 0) {
                 resolve(results);
                 return;
             }
 
-            // Lance les tâches tant qu'il reste de la place
+            // Lance les taches tant qu'il reste de la place
             while (active < limit && index < tasks.length) {
                 const current = index++;
                 const task = tasks[current];
@@ -34,7 +34,7 @@ async function runLimited(tasks, limit = 5) {
                     .catch(err => { results[current] = { error: err }; })
                     .finally(() => {
                         active--;
-                        next(); // Quand une tâche finit ? on en lance une autre
+                        next(); // Quand une tache finit ? on en lance une autre
                     });
             }
         }
@@ -45,7 +45,7 @@ async function runLimited(tasks, limit = 5) {
 
 /**
  * Extraction EXIF pour l'ensemble des photos
- * Utilise runLimited pour éviter de saturer le navigateur
+ * Utilise runLimited pour eviter de saturer le navigateur
  */
 export async function extractExif(photoArray) {
     // Affiche le nombre de photo dans l'animation de chargement
@@ -54,7 +54,7 @@ export async function extractExif(photoArray) {
 
     // Lance l'extraction exif par paquet de 5
     const tasks = photoArray.map(url => () => extractSingleExif(url));
-    return runLimited(tasks, 5);  // 5 en parallèle (réglable)
+    return runLimited(tasks, 5);  // 5 en parallele (reglable)
 }
 
 /**
