@@ -11,10 +11,10 @@ async function init() {
          * fileReaders.js
          * Lecture des dossiers photos dans 'albums'
          *  */
-        const { search, images, nbFiles } = await readPhotoDirectory();
+        const { search, images } = await readPhotoDirectory();
         /**
          * exifParser.js
-         * Extraction des méta-données de chaque photo
+         * Extraction des mÃ©ta-donnÃ©es de chaque photo
          *  */
         const metaData = await extractExif(images);
         /** uiRenderer.js
@@ -28,13 +28,13 @@ async function init() {
     }
 
     /** fancybox.js
-     * Initialisation de Fancybox après affichage complet
+     * Initialisation de Fancybox aprÃ¨s affichage complet
      *  */
     displayFancybox();
 
     /**
      * fonction dans util.js
-     * Initialisation des observers après affichage complet
+     * Initialisation des observers aprÃ¨s affichage complet
      *  */
     initPhotoObservers(config.data.typeAlbum);
 }
