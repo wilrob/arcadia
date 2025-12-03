@@ -3,7 +3,7 @@
    ----------------------------------------------------------- */
 export class Div {
     constructor({ type = 'div', id = '', name = '', container = '', contents = '', classe = '', position = 'inner', caption = '', display = 'block'
-    } = {}) { // <= ici, le = {} évite l?erreur
+    } = {}) { // <= ici, le = {} ï¿½vite l?erreur
         this.type = type;
         this.id = id;
         this.name = name;
@@ -23,7 +23,7 @@ export class Div {
         if (this.contents) el.innerHTML = this.contents;
         if (this.display) el.style.display = this.display;
 
-        const container = document.getElementById(this.container);
+        const container = document.querySelector(`#${this.container}`);
         if (!container) {
             console.warn(`? Conteneur "${this.container}" introuvable.`);
             return;
@@ -54,7 +54,7 @@ export class Div {
 }
 
 /* ===========================================================
-   CHARGEMENT DES FICHIERS D?UN RÉPERTOIRE
+   CHARGEMENT DES FICHIERS D?UN Rï¿½PERTOIRE
    ----------------------------------------------------------- */
 export async function loadFiles(dir) {
     const response = await fetch(dir);
@@ -78,7 +78,7 @@ export const encode_utf8 = (str) => encodeURIComponent(str);
    TRI DES DIVS PAR ATTRIBUT
    ----------------------------------------------------------- */
 export async function divOrder(tri, sens) {
-    const main = document.getElementById("central");
+    const main = document.querySelector("#central");
     if (!main) return;
 
     const elemTri = tri || getCookie("tri") || "name";
@@ -107,13 +107,13 @@ export async function divOrder(tri, sens) {
     children.forEach((el) => main.appendChild(el));
 
     // --- MAJ des boutons ---
-    const triButton = document.getElementById("boutontri");
+    const triButton = document.querySelector("#boutontri");
     if (triButton) {
         triButton.innerHTML =
             elemTri === "name" ? globalThis.numericButton : globalThis.alphabeticButton;
     }
 
-    const sensButton = document.getElementById("sens");
+    const sensButton = document.querySelector("#sens");
     if (sensButton) {
         sensButton.innerHTML =
             elemSens === "down" ? globalThis.arrowUpButton : globalThis.arrowDownButton;
@@ -134,16 +134,6 @@ export function showClass(classe) {
     document.querySelectorAll(`.${classe}`).forEach((el) => (el.style.display = "block"));
 }
 
-function hideDiv(id) {
-    const el = document.getElementById(id);
-    if (el) el.style.display = "none";
-}
-
-function showDiv(id) {
-    const el = document.getElementById(id);
-    if (el) el.style.display = "block";
-}
-
 export function toggleClass(classe) {
     document.querySelectorAll(`.${classe}`).forEach((el) => {
         el.style.display = el.style.display === "none" ? "block" : "none";
@@ -151,22 +141,8 @@ export function toggleClass(classe) {
 }
 
 /* ===========================================================
-   PUBLICATION / INFOS / BOUTONS
+   INFOS / BOUTONS
    ----------------------------------------------------------- */
-/**
- * Permet d'afficher/masquer une publication
- * @param {string} divId - ID de la div publication à afficher/masquer
- */
-export function togglePublication(divId) {
-    const display = document.getElementById(divId).style.display;
-    document.querySelectorAll(".publication").forEach((el) => {
-        el.style.display = "none";
-    });
-    display === "none" ?
-        (document.getElementById(divId).style.display = "block") :
-        (document.getElementById(divId).style.display = "none");
-}
-
 /**
  * Permet de basculer entre les modes MOSAIC et BLOG
  * @param {string} type - "mosaic" ou "blog"
@@ -176,7 +152,7 @@ export async function toggleDisplay(type) {
         photoObserver.disconnect();
         photoObserver = null;
     }
-    const displayButton = document.getElementById("boutondisplay");
+    const displayButton = document.querySelector("#boutondisplay");
     const trash = document.querySelectorAll(".trash");
     if (!displayButton) return;
     if (type === "mosaic") {
@@ -185,7 +161,6 @@ export async function toggleDisplay(type) {
         replaceClass("photo", "photoMini");
         replaceClass("divImageBlog", "divImageMosaic");
         hideClass("tagBlog");
-        //setCookie("album", "mosaic", 3);
         initMosaicHoverObserver();
         trash.forEach(element => {
             element.style.display = "none";
@@ -197,7 +172,6 @@ export async function toggleDisplay(type) {
         replaceClass("photoMini", "photo");
         replaceClass("divImageMosaic", "divImageBlog");
         showClass("tagBlog");
-        //setCookie("album", "blog", 3);
         initBlogObserver();
         trash.forEach(element => {
             element.style.display = "block";
@@ -209,7 +183,7 @@ export async function toggleDisplay(type) {
    GEOLOCALISATION
    ----------------------------------------------------------- */
 /**
- * Récupère la localisation (ville, pays) à partir des coordonnées lat/lon
+ * Rï¿½cupï¿½re la localisation (ville, pays) ï¿½ partir des coordonnï¿½es lat/lon
  * @param {number} lat - Latitude
  * @param {number} lon - Longitude
  */
@@ -239,7 +213,7 @@ export async function getLocation(lat, lon) {
 /* ===========================================================
    COPIE ET SUPPRESSION D'IMAGES
    ----------------------------------------------------------- */
-// Gestion fichiers à supprimer
+// Gestion fichiers ï¿½ supprimer
 export function copyImagesToTrash() {
     const trash = document.querySelectorAll('.trash');
     if (trash) {
@@ -254,7 +228,7 @@ export function copyImagesToTrash() {
 
 
 function deleteImage(img) {
-    if (!document.getElementById('poubelle')) {
+    if (!document.querySelector('#poubelle')) {
         const poubelle = document.createElement('div');
         poubelle.id = 'poubelle';
         const poubelleContent = `
@@ -266,14 +240,14 @@ function deleteImage(img) {
     }
 
     const newImg = img.replace('trash-', ' ');
-    const trashText = document.getElementById("textTrash");
+    const trashText = document.querySelector("#textTrash");
     if (trashText) {
         let texte = trashText.textContent;
-        if (texte.includes(newImg)) return; // évite les doublons
+        if (texte.includes(newImg)) return; // ï¿½vite les doublons
         trashText.textContent += newImg;
     }
 
-    const hideTrash = document.getElementById('closeInfos');
+    const hideTrash = document.querySelector('#closeInfos');
     if (hideTrash) {
         hideTrash.addEventListener('click', () => {
             poubelle.remove();
@@ -293,12 +267,12 @@ function deleteImage(img) {
 }
 
 function copyToClipBoard(id) {
-    const text = document.getElementById(id)?.innerHTML || "";
+    const text = document.querySelector(`#${id}`)?.innerHTML || "";
     navigator.clipboard.writeText(text);
     alert("Suppress command (copied to clip board)\n\n" + text);
 }
 
-/* Edition des métadonnées via le modal */
+/* Edition des mï¿½tadonnï¿½es via le modal */
 export function editExif() {
     const trash = document.querySelectorAll('.editExif');
     if (trash) {
@@ -310,17 +284,17 @@ export function editExif() {
     }
 }
 
-/* Edite les métadonnées d'une image */
+/* Edite les mï¿½tadonnï¿½es d'une image */
 function openEditMetadataModal(imgId) {
-    const img = document.getElementById(imgId.replace('edit-', ''));
+    const img = document.querySelector(`#${imgId}`.replace('edit-', ''));
     const parentLink = img.closest('a');
 
-    // Récupère le contenu de l'attribut data-caption
+    // Rï¿½cupï¿½re le contenu de l'attribut data-caption
     const captionHTML = parentLink ? parentLink.getAttribute('data-caption') : '';
     if (captionHTML) {
         const data = parseCaptionHTML(captionHTML);
         //console.log(data);
-        // Crée le modal
+        // Crï¿½e le modal
         const modal = document.createElement('div');
         modal.className = 'edit-modal';
         // Conversion dimensions en tableau W x H
@@ -382,7 +356,7 @@ function openEditMetadataModal(imgId) {
             </form>
         </div>
         `;
-        // Fonction d'échappement des guillemets doubles
+        // Fonction d'ï¿½chappement des guillemets doubles
         function escapeQuote(str) {
             return String(str).replace(/"/g, '&quot;');
         }
@@ -393,7 +367,7 @@ function openEditMetadataModal(imgId) {
         closeBtn.addEventListener('click', () => {
             document.body.removeChild(modal);
         });
-        // Gère la soumission du formulaire
+        // Gï¿½re la soumission du formulaire
         const form = modal.querySelector('#edit-metadata-form');
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -411,7 +385,7 @@ function openEditMetadataModal(imgId) {
             const newLon = modal.querySelector('#edit-lon').value;
             const newTags = modal.querySelector('#edit-tags').value;
             const newPersonnes = modal.querySelector('#edit-personnes').value;
-            // Génère la commande exiftool
+            // Gï¿½nï¿½re la commande exiftool
             const exifCopy =
                 `exiftool ` +
                 `-Creator=${escapeShell(newAuteur)} ` +
@@ -428,10 +402,6 @@ function openEditMetadataModal(imgId) {
                 `-GPSLatitude=${escapeShell(newLat)} ` +
                 `-GPSLongitude=${escapeShell(newLon)} ` +
                 `${escapeShell(data.fichier)}`;
-            // Fonction d'échappement des aopostrophes pour shell
-            function escapeShell(str) {
-                return `'${String(str).replace(/'/g, `'\"'\"'`)}'`;
-            }
             // Copie dans le presse-papier
             navigator.clipboard.writeText(exifCopy);
             alert("Exiftool command (copied to clip board)\n\n" + exifCopy);
@@ -441,17 +411,22 @@ function openEditMetadataModal(imgId) {
     }
 }
 
+// Fonction d'ï¿½chappement des aopostrophes pour shell
+function escapeShell(str) {
+    return `'${String(str).replace(/'/g, `'\"'\"'`)}'`;
+}
+
 /**
- * Active la détection quand une photo est centrée à l'écran
+ * Active la dï¿½tection quand une photo est centrï¿½e ï¿½ l'ï¿½cran
  * Affiche les infos correspondantes (ex: publicationX)
  */
-// Initialise les événements hover pour le mode BLOG
+// Initialise les ï¿½vï¿½nements hover pour le mode BLOG
 
 // --- OBSERVER D'IMAGE --- //
 let photoObserver = null;
 
 export async function initPhotoObservers(typeAlbum) {
-    // Attendre que toutes les images soient chargées
+    // Attendre que toutes les images soient chargï¿½es
     const photos = Array.from(document.querySelectorAll('.photo, .photoMini'));
     await Promise.all(
         photos.map(img =>
@@ -460,7 +435,7 @@ export async function initPhotoObservers(typeAlbum) {
         )
     );
 
-    // Stopper l'observer précédent s'il existe
+    // Stopper l'observer prï¿½cï¿½dent s'il existe
     if (photoObserver) {
         photoObserver.disconnect();
         photoObserver = null;
@@ -474,7 +449,7 @@ export async function initPhotoObservers(typeAlbum) {
     }
 }
 
-// --- Mode BLOG : Observer basé sur l'intersection ---
+// --- Mode BLOG : Observer basï¿½ sur l'intersection ---
 function initBlogObserver() {
     const options = {
         root: null,
@@ -496,7 +471,7 @@ function initBlogObserver() {
     });
 }
 
-// --- Mode MOSAÏQUE : survol souris ---
+// --- Mode MOSAï¿½QUE : survol souris ---
 function initMosaicHoverObserver() {
     const photos = document.querySelectorAll('.photoMini');
     photos.forEach(img => {
@@ -505,7 +480,7 @@ function initMosaicHoverObserver() {
             displayMetaData(img)
         });
         img.addEventListener('mouseleave', () => {
-            // cacher la légende
+            // cacher la lï¿½gende
         });
     });
 }
@@ -541,7 +516,7 @@ function getCookie(name) {
 
 /**
  * Remplace une classe par une autre
- * @param {string} class1 - Classe à remplacer
+ * @param {string} class1 - Classe ï¿½ remplacer
  * @param {string} class2 - Classe de remplacement
  */
 export function replaceClass(class1, class2) {
@@ -554,7 +529,7 @@ export function replaceClass(class1, class2) {
    AFFICHAGE DES CARTES
    ----------------------------------------------------------- */
 /**
- * Affiche ou met à jour une carte Leaflet centrée sur lat/lon
+ * Affiche ou met ï¿½ jour une carte Leaflet centrï¿½e sur lat/lon
  * @param {number} lat - Latitude
  * @param {number} lon - Longitude
  */
@@ -567,9 +542,9 @@ const photoIcon = L.icon({
 });
 
 function displayMap(lat, lon) {
-    const divMap = document.getElementById("map");
+    const divMap = document.querySelector("#map");
 
-    // Si pas de coordonnées ? cacher la carte
+    // Si pas de coordonnï¿½es ? cacher la carte
     if (!lat || !lon) {
         divMap.style.display = "none";
         return;
@@ -577,14 +552,14 @@ function displayMap(lat, lon) {
     divMap.style.display = "block";
 
     // Ajuster la hauteur
-    const divDetail = document.getElementById("location");
+    const divDetail = document.querySelector("#location");
     const rect = divDetail?.getBoundingClientRect();
     const mapHeight = rect ? window.innerHeight - rect.bottom - 45 : 300;
     divMap.style.height = `${mapHeight}px`;
 
     // --- 1) Initialisation de la carte (une seule fois) ---
     if (!map) {
-        // Créer la carte
+        // Crï¿½er la carte
         map = L.map("map").setView([lat, lon], 9);
 
         // Ajouter le fond de carte
@@ -592,26 +567,26 @@ function displayMap(lat, lon) {
             maxZoom: 20,
         }).addTo(map);
 
-        // Créer le marker
+        // Crï¿½er le marker
         mapMarker = L.marker([lat, lon], { icon: photoIcon }).addTo(map);
     }
 
-    // --- 2) Mise à jour de la carte déjà existante ---
+    // --- 2) Mise ï¿½ jour de la carte dï¿½jï¿½ existante ---
     else {
         map.setView([lat, lon], 9);
         mapMarker.setLatLng([lat, lon]);
         mapMarker.setIcon(photoIcon);
     }
 
-    // Réparer l'affichage si le conteneur a changé de taille
+    // Rï¿½parer l'affichage si le conteneur a changï¿½ de taille
     setTimeout(() => map.invalidateSize(), 10);
 }
 
 /**
- * Parse le contenu HTML de data-caption et retourne un objet avec les données
+ * Parse le contenu HTML de data-caption et retourne un objet avec les donnï¿½es
  * 
  * @param {string} captionHTML - Le contenu HTML de l'attribut data-caption
- * @returns {Object} - Un objet avec les données extraites
+ * @returns {Object} - Un objet avec les donnï¿½es extraites
  */
 function parseCaptionHTML(captionHTML) {
     const parser = new DOMParser();
@@ -624,13 +599,13 @@ function parseCaptionHTML(captionHTML) {
         const id = el.id;
         // Cas particulier pour la carte
         if (id === 'map-modal') {
-            // Cas spécial : on récupère latitude et longitude
+            // Cas spï¿½cial : on rï¿½cupï¿½re latitude et longitude
             result[id] = {
                 lat: parseFloat(el.dataset.lat),
                 lon: parseFloat(el.dataset.lon)
             };
         } else if (id === 'dateFR') {
-            // Cas spécial : on récupère le texte de dateFR et la date au format UTC 
+            // Cas spï¿½cial : on rï¿½cupï¿½re le texte de dateFR et la date au format UTC 
             result[id] = {
                 dateFR: el.textContent,
                 dateUTC: new Date(el.getAttribute('date'))
@@ -645,22 +620,22 @@ function parseCaptionHTML(captionHTML) {
 }
 
 /**
- * Affiche les métadonnées extraites de data-caption dans la div publication
- * @param {HTMLImageElement} img - L'élément image dont on veut afficher les métadonnées
+ * Affiche les mï¿½tadonnï¿½es extraites de data-caption dans la div publication
+ * @param {HTMLImageElement} img - L'ï¿½lï¿½ment image dont on veut afficher les mï¿½tadonnï¿½es
  */
 function displayMetaData(img) {
-    // Récupère le <a> parent
+    // Rï¿½cupï¿½re le <a> parent
     const parentLink = img.closest('a');
 
-    // Récupère le contenu de l'attribut data-caption
+    // Rï¿½cupï¿½re le contenu de l'attribut data-caption
     const captionHTML = parentLink ? parentLink.getAttribute('data-caption') : '';
     if (captionHTML) {
         const data = parseCaptionHTML(captionHTML);
         //console.log(captionHTML);
 
-        const publication = document.getElementById('publication');
-        const divMap = document.getElementById('map');
-        const buttonBlog = document.getElementById('buttonBlog');
+        const publication = document.querySelector('#publication');
+        const divMap = document.querySelector('#map');
+        const buttonBlog = document.querySelector('#buttonBlog');
         const divPublication = `
         <div class="dataXMP">
             <div class="detail">
@@ -740,7 +715,5 @@ function displayMetaData(img) {
         } else {
             divMap.style.display = 'none';          
         }
-
-       
     }
 }
