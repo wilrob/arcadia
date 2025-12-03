@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   // Div de la page index
-  const central = document.getElementById("central");
-  const head = document.getElementById("hautdepage");
+  const central = document.querySelector("#central");
+  const head = document.querySelector("#hautdepage");
 
   // Page d'accueil par dÃ©faut
   const home = "home.html";
@@ -39,7 +39,7 @@ function getHtmlPage(div, page) {
 
 //=====================Affichage des photos avec mouse over ============
 // === CONFIGURATION ===
-const baseURL = "albums/"; // à adapter à ton serveur
+const baseURL = "albums/"; // a adapter a ton serveur
 const extensionsAutorisees = [".jpg", ".jpeg", ".png", ".webp"];
 
 // === UTILITAIRE ===
@@ -81,10 +81,10 @@ async function traiterAlbums(dossier) {
 
     const choisies = choisirAleatoirement(images, 4);
 
-    // On construit les URLs complètes
+    // On construit les URLs completes
     const chemins = choisies.map(img => `${baseURL}${dossier}/${img}`);
 
-    // Afficher les images avec ton système existant
+    // Afficher les images avec ton systeme existant
     image_display(chemins);
   } catch (err) {
     console.error("Erreur :", err);
@@ -93,12 +93,12 @@ async function traiterAlbums(dossier) {
 
 // === AFFICHAGE / EFFACEMENT ===
 function image_display(images) {
-  const container = document.getElementById("image");
+  const container = document.querySelector("#image");
   //console.log(images[0])
-  document.getElementById("image-1").src = images[0];
-  document.getElementById("image-2").src = images[1];
-  document.getElementById("image-3").src = images[2];
-  document.getElementById("image-4").src = images[3];
+  document.querySelector("#image-1").src = images[0];
+  document.querySelector("#image-2").src = images[1];
+  document.querySelector("#image-3").src = images[2];
+  document.querySelector("#image-4").src = images[3];
 
   container.style.display = "block";
 
@@ -107,7 +107,7 @@ function image_display(images) {
 }
 
 function image_clear() {
-  const container = document.getElementById("image");
+  const container = document.querySelector("#image");
   container.classList.remove("show");
   container.style.display = "none";
 }
