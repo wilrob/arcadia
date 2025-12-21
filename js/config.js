@@ -86,7 +86,7 @@ if (setFixedTitle == 1) {
     setTitle.innerHTML = `<a href="${index}">${fixedTitle}</a>`;
 } else {
     // Title: photo directory's name
-    setTitle.innerHTML = returnLink !== '' ? returnLink : `<a href="${index}">${getDir}</a>`;
+    //setTitle.innerHTML = returnLink !== '' ? returnLink : `<a href="${index}">index</a>`;
 }
 
 // Recuperation parametre URL 'search'
