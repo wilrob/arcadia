@@ -12,13 +12,16 @@ const setFixedTitle = 0 // Set to 1 if you want to display the fixedTitle
 const imageDir = 'albums';
 // index page
 const index = 'album.html';
+// Si retour different de index quand on clique sur le titre de l'album,
+// decommenter la ligne returnLink ligne 86 dans // Title
+let returnLink = '';
 // Search text separator
 const separator = ';';
 // Affichage résultat nb photos trouvées
-const divResult = document.getElementById("resultat");
+const divResult = document.querySelector('#resultat');
 // Loader
-const loader = document.getElementById('loader');
-const progressText = document.getElementById('progressText');
+const loader = document.querySelector('#loader');
+const progressText = document.querySelector('#progressText');
 
 function setCookie(name, value, days) {
     const d = new Date();
@@ -62,7 +65,6 @@ if (urlParams.get('dir')) {
     data.dir = imageDir + '/' + getDir;
 }
 
-
 // Recuperation parametre URL 'tri' (numérique ou alphabétique)
 if (getCookie('tri')) {
     data.tri = getCookie('tri');
@@ -78,20 +80,24 @@ if (getCookie('sens')) {
 }
 
 // Title
-let setTitle = document.getElementById('hautdepage');
+let setTitle = document.querySelector('#hautdepage');
+// Lien de retour en cliquant surle titre si different de index
+// A commenter si retour vers index
+returnLink = `<a href="index.html?name=${getDir.trim()}">${getDir}</a>`;
+
 if (setFixedTitle == 1) {
     // Tile: fixed title defined in User Settings
     setTitle.innerHTML = `<a href="${index}">${fixedTitle}</a>`;
 } else {
     // Title: photo directory's name
-    setTitle.innerHTML = `<a href="${index}">${getDir}</a>`;
+    setTitle.innerHTML = returnLink !== '' ? returnLink : `<a href="${index}">${getDir}</a>`;
 }
 
 // Recuperation parametre URL 'search'
 if (urlParams.get('search')) {
     // On remplace les espaces entourant le separateur par le separateur 
     const regex = new RegExp(`\\s*${separator}\\s*`, 'g');
-    search = urlParams.get('search').replaceAll(regex, separator);
+    let search = urlParams.get('search').replaceAll(regex, separator);
     // Supprime les espaces en debut et fin et les espaces multiples
     search = search.replace(/^\s+|\s+$|\s+(?=\s)/g, '');
     search = search.trim();

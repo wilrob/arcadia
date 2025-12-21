@@ -6,8 +6,8 @@ import { config } from './config.js';
 import { t } from './messages.js';
 
 /**
- * Limiteur de parallélisme pour éviter de surcharger le processeur
- * Exécute les tâches par paquet de "limit"
+ * Limiteur de parallelisme pour eviter de surcharger le processeur
+ * Execute les tâches par paquet de "limit"
  */
 async function runLimited(tasks, limit = 5) {
     const results = [];
@@ -17,7 +17,7 @@ async function runLimited(tasks, limit = 5) {
         let active = 0;
 
         function next() {
-            // Fin quand toutes les tâches sont lancées ET terminées
+            // Fin quand toutes les tâches sont lancees ET terminees
             if (index === tasks.length && active === 0) {
                 resolve(results);
                 return;
@@ -45,7 +45,7 @@ async function runLimited(tasks, limit = 5) {
 
 /**
  * Extraction EXIF pour l'ensemble des photos
- * Utilise runLimited pour éviter de saturer le navigateur
+ * Utilise runLimited pour eviter de saturer le navigateur
  */
 export async function extractExif(photoArray) {
     // Affiche le nombre de photo dans l'animation de chargement
@@ -54,7 +54,7 @@ export async function extractExif(photoArray) {
 
     // Lance l'extraction exif par paquet de 5
     const tasks = photoArray.map(url => () => extractSingleExif(url));
-    return runLimited(tasks, 5);  // 5 en parallèle (réglable)
+    return runLimited(tasks, 5);  // 5 en parallele (reglable)
 }
 
 /**

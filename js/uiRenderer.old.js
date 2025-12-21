@@ -23,7 +23,7 @@ export async function renderGallery(photoData, search) {
       name: imageName,
       container: 'central',
       contents,
-      classe: config.typeAlbum === 'mosaic' ? 'divPhotoMini' : 'divPhoto',
+      classe: config.typeAlbum === 'mosaic' ? 'divDisplay divPhotoMini' : 'divDisplay divPhoto',
       position: 'inner',
       caption: buildExifCaption(imageName, meta),
     });
@@ -38,7 +38,7 @@ export async function renderGallery(photoData, search) {
   copyImagesToTrash();
   // Gestion de l'edition des EXIF
   editExif();
-  // Gere le click sur les tags et la recherche
+  // Gère le click sur les tags et la recherche
   tagsManage();
   tagsDelete();
   searchInputManage();
@@ -48,12 +48,12 @@ export async function renderGallery(photoData, search) {
   updateImagesVisibility();
 }
 /********** GESTION DES TAGS **************/
-// Gere les tags entres dans l'url (search=tag1;tag2)
+// Gère les tags entrés dans l'url (search=tag1;tag2)
 function applyUrlSearch(urlSearch) {
     const input = document.querySelector('#searchText');
     if (!input) return;
 
-    // Pre-remplit l'input
+    // Pré-remplit l'input
     input.value = urlSearch;
 
     // Ajoute automatiquement les tags
@@ -101,28 +101,28 @@ function searchInputManage() {
       tagsContainer.appendChild(span);
     });
 
-    updateImagesVisibility(); // met aussi a jour displayNumberPhotos
+    updateImagesVisibility(); // met aussi à jour displayNumberPhotos
   };
 
   const debouncedSearch = debounce(performSearch, 200);
   input.addEventListener('input', debouncedSearch);
 }
 
-// Verifie que la recherche est contenue dans titre, description ou tags
+// Vérifie que la recherche est contenue dans titre, description ou tags
 function matchSearch(search, titre, description, tags) {
-  // 1. Separer les tags de recherche
+  // 1. Séparer les tags de recherche
   const searchTags = search
     .toLowerCase()
     .split(config.separator)
     .map(s => s.trim())
-    .filter(Boolean);  // enleve les vides
-  // 2. Regrouper les champs ou chercher
+    .filter(Boolean);  // enlève les vides
+  // 2. Regrouper les champs où chercher
   const fields = [
     titre?.toLowerCase() || "",
     description?.toLowerCase() || "",
     tags?.toLowerCase() || ""
   ];
-  // 3. Verifier que chaque tag figure dans au moins un champ
+  // 3. Vérifier que chaque tag figure dans au moins un champ
   return searchTags.every(tag =>
     fields.some(field => field.includes(tag))
   );
@@ -136,7 +136,7 @@ function tagsManage() {
     e.preventDefault();
     const titleValue = e.target.getAttribute('title').toLowerCase();
 
-    // deja present ?
+    // déjà présent ?
     if (document.querySelector(`.tagDelete[title="${titleValue}"]`)) {
       return;
     }
@@ -147,14 +147,14 @@ function tagsManage() {
   });
 }
 
-// Affiche le tags clique sous forme de bouton delete tag
+// Affiche le tags cliqué sous forme de bouton delete tag
 function addTagToSearch(tag) {
   if (!tag) return;
 
   const container = document.querySelector('#searchTags');
   if (!container) return;
 
-  // eviter doublons
+  // éviter doublons
   if (document.querySelector(`.tagDelete[title="${tag}"]`)) return;
 
   const span = document.createElement('span');
@@ -166,14 +166,13 @@ function addTagToSearch(tag) {
   updateImagesVisibility();
 }
 
-// Suppression d'un tag clique
+// Suppression d'un tag cliqué
 function tagsDelete() {
   document.addEventListener('click', e => {
     if (!e.target.matches('.tagDelete')) return;
 
     e.preventDefault();
     e.target.closest('.searchText').remove();
-    document.querySelector('#searchText').value = '';
     updateImagesVisibility();
   });
 }
@@ -183,11 +182,12 @@ function getActiveTags() {
     .map(el => el.getAttribute('title').toLowerCase());
 }
 
-// Mise a jour de l'affichage des photos
+// Mise à jour de l'affichage des photos
 function updateImagesVisibility() {
   const activeTags = getActiveTags();
-  // divDisplay est commun avec divImageBlog et divImageMini
+  // Sélectionne divDisplay commune aux div Blog & Mosaic
   const items = document.querySelectorAll('.divDisplay');
+
   let imageCounter = 0;
 
   const noFilter = activeTags.length === 0;
@@ -207,16 +207,16 @@ function updateImagesVisibility() {
       .replace(/&amp;/g, '&')
       .toLowerCase();
 
-    // 2. Extraction titre et description par regex tres simple
+    // 2. Extraction titre et description par regex très simple
     const titreMatch = decoded.match(/<div id="titre"[^>]*>(.*?)<\/div>/s);
     const descriptionMatch = decoded.match(/<div id="description"[^>]*>(.*?)<\/div>/s);
 
     const titre = titreMatch ? titreMatch[1].trim() : "";
     const description = descriptionMatch ? descriptionMatch[1].trim() : "";
 
-    // 3. Aucun tag actif, on affiche tout
+    // 3. Aucun tag actif ? on affiche tout
     if (noFilter) {
-      item.parentElement.style.display = "block";
+      item.style.display = "block";
       anchor.setAttribute("data-fancybox", "central");
       imageCounter++;
       return;
@@ -224,19 +224,19 @@ function updateImagesVisibility() {
 
     // 4. Matching
     const isMatch = matchSearch(searchString, titre, description, dataTags);
-
+    
     if (isMatch) {
-      item.parentElement.style.display = "block";
+      item.style.display = "block";
       // ajoute data-fancybox pour prise en compte dans Fancybox
       anchor.setAttribute("data-fancybox", "central");
-      // Incremente le nb d'images affichees
+      // Incrémente le nb d'images affichées
       imageCounter++;
     } else {
-      item.parentElement.style.display = "none";
+      item.style.display = "none";
       anchor.removeAttribute("data-fancybox");
     }
   });
-  // Affiche le nombre d'images trouvees
+  // Affiche le nombre d'images trouvées
   displayNumberPhotos(imageCounter);
 }
 
@@ -253,7 +253,7 @@ function displayNumberPhotos(nbPhotos) {
 
 /****************************************************************************************** */
 
-// Cree data-caption a integrer dans le lien de la photo
+// Crée data-caption a integrer dans le lien de la photo
 function buildExifCaption(imageName, meta) {
   const {
     titre = '', description = '', createur = '', credit = '',
@@ -266,6 +266,16 @@ function buildExifCaption(imageName, meta) {
   let dateFR = date
     ? new Date(date).toLocaleDateString('fr-FR', { year: 'numeric', month: 'long', day: 'numeric' })
     : '';
+
+  // Si la date est le 1er janvier, on n'affiche que l'annee
+  const newDate = dateFR.split(' ');
+  if (newDate[0] === '1' && newDate[1] === 'janvier') {
+    dateFR = newDate[2];
+    // Si l'attribut XMP 'label' = 'circa, on affiche 'vers ' devant l'annee (ex: vers 1900)
+    if (label === 'circa') {
+      dateFR = `${t("circa")} ${dateFR}`;
+    }
+  }
 
   /** Creation de l'attribut data-caption contenant les infos EXIF */
   const WidthxHeight = largeur && hauteur ? `${largeur}x${hauteur}` : '';
@@ -280,13 +290,13 @@ function buildExifCaption(imageName, meta) {
         ${(createur || dateFR) ? `
           <div class="caption-meta">
             ${createur ? `
-            <span id="auteur">
-              <svg class="Icon"><use href="./icons/sprite.svg#icon-user"></use></svg>&nbsp;${createur}
+            <span id="auteur" style="color:rgba(115,182,245)" >
+              <svg class="Icon"><use href="./icons/sprite.svg#icon-user" fill="rgba(115,182,245)"></use></svg>&nbsp;${createur}
             </span>
             ` : ``}
             ${dateFR ? `
             <span id="dateFR" date="${date}">
-              <svg class="Icon"><use href="./icons/sprite.svg#icon-calendar"></use></svg>&nbsp;${dateFormat(dateFR,label)}
+              <svg class="Icon"><use href="./icons/sprite.svg#icon-calendar"></use></svg>&nbsp;${dateFR}
             </span>
             ${label ? `<span id="label" style="display:none;">circa</span>` : ``}
             ` : ``}
@@ -327,24 +337,8 @@ function buildExifCaption(imageName, meta) {
   </div>`;
 }
 
-// Affichage de la date
-// Si la date est le 1er janvier, on n'affiche que l'annee
-function dateFormat(date, label) {
-  const newDate = date.split(' ');
-  if (newDate[0] === '1' && newDate[1] === 'janvier') {
-    date = newDate[2];
-    // Si l'attribut XMP 'label' = 'circa, on affiche 'vers ' devant l'annee (ex: vers 1900)
-    if (label === 'circa') {
-      date = `${t("circa")} ${date}`;
-    }
-  }
-  return date;
-}
-
 // Cree le bloc photo HTML
-function buildPhotoHTML(fileName, url, meta, search, dataFancybox) {
-  // Enleve l'extension du fichier
-  const imageName = decode_utf8(fileName.replace(/\.(jpeg|jpg|png|tiff)$/i, ''));
+function buildPhotoHTML(imageName, url, meta, search, dataFancybox) {
   const titre = decode_utf8(meta.titre) || '';
   const description = decode_utf8(meta.description) || '';
   const tag = meta.tag || '';
@@ -369,14 +363,14 @@ function buildPhotoHTML(fileName, url, meta, search, dataFancybox) {
   const infos = `
   <div class="trait-horiz"></div>
     <div class="plusinfo">
-      <div class="titreName">${imageName}</div>
-      <div class="titreDate">${t("date")} ${dateFormat(dateFR,meta.label) || ''}</div>
+      <div class="titreName">${decode_utf8(imageName)}</div>
+      <div class="titreDate">${dateFR || ''}</div>
     </div>
   `;
 
   // Cree le lien pour supprimer la photo
   const iconTrash = `
-    <div id="trash-${decode_utf8(fileName)}" class="trash hint--left" aria-label="${t("deleteImage")}">
+    <div id="trash-${decode_utf8(imageName)}" class="trash hint--left" aria-label="${t("deleteImage")}">
       <svg class="Icon"><use href="./icons/sprite.svg#icon-trash"></use></svg>
     </div>
   `;
@@ -389,13 +383,11 @@ function buildPhotoHTML(fileName, url, meta, search, dataFancybox) {
   `;
 
   // Affiche l'ensemble photo + titre, description, infos (tags) + supprimer + editer
-  // Remarque : la classe divDisplay commune a divImageBlog et divImageMosaic permet
-  // la mise a jour dans les deux modes avec updateImagesVisibility()
   return `
-    <div class="divImageBlog divDisplay" data-tags="${tag};${personne}">${photo}
+    <div class="divImageBlog" data-tags="${tag};${personne}">${photo}
         <div class="titre">${titre}</div>
         <div class="desc">${htmlDecode(description)}</div>
-        <div class="option">${infos}${iconTrash}${iconEdit}</div>
+        ${infos}${iconTrash}${iconEdit}
     </div>
   ${(tagBlock !== '' || personsBlock !== '') ? `<div class="tagBlog">${tagBlock}${personsBlock}</div>` : ``}
   `;
@@ -404,9 +396,8 @@ function buildPhotoHTML(fileName, url, meta, search, dataFancybox) {
 // Cree la ligne de Tags
 function buildTagsBlock(tagString, search) {
   if (!tagString) return '';
-  console.log(htmlDecode(tagString))
   //const oldTag = search !== 'all' ? config.separator + search : '';
-  const tags = htmlDecode(tagString).split(config.separator).sort((a, b) => a.localeCompare(b, 'fr'));
+  const tags = tagString.split(config.separator).sort((a, b) => a.localeCompare(b, 'fr'));
   //console.log(search);
   const searchTags = search.split(';').filter(Boolean);
   const links = tags.map(tg => {

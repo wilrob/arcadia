@@ -1,51 +1,36 @@
-/* ============================================================
-   STYLE-MODERN-PC.CSS
-   Version PC — Palette chaude, fluide et élégante
-   ============================================================ */
-
 /* -----------------------------
    VARIABLES GLOBALES
 ----------------------------- */
-/* Polices personnalisees */
-@font-face {
-  font-family: "SegoeUi";
-  src: url("https://fontsforyou.com/fonts/s/SegoeUi.ttf");
-}
-
-/* Police pour les titres */
-@font-face {
-  font-family: "Average";
-  src: url("http://fonts.gstatic.com/s/average/v4/IA8jQA5GFnMtnG2oawAIjw.ttf");
-}
 
 /* Variables CSS */
 :root {
   /* Couleurs principales */
-  --text-color: #3e1717;
-  --accent-color: #7a1b1b;
-  --bg-color: #f4f0ec;
-  --muted-color: #666;
+  --text-color: #7a1b1b;
+  --accent-color: #ba2222;
+  --gray-color: #999;
+  --bg-color: #333;
+  --muted-color: rgb(35, 127, 212);
   --border-color: #ccc;
-  --light-bg: #f1ede9;
-  --highlight-bg: #f8e5d9;
+  --border-button: #aaa;
+  --light-bg: #f8e5d9;
+  --highlight-bg: var(--light-bg);
   --border-color-light: #ddd;
+  --caption-color: rgba(221, 221, 221);
 
-  --background-image: url("images/your_image.jpg");
-  
   /* Transitions */
   --transition-fast: 0.3s ease;
   --transition-slow: 0.6s ease;
 
   /* Couleurs liens et tags */
-  --link-color: #7a1b1b;
-  --link-hover: #3351fa;
+  --link-color: #666;
+  --link-hover: #999;
   --tag-color: #d34d1d;
   --tag-hover: #3351fa;
 
   /* Typographies */
 
-  --title-font: "Average", Garamond, serif;
-  --main-font: "SegoeUi", system-ui, 'Trebuchet MS', sans-serif;
+  --title-font:  'Trebuchet MS', sans-serif;
+  --main-font: system-ui, 'Trebuchet MS', sans-serif;
 
   /* Dimensions et effets */
   --border-radius: 6px;
@@ -73,9 +58,20 @@ body {
   padding: 0;
   font-family: var(--main-font);
   color: var(--text-color);
-  background: var(--bg-color) var(--background-image) no-repeat fixed center;
+  background: var(--bg-color);
   background-size: cover;
   animation: fadeIn var(--fade-duration) ease-in;
+}
+
+footer {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  width: 300px;
+  margin: auto;
+  color: #999;
+  font-size: 0.8em;
+  text-align: center;
 }
 
 /* Animation d'apparition au chargement */
@@ -92,7 +88,7 @@ body {
 }
 
 /* Titres */
-h1,
+
 h2 {
   font-family: var(--title-font);
   color: var(--accent-color);
@@ -119,20 +115,15 @@ a:hover {
   text-decoration: none;
 }
 
-a.external {
-  background: url(images/link-external.svg) no-repeat right center;
-  background-size: 0.857em;
-  padding-right: 1em;
-}
-
 /* Tableaux, formulaires */
-th {
-  text-align: left;
-}
 
 select,
 input {
   vertical-align: middle;
+}
+
+input:hover {
+  background: #e3eef9;
 }
 
 /* Figures et legendes */
@@ -145,12 +136,6 @@ figure {
   margin-bottom: var(--space-md);
 }
 
-figcaption {
-  font-size: 0.85em;
-  margin-top: var(--space-xs);
-  color: var(--muted-color);
-}
-
 caption.titre {
   font-weight: bold;
   text-align: center;
@@ -158,13 +143,32 @@ caption.titre {
   color: #000;
 }
 
+button.edit-modal-content [type="submit"] {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button  {
+  border-radius: 3px;
+  border: 1px solid var(--border-button);
+  background: white;
+}
+
+button:hover  {
+  background: #e3eef9;;
+}
+
 /* -----------------------------
    STRUCTURE PRINCIPALE
 ----------------------------- */
 #central {
   position: absolute;
-  top: 70px;
-  left: 70px;
+  top: 20px;
+  left: 100px;
   right: 300px;
   bottom: 0;
   z-index: 1;
@@ -178,21 +182,22 @@ caption.titre {
   font-family: var(--title-font);
   position: fixed;
   z-index: 9;
-  top: 0;
-  left: 0;
-  right: 300px;
+  width: 100%;
+  top: 50%;
+  left: -45%;
+  transform: rotate(270deg);
   font-size: 3em;
   font-weight: bold;
   text-align: center;
-  color: var(--accent-color);
+  color: var(--title-color);
   background: var(--bg-color) var(--background-image) no-repeat fixed center;
   opacity: 0.8;
   animation: fadeIn var(--fade-duration) ease-in;
+  opacity: 0.8;
 }
 
-#hautdepage a {
-  color: var(--accent-color);
-  text-decoration: none;
+#hautdepage:hover {
+  opacity: 1;
 }
 
 #right-column {
@@ -208,8 +213,6 @@ caption.titre {
   margin-bottom: var(--space-md);
   border-radius: var(--border-radius);
   background: var(--light-bg);
-  border: 1px solid var(--border-color);
-  opacity: 0.9;
   z-index: 99;
   box-shadow: var(--shadow-soft);
 }
@@ -220,22 +223,167 @@ caption.titre {
   width: 100%;
   overflow-y: auto;
   background: transparent;
-  z-index: 99;
+  z-index: 0;
   box-shadow: var(--shadow-soft);
+}
+
+/**
+ Menu deroulant dossier des albums 
+ **/
+.album-selector {
+  position: relative;
+  display: inline-block;
+  margin-top: 5px;
+}
+
+/* Checkbox invisible */
+.menu-toggle {
+  display: none;
+}
+
+/* Ic�ne d�clencheur */
+.selector-trigger {
+  cursor: pointer;
+  display: inline-block;
+}
+
+.selector-trigger svg {
+  transition: transform 0.2s ease;
+}
+
+.selector-trigger:hover svg {
+  transform: scale(1.1);
+}
+
+/* Menu */
+.selector-menu {
+  display: block;
+  opacity: 0;
+  transform: translateY(-8px);
+  pointer-events: none;
+  position: absolute;
+  top: 30px;
+  right: -25px;
+  background: white;
+  border-radius: 6px;
+  padding: 6px 0;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  min-width: 160px;
+  z-index: 99;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+/* Ouvert */
+.menu-toggle:checked ~ .selector-menu {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* Boutons comme options */
+.album-option {
+  width: 100%;
+  text-align: left;
+  border: none;
+  background: none;
+  padding: 8px 14px;
+  cursor: pointer;
+  font: inherit;
+  white-space: nowrap;
+}
+
+.album-option:hover {
+  background: #ececec;
+}
+
+.album-option[data-selected="true"] {
+  font-weight: bold;
+  background: #f0f0f0;
+}
+
+
+/**
+ Champ de recherche
+ **/
+.search-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.searchButton {
+  padding: 2px 6px 1px 6px;
+  border-radius: 3px;
+  border: 1px solid var(--border-button);
+  background: white;
+}
+
+.searchButton:hover  {
+  background: #e3eef9;;
+}
+
+.search-wrapper:focus-within .search-box {
+  width: 200px;
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.search-toggle {
+  display: none;
+}
+
+.search-trigger {
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+}
+
+.search-trigger svg {
+  transition: transform 0.2s ease;
+}
+
+.search-trigger:hover svg {
+  transform: scale(1.1);
+}
+
+.search-box {
+  display: inline-block;
+  overflow: hidden;
+  width: 0;
+  opacity: 0;
+  transform: translateX(-8px);
+  transition: 
+    width 0.25s ease,
+    opacity 0.25s ease,
+    transform 0.25s ease;
+}
+
+.search-box input {
+  width: 180px;
+  padding: 4px 6px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 0.9em;
+  outline: none;
+  transition: box-shadow 0.2s ease, border 0.2s ease;
+}
+
+.search-box input:focus {
+  border-color: #555;
+  box-shadow: 0 0 0 2px #ddd;
 }
 
 /* ============================================================
    BLOCS DE CONTENU
 ============================================================ */
 
-/* Zones d'informations générales */
+/* Zones d'informations generales */
 .cadre {
   background: var(--light-bg);
   border-radius: var(--border-radius);
   color: var(--muted-color);
   padding: var(--space-sm);
   margin-bottom: var(--space-sm);
-  opacity: 0.9;
 }
 
 .cadre>div {
@@ -275,21 +423,6 @@ caption.titre {
 }
 
 /* Boîte d'information (type infobox) */
-div.infobox_v3 {
-  padding: var(--space-sm);
-  width: 25em;
-  background-color: var(--light-bg);
-  border: 1px solid var(--border-color);
-  clear: right;
-  float: right;
-  font-size: 0.9em;
-  line-height: 1.4;
-  margin: 0 0 var(--space-sm) var(--space-sm);
-  max-width: 325px;
-  word-wrap: break-word;
-  border-radius: var(--border-radius);
-  box-shadow: var(--shadow-soft);
-}
 
 /* Sections et titres */
 .titre {
@@ -322,6 +455,7 @@ div.infobox_v3 {
 .map {
   min-height: 150px;
   width: 300px;
+  z-index:0;
 }
 
 .map-modal {
@@ -386,16 +520,14 @@ div.infobox_v3 {
   width: 16px;
   height: 16px;
   fill: currentColor;
-  /* la magie */
   color: var(--muted-color);
   vertical-align: middle;
 }
 
 .IconMedium {
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
   fill: currentColor;
-  /* la magie */
   color: var(--muted-color);
   vertical-align: middle;
 }
@@ -403,9 +535,7 @@ div.infobox_v3 {
 .IconLarge {
   width: 32px;
   height: 32px;
-  fill: currentColor;
-  /* la magie */
-  color: var(--muted-color);
+  fill: var(--gray-color);
   vertical-align: middle;
 }
 
@@ -419,11 +549,13 @@ div.infobox_v3 {
   overflow-y: auto;
   z-index: 99;
   border-radius: var(--border-radius);
-  background: rgba(244, 240, 236, 0.85);
+  background: var(--light-bg);
   box-shadow: var(--shadow-soft);
 }
 
-
+#textTrash {
+  cursor: pointer;
+}
 /* ============================================================
    IMAGES, GALERIES & EFFETS VISUELS
 ============================================================ */
@@ -476,9 +608,9 @@ div.infobox_v3 {
   border-radius: var(--border-radius);
   padding-top: var(--space-md);
   margin: 0 auto var(--space-xl);
-  background: rgba(244, 240, 236, 0.6);
-  border: 1px solid var(--border-color);
-  box-shadow: var(--shadow-soft);
+  background: transparent;
+  /*border: 1px solid #666;
+  box-shadow: var(--shadow-soft);*/
 }
 
 /* Miniatures d’images */
@@ -533,21 +665,6 @@ div.infobox_v3 {
 }
 
 /* Pourcentage (élément décoratif central) */
-#pourcent {
-  position: absolute;
-  left: 0;
-  top: 300px;
-  right: 300px;
-  margin: auto;
-  font-size: 6em;
-  font-weight: bold;
-  font-family: 'Arial Black', Arial, sans-serif;
-  color: var(--bg-color);
-  -webkit-text-stroke: 1px var(--text-color);
-  text-align: center;
-  z-index: 99;
-  display: none;
-}
 
 /* Lien retour haut de page */
 #toTop {
@@ -556,44 +673,12 @@ div.infobox_v3 {
   right: 330px;
   bottom: 20px;
   cursor: pointer;
-  opacity: 0.5;
+  opacity: 0.8;
   transition: opacity var(--transition-fast);
   z-index: 99;
 }
 
 #toTop:hover {
-  opacity: 1;
-}
-
-/* Arborescence web (bloc fixe gauche) */
-#home {
-  display: block;
-  position: fixed;
-  top: 70px;
-  left: 10px;
-  border: none;
-  text-align: center;
-  opacity: 0.5;
-  transition: opacity var(--transition-fast);
-}
-
-#home:hover {
-  opacity: 1;
-}
-
-/* Lien vers album photos */
-#lien-album {
-  display: block;
-  position: fixed;
-  top: 120px;
-  left: 10px;
-  border: none;
-  text-align: center;
-  opacity: 0.5;
-  transition: opacity var(--transition-fast);
-}
-
-#lien-album:hover {
   opacity: 1;
 }
 
@@ -626,10 +711,10 @@ div.infobox_v3 {
   background: #e6eaec;
   border: 1px solid var(--border-color);
   color: var(--tag-color);
-  padding: 3px 6px;
+  padding: 1px 5px 3px 5px;
   margin: 3px;
-  border-radius: 20px;
-  font-size: 13px;
+  border-radius: 12px;
+  font-size: 0.8em;
   align-items: center;
 }
 
@@ -642,12 +727,11 @@ div.infobox_v3 {
   opacity: 0.7;
 }
 
-.tagBlog,
-.tagMosaic {
-  width: 580px;
+.tagBlog {
+  width: 584px;
   margin: 0 auto var(--space-md);
   color: var(--muted-color);
-  background-color: #f8e5d9;
+  background-color: var(--light-bg);
   font-size: 0.8em;
   border-radius: var(--border-radius);
   padding: var(--space-sm);
@@ -664,14 +748,6 @@ div.infobox_v3 {
   color: #0000cc;
 }
 
-.tagLink.activeTag {
-  background-color: #d34d1d;
-  color: #fff !important;
-  padding: 2px 6px;
-  border-radius: 4px;
-  text-decoration: none;
-}
-
 /* ============================================================
    LEGENDES & METADONNEES D'IMAGES FANCYBOX
 ============================================================ */
@@ -686,7 +762,7 @@ div.infobox_v3 {
 
 /* Titre et description */
 .caption-title {
-  color: rgba(221, 221, 221);
+  color: var(--caption-color);
   font-size: 1rem;
   font-weight: 700;
   line-height: 1.5;
@@ -697,7 +773,7 @@ div.infobox_v3 {
   text-align: left;
   font-size: 0.9rem;
   font-style: italic;
-  color: rgba(221, 221, 221);
+  color: var(--caption-color);
   line-height: 1.5;
 }
 
@@ -710,19 +786,20 @@ div.infobox_v3 {
   max-height: calc(100% - 120px);
   overflow-y: auto;
   background: rgba(54, 54, 54, 0.75);
-  color: rgba(221, 221, 221);
+  color: var(--caption-color);
+  filter: grayscale(100%);
   padding: var(--space-xs);
   transform: translateX(100%);
   transition: transform var(--transition-slow);
   pointer-events: none;
-  z-index: 9999;
+  z-index: 99;
   display: none;
 }
 
 /* Metadonnees principales */
 .caption-meta {
   font-size: 0.8rem;
-  color: rgba(221, 221, 221);
+  color: var(--caption-color);
   display: flex;
   justify-content: space-between;
   margin-bottom: 1em;
@@ -731,7 +808,7 @@ div.infobox_v3 {
 /* Metadonnees EXIF */
 .caption-exif {
   font-size: 0.8rem;
-  color: rgba(221, 221, 221);
+  color: var(--caption-color);
   justify-content: space-between;
   margin-bottom: 1em;
   border-top: 1px solid rgba(255, 255, 255, 0.15);
@@ -765,12 +842,12 @@ div.infobox_v3 {
 #home {
   display: block;
   position: fixed;
-  top: 70px;
+  top: 30px;
   left: 10px;
   border: none;
-  text-align: center;
   opacity: 0.8;
   animation: fadeIn var(--fade-duration) ease-in;
+  z-index: 99;
 }
 
 #home:hover {
@@ -781,45 +858,6 @@ div.infobox_v3 {
   font-weight: bold;
   text-align: center;
   color: rgb(189, 7, 50)
-}
-
-#nb_photos {
-  font-size: 16pt;
-  color: var(--title-color);
-}
-
-.gallery {
-  position: absolute;
-  top: 100px;
-  left: 100px;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  gap: 16px;
-  width: 90%;
-  margin: auto;
-  max-width: 1200px;
-  padding-bottom: 80px;
-}
-
-.gallery a {
-  display: block;
-  position: relative;
-  overflow: hidden;
-  border-radius: 12px;
-  background: #111;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.gallery a:hover {
-  transform: scale(1.03);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
-}
-
-.gallery img {
-  width: 100%;
-  height: 150px;
-  object-fit: cover;
-  display: block;
 }
 
 /* ============================================================
@@ -915,15 +953,6 @@ div.infobox_v3 {
   box-sizing: border-box;
 }
 
-.edit-modal-content button[type="submit"] {
-  background-color: #4CAF50;
-  color: white;
-  padding: 10px 15px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
 /* ============================================================
    UTILITAIRES
 ============================================================ */
@@ -932,10 +961,6 @@ div.infobox_v3 {
   display: none !important;
 }
 
-<<<<<<< HEAD
 .visible {
   display: block !important;
 }
-=======
-   
->>>>>>> 69242a9590c93752ec31a3d31a49898336950b85

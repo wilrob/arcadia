@@ -1,7 +1,7 @@
 /** Translation messages for the application */
 // messages.js
 
-// Détection de la langue du navigateur
+// Detection de la langue du navigateur
 const browserLang = navigator.language || navigator.userLanguage;
 const userLang = (browserLang.split('-')[0] || 'en').toLowerCase();
 
@@ -9,6 +9,7 @@ const userLang = (browserLang.split('-')[0] || 'en').toLowerCase();
 const messages = {
   fr: {
     loading: "Chargement de",
+    search: "Recherche",
     searchInput: "mots s&eacute;par&eacute;s par un ;",
     showInfo: "Afficher les infos",
     hideInfo: "Masquer les infos",
@@ -29,12 +30,15 @@ const messages = {
     noDataLens: "Aucune donn&eacute;e sur l'objectif",
     deleteImage: "Supprimer cette image",
     home: "Accueil",
+    chooseDir: "Choisir un album",
     openAlbum: "Ouvrir l'album",
     editMetadata: "Modifier les m&eacute;tadonn&eacute;es",
     circa: "vers ",
+    date: "Date : ",
   },
   en: {
     loading: "Loading ",
+    search: "Search",
     searchInput: "words separated by a ;",
     showInfo: "Display info",
     hideInfo: "Hide info",
@@ -55,14 +59,16 @@ const messages = {
     noDataLens: "No data on the lens",
     deleteImage: "Delete this image",
     home: "Home",
+    chooseDir: "Choose an album",
     openAlbum: "Open Album",
     editMetadata: "Edit metadata",
-    circa: "ca. ",
+    circa: "circa ",
+    date: "Date: "
   },
 };
 
-// Fonction de traduction (fallback en anglais si clé manquante)
+// Fonction de traduction (fallback en anglais si cle manquante)
 export const t = (key) => (messages[userLang] || messages.en)[key] || key;
 
-// Si tu veux aussi exporter la langue détectée
+// Si tu veux aussi exporter la langue detectee
 export { userLang, messages };

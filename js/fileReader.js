@@ -1,6 +1,6 @@
 /*************************************************************
  * fileReader.js
- * Gère la lecture du répertoire photo et le chargement des images
+ * Gere la lecture du repertoire photo et le chargement des images
  *************************************************************/
 import { t } from './messages.js';
 import { config } from './config.js';
@@ -11,7 +11,7 @@ import { Div, loadFiles, divOrder, toggleDisplay } from './util.js';
  */
 function initScrollToTop() {
 
-  const myButton = document.getElementById('toTop');
+  const myButton = document.querySelector('#toTop');
   myButton.innerHTML = `
     <svg class="IconLarge"><use href="./icons/sprite.svg#icon-toTop"></use></svg>
   `;
@@ -34,7 +34,7 @@ function initScrollToTop() {
  * @returns {string} HTML des boutons de navigation
  */
 function createNavigationButtons() {
-  // Configuration des boutons (évite la répétition)
+  // Configuration des boutons (evite la repetition)
   const buttons = {
     arrowDown: {
       id: 'arrowDownButton',
@@ -68,18 +68,12 @@ function createNavigationButtons() {
     }
   };
 
-  // Fonction helper pour créer un bouton
-  const createButton = (config) => `
-    <button id="${config.id}" class="hint--bottom${config.id.includes('display') ? '-left' : ''}" aria-label="${config.label}">
-      <svg class="IconMedium"><use href="./icons/sprite.svg#icon-${config.icon}"></use></svg>
-    </button>`;
-
-  // Stockage global (si nécessaire ailleurs)
+  // Stockage global (si necessaire ailleurs)
   Object.entries(buttons).forEach(([key, cfg]) => {
     globalThis[`${key}Button`] = createButton(cfg);
   });
 
-  // Sélection des boutons appropriés
+  // Selection des boutons appropries
   const triButton = config.data.tri === 'id' ? globalThis.alphabeticButton : globalThis.numericButton;
   const sensButton = config.data.sens === 'down' ? globalThis.arrowUpButton : globalThis.arrowDownButton;
   const displayButton = config.data.typeAlbum === 'blog' ? globalThis.mosaicButton : globalThis.blogButton;
@@ -92,6 +86,12 @@ function createNavigationButtons() {
   `;
 }
 
+// Fonction helper pour creer un bouton
+const createButton = (config) => `
+  <button id="${config.id}" class="hint--bottom${config.id.includes('display') ? '-left' : ''}" aria-label="${config.label}">
+    <svg class="IconMedium"><use href="./icons/sprite.svg#icon-${config.icon}"></use></svg>
+  </button>`;
+
 /**
  * Charge la liste des albums disponibles
  * @returns {Promise<Map>} Map des albums (nom -> chemin)
@@ -100,7 +100,7 @@ async function loadAlbums() {
   const listDir = await loadFiles(config.imageDir);
   const parser = new DOMParser();
   const xmlDoc = parser.parseFromString(listDir, 'text/html');
-  const links = Array.from(xmlDoc.getElementsByTagName('a')).slice(1);
+  const links = Array.from(xmlDoc.querySelectorAll('a')).slice(1);
 
   const albums = new Map();
 
@@ -114,7 +114,7 @@ async function loadAlbums() {
   }
 
   if (albums.size === 0) {
-    console.warn("Aucun album trouvé dans le dossier", config.imageDir);
+    console.warn("Aucun album trouve dans le dossier", config.imageDir);
   }
 
   return albums;
@@ -129,7 +129,7 @@ async function loadAlbumImages(albumPath) {
   const listFiles = await loadFiles(albumPath);
   const parser = new DOMParser();
   const xmlDoc = parser.parseFromString(listFiles, 'text/html');
-  const links = xmlDoc.getElementsByTagName('a');
+  const links = xmlDoc.querySelectorAll('a');
 
   const imageExtensions = /\.(gif|jpe?g|png|tiff?)$/i;
   const imageList = [];
@@ -145,13 +145,13 @@ async function loadAlbumImages(albumPath) {
 }
 
 /**
- * Crée le formulaire de sélection d'album
+ * Cree le formulaire de selection d'album
  * @param {Map} albums - Map des albums disponibles
  * @returns {string} HTML du formulaire
  */
-function createAlbumSelector(albums) {
+/*function createAlbumSelector(albums) {
   const options = Array.from(albums.entries())
-    .map(([name, path]) => {
+    .map(([name]) => {
       const selected = name === config.getDir ? 'selected="selected"' : '';
       return `<option value="${name}" ${selected}>${name}</option>`;
     })
@@ -163,15 +163,51 @@ function createAlbumSelector(albums) {
       <select name="dir">${options}</select>
     </form>
   `;
+}*/
+function createAlbumSelector(albums) {
+  const options = Array.from(albums.entries())
+    .map(([name]) => {
+      const selected = name === config.getDir ? 'data-selected="true"' : '';
+      return `
+        <button type="submit" name="dir" value="${name}" class="album-option" ${selected}>
+          ${name}
+        </button>
+      `;
+    })
+    .join('');
+
+  return `
+    <div class="album-selector">
+      
+      <!-- Toggle menu (checkbox hack) -->
+      <input type="checkbox" id="toggleMenu" class="menu-toggle" />
+
+      <!-- Icône -->
+      <button class="hint--left" aria-label="${t("chooseDir")}">
+        <label for="toggleMenu" class="selector-trigger">
+            <svg class="IconMedium">
+              <use href="./icons/sprite.svg#icon-dir"></use>
+            </svg>
+        </label>
+       </button>
+
+      <!-- Menu -->
+      <form action="${config.index}" method="get" class="selector-menu">
+        ${options}
+      </form>
+
+    </div>
+  `;
 }
 
+
 /**
- * Gère les événements des boutons de navigation
+ * Gere les evenements des boutons de navigation
  */
 function setupNavDelegation() {
-  const navContainer = document.getElementById('nav1') || document.getElementById('foundFiles');
+  const navContainer = document.querySelector('#nav1') || document.querySelector('#foundFiles');
   if (!navContainer) {
-    console.warn("Aucun conteneur nav trouvé pour délégation");
+    console.warn("Aucun conteneur nav trouve pour delegation");
     return;
   }
 
@@ -195,8 +231,8 @@ function setupNavDelegation() {
 }
 
 /**
- * Point d'entrée principal : lecture du répertoire photo
- * @returns {Promise<Object>} Informations sur les images chargées
+ * Point d'entree principal : lecture du repertoire photo
+ * @returns {Promise<Object>} Informations sur les images chargees
  */
 export async function readPhotoDirectory() {
   try {
@@ -205,7 +241,7 @@ export async function readPhotoDirectory() {
     config.progressText.innerHTML = t('loading');
 
     // Lien home
-    document.getElementById('link').innerHTML = `
+    document.querySelector('#link').innerHTML = `
       <div id="home">
         <a href="index.html" class="hint--right" aria-label="${t('home')}">
           <svg class="IconLarge"><use href="./icons/sprite.svg#icon-home"></use></svg>
@@ -226,15 +262,30 @@ export async function readPhotoDirectory() {
     setupNavDelegation();
 
     // Formulaire de recherche
+    const searchField = `
+    <div class="search-wrapper">
+      <!-- Icône cliquable = label qui cible l?input -->
+      <label for="searchText" class="hint--bottom" aria-label="${t('search')}">
+        <svg class="IconMedium searchButton">
+          <use href="./icons/sprite.svg#icon-search"></use>
+        </svg>
+      </label>
+
+      <!-- Formulaire -->
+      <form name="recherche" action="#" method="get" class="search-box">
+        <input
+          id="searchText"
+          name="search"
+          placeholder="${t('searchInput')}"
+          required>
+      </form>
+    </div>`;
+
     new Div({
       type: 'p',
       id: 'search',
       container: 'foundFiles',
-      contents: `
-        <form name="recherche" action="#" method="GET">
-          <svg class="IconMedium"><use href="./icons/sprite.svg#icon-search"></use></svg>
-          <input id="searchText" name="search" placeholder="${t("searchInput")}" value="" size=25" required />
-        </form>`,
+      contents: searchField,
       classe: 'menu',
       position: 'before',
     }).show();
@@ -245,7 +296,7 @@ export async function readPhotoDirectory() {
       return { images: [], search: config.data.search, nbFiles: 0 };
     }
 
-    // Sélecteur d'albums
+    // Selecteur d'albums
     const dirForm = createAlbumSelector(albums);
     new Div({
       type: 'p',
@@ -256,16 +307,19 @@ export async function readPhotoDirectory() {
       position: 'before',
     }).show();
 
-    // Sélection de l'album
+    // Selection de l'album
     const albumPath = config.data.dir !== '' ? config.data.dir : albums.values().next().value;
 
     // Chargement des images
     const imageList = await loadAlbumImages(albumPath);
 
     // Affichage du nombre d'images
-    const dirElem = document.getElementById('directory');
+    const dirElem = document.querySelector('#directory');
     if (dirElem) {
-      dirElem.append(`${imageList.length}` > 1 ? `${imageList.length} ${t('pictures')}` : `${imageList.length} ${t('picture')}`);
+      const dir = config.data.dir.replace(`${config.imageDir}/`,``);
+      const newDiv = document.createElement('span');
+      newDiv.innerHTML = `<b>${dir}</b>`;
+      dirElem.appendChild(newDiv);
     }
 
     return {

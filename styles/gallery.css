@@ -1,0 +1,88 @@
+/* -----------------------------
+   VARIABLES GLOBALES
+----------------------------- */
+/* Polices personnalisees */
+@font-face {
+  font-family: "SegoeUi";
+  src: url("https://fontsforyou.com/fonts/s/SegoeUi.ttf");
+}
+
+/* Police pour les titres */
+@font-face {
+  font-family: "Average";
+  src: url("http://fonts.gstatic.com/s/average/v4/IA8jQA5GFnMtnG2oawAIjw.ttf");
+}
+
+body {
+    margin: 0;
+    background-color: #f4f0ec;
+    color: #7a1b1b;
+    font-family: "Average", Garamond, serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+}
+
+#titre {
+    font-size: 2em;
+}
+
+#nb_photos {
+    font-size: 1em;
+}
+
+/* Arborescence web (bloc fixe gauche) */
+#home {
+    display: block;
+    position: fixed;
+    top: 70px;
+    left: 10px;
+    border: none;
+    text-align: center;
+    opacity: 0.8;
+    transition: opacity var(--transition-fast);
+}
+
+#home:hover {
+    opacity: 1;
+}
+
+.IconLarge {
+  width: 32px;
+  height: 32px;
+  fill: currentColor;
+  vertical-align: middle;
+}
+
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 16px;
+    width: 90%;
+    max-width: 1200px;
+    margin-top: 10px;
+    padding-bottom: 80px;
+}
+
+.gallery a {
+    display: block;
+    position: relative;
+    overflow: hidden;
+    border-radius: 12px;
+    background: #111;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.gallery a:hover {
+    transform: scale(1.03);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+}
+
+.gallery img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    object-position: top;
+    display: block;
+}

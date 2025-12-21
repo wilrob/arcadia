@@ -14,7 +14,7 @@ async function init() {
         const { search, images, nbFiles } = await readPhotoDirectory();
         /**
          * exifParser.js
-         * Extraction des méta-données de chaque photo
+         * Extraction des meta-donnees de chaque photo
          *  */
         const metaData = await extractExif(images);
         /** uiRenderer.js
@@ -28,13 +28,13 @@ async function init() {
     }
 
     /** fancybox.js
-     * Initialisation de Fancybox après affichage complet
+     * Initialisation de Fancybox apres affichage complet
      *  */
     displayFancybox();
 
     /**
      * fonction dans util.js
-     * Initialisation des observers après affichage complet
+     * Initialisation des observers apres affichage complet
      *  */
     initPhotoObservers(config.data.typeAlbum);
 }

@@ -1,0 +1,269 @@
+/* -----------------------------
+   VARIABLES GLOBALES
+----------------------------- */
+/* Polices personnalisees */
+@font-face {
+  font-family: "SegoeUi";
+  src: url("https://fontsforyou.com/fonts/s/SegoeUi.ttf");
+}
+
+/* Police pour les titres */
+@font-face {
+  font-family: "Average";
+  src: url("http://fonts.gstatic.com/s/average/v4/IA8jQA5GFnMtnG2oawAIjw.ttf");
+}
+
+/* Variables CSS */
+:root {
+  /* Couleurs principales */
+  --text-color: #3e1717;
+  --accent-color: #7a1b1b;
+  --bg-color: #f4f0ecaa;
+  --muted-color: #666;
+  --border-color: #ccc;
+  --border-button: #aaa;
+  --light-bg: #f1ede9;
+  --highlight-bg: #f8e5d9;
+  --border-color-light: #ddd;
+
+  --background-image: url("images/arcadia.jpg");
+
+  /* Transitions */
+  --transition-fast: 0.3s ease;
+  --transition-slow: 0.6s ease;
+
+  /* Couleurs liens et tags */
+  --link-color: #7a1b1b;
+  --link-hover: #3351fa;
+  --tag-color: #d34d1d;
+  --tag-hover: #3351fa;
+
+  /* Typographies */
+
+  --title-font: "Average", Garamond, serif;
+  --main-font: "SegoeUi", system-ui, 'Trebuchet MS', sans-serif;
+
+  /* Dimensions et effets */
+  --border-radius: 6px;
+  --shadow-soft: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --shadow-hover: 0 6px 16px rgba(0, 0, 0, 0.15);
+  --transition-fast: 0.3s ease;
+  --transition-slow: 0.6s ease;
+  --fade-duration: 0.8s;
+
+  /* Espacements */
+  --space-xs: 6px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 48px;
+}
+
+/* -----------------------------
+   BASE TYPOGRAPHIQUE & PAGE
+----------------------------- */
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: var(--main-font);
+  color: var(--text-color);
+  background: var(--bg-color) var(--background-image) no-repeat fixed center;
+  background-size: cover;
+  animation: fadeIn var(--fade-duration) ease-in;
+}
+
+/* Animation d'apparition au chargement */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Titres */
+h1,
+h2 {
+  font-family: var(--title-font);
+  color: var(--accent-color);
+  font-weight: normal;
+  margin: var(--space-md) 0 var(--space-sm);
+  padding-left: var(--space-sm);
+}
+
+a {
+  color: var(--link-color);
+  transition: color var(--transition-fast);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--link-hover);
+  text-decoration: none;
+}
+
+p {
+  text-align: justify;
+}
+
+a.external {
+  background: url(../icons/link-external.svg) no-repeat right center;
+  background-size: 0.857em;
+  padding-right: 1em;
+}
+
+/* Figures et legendes */
+figure {
+border: 1px solid var(--border-color);
+background: var(--light-bg);
+text-align: center;
+padding: var(--space-sm);
+margin: auto;
+margin-bottom: var(--space-md);
+}
+
+figcaption {
+font-size: 0.85em;
+margin-top: var(--space-xs);
+color: var(--muted-color);
+}
+
+caption.titre {
+font-weight: bold;
+text-align: center;
+background: #7DA7D9;
+color: #000;
+}
+
+/* -----------------------------
+STRUCTURE PRINCIPALE
+----------------------------- */
+#central {
+padding-left: 70px;
+padding-right: 70px;
+z-index: 1;
+font-size: 1em;
+min-width: 700px;
+animation: fadeIn var(--fade-duration) ease;
+}
+
+#hautdepage {
+padding: 1em;
+}
+
+#hautdepage a {
+color: var(--accent-color);
+text-decoration: none;
+}
+
+footer {
+  position: fixed;
+  bottom: 0;
+  background-color: var(--light-bg);
+  width: 100%;
+  margin: auto;
+  border-top: 1px solid #aaa;
+  font-size: 0.8em;
+  text-align: center;
+}
+
+/* Boite d'information (type infobox) */
+div.infobox_v3 {
+padding: var(--space-sm);
+width: 25em;
+background-color: var(--light-bg);
+border: 1px solid var(--border-color);
+clear: right;
+float: right;
+font-size: 0.9em;
+line-height: 1.4;
+margin: 0 0 var(--space-sm) var(--space-sm);
+max-width: 325px;
+word-wrap: break-word;
+border-radius: var(--border-radius);
+box-shadow: var(--shadow-soft);
+}
+
+/* Sections et titres */
+.titre {
+text-align: center;
+font-size: 1em;
+font-weight: 600;
+color: var(--accent-color);
+padding-bottom: var(--space-xs);
+letter-spacing: 0.3px;
+}
+
+.IconLarge {
+  width: 32px;
+  height: 32px;
+  fill: var(--link-color);;
+  /* la magie */
+  vertical-align: middle;
+}
+
+/* Arborescence web (bloc fixe gauche) */
+#home {
+width: 50px;
+opacity: 0.8;
+transition: opacity var(--transition-fast);
+}
+
+#home:hover {
+opacity: 1;
+}
+
+/* Lien vers album photos */
+#lien-album {
+width: 50px;
+opacity: 0.8;
+transition: opacity var(--transition-fast);
+}
+
+#lien-album:hover {
+opacity: 1;
+}
+
+/*********** home.html *****************/
+ul {
+      width: 500px;
+    }
+    li {
+      width: 100%;
+    }
+    li:hover {
+      background-color: #eee;
+    }
+
+    #image {
+    position: absolute;
+    left: 500px;
+    top: 100px;
+    display: none;
+    border-collapse: collapse;
+    padding: 10px;
+    background-color: #eee;
+    border-radius: 10px;
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2);
+    /* --- Ajout pour le fade-in --- */
+    opacity: 0;
+    transition: opacity 0.6s ease-in;
+  }
+
+  #image.show {
+    opacity: 1;
+  }
+
+  .image {
+    object-fit: cover;
+    object-position: top;
+    margin: 3px;
+    border: solid 1px #aaa;
+  }
