@@ -402,7 +402,7 @@ function buildPhotoHTML(fileName, url, meta, search, dataFancybox) {
 }
 
 // Cree la ligne de Tags
-function buildTagsBlock(tagString) {
+function buildTagsBlock(tagString, search) {
   if (!tagString) return '';
   console.log(htmlDecode(tagString))
   //const oldTag = search !== 'all' ? config.separator + search : '';
@@ -411,6 +411,12 @@ function buildTagsBlock(tagString) {
   const searchTags = search.split(';').filter(Boolean);
   const links = tags.map(tg => {
     const decoded = decode_utf8(tg);
+    // Si tg est deja dans la liste des tags de 'search'
+    if (searchTags.includes(tg)) {
+      // On retourne juste du texte non cliquable
+      return `#${decoded}`;
+    }
+    // Sinon on garde le lien cliquable
     return `<a title="${tg}" href="#">#${decoded}</a>`;
   }).join(' ');
   return `<p class="tag"><svg class="Icon"><use href="./icons/sprite.svg#icon-tag"></use></svg>&nbsp;${links}</p>`;

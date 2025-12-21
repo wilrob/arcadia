@@ -54,7 +54,7 @@ export class Div {
 }
 
 /* ===========================================================
-   CHARGEMENT DES FICHIERS D?UN Rï¿½PERTOIRE
+   CHARGEMENT DES FICHIERS D?UN RÉPERTOIRE
    ----------------------------------------------------------- */
 export async function loadFiles(dir) {
     const response = await fetch(dir);
@@ -141,7 +141,7 @@ export function toggleClass(classe) {
 }
 
 /* ===========================================================
-   INFOS / BOUTONS
+   PUBLICATION / INFOS / BOUTONS
    ----------------------------------------------------------- */
 /**
  * Permet d'afficher/masquer une publication
@@ -176,6 +176,7 @@ export async function toggleDisplay(type) {
         replaceClass("photo", "photoMini");
         replaceClass("divImageBlog", "divImageMosaic");
         hideClass("tagBlog");
+        //setCookie("album", "mosaic", 3);
         initMosaicHoverObserver();
         /*trash.forEach(element => {
             element.style.display = "none";
@@ -190,6 +191,7 @@ export async function toggleDisplay(type) {
         replaceClass("photoMini", "photo");
         replaceClass("divImageMosaic", "divImageBlog");
         showClass("tagBlog");
+        //setCookie("album", "blog", 3);
         initBlogObserver();
         option.forEach(element => {
             element.style.display = "block";
@@ -490,7 +492,7 @@ function initBlogObserver() {
     });
 }
 
-// --- Mode MOSAï¿½QUE : survol souris ---
+// --- Mode MOSAÏQUE : survol souris ---
 function initMosaicHoverObserver() {
     const photos = document.querySelectorAll('.photoMini');
     photos.forEach(img => {
@@ -734,5 +736,7 @@ function displayMetaData(img) {
         } else {
             divMap.style.display = 'none';          
         }
+
+       
     }
 }

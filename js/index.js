@@ -2,7 +2,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // Div de la page index
   const central = document.querySelector("#central");
   const head = document.querySelector("#hautdepage");
-  const footer = document.querySelector("footer");
 
   // Page d'accueil par defaut
   const home = "./bio/home.html";
@@ -24,9 +23,6 @@ document.addEventListener('DOMContentLoaded', () => {
       </svg>
     </a>`;
 
-    // FOOTER
-    const foot = '&copy; William ROBRECHT - 2025';
-
   // Si parametre name dans l'url, on affiche la page html (dans dossier bio) 
   // et on ajoute l'en-tete avec les icones home et album
   if (name) {
@@ -34,7 +30,6 @@ document.addEventListener('DOMContentLoaded', () => {
     getHtmlPage(central, `./bio/${name}.html`, () => {
 
       head.innerHTML = entete;
-      footer.innerHTML = foot;
     });
 
     // Sinon on rempli la div avec la page home.html
@@ -50,7 +45,6 @@ document.addEventListener('DOMContentLoaded', () => {
       });
 
       head.innerHTML = entete;
-      footer.innerHTML = foot;
     });
   }
 });
@@ -144,3 +138,4 @@ function imageClear() {
   container.classList.remove("show");
   container.style.display = "none";
 }
+

@@ -11,7 +11,7 @@ async function init() {
          * fileReaders.js
          * Lecture des dossiers photos dans 'albums'
          *  */
-        const { search, images } = await readPhotoDirectory();
+        const { search, images, nbFiles } = await readPhotoDirectory();
         /**
          * exifParser.js
          * Extraction des meta-donnees de chaque photo

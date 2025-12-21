@@ -236,9 +236,8 @@ function setupNavDelegation() {
  */
 export async function readPhotoDirectory() {
   try {
-    // Affiche le bouton haut de page
+    // Initialisation
     initScrollToTop();
-    // Affiche le logo de chargement
     config.progressText.innerHTML = t('loading');
 
     // Lien home
