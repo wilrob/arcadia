@@ -18,7 +18,7 @@ let returnLink = '';
 // Search text separator
 const separator = ';';
 // Affichage résultat nb photos trouvées
-const divResult = document.querySelector('#resultat');
+const divResult = document.querySelector("#resultat");
 // Loader
 const loader = document.querySelector('#loader');
 const progressText = document.querySelector('#progressText');
@@ -65,7 +65,7 @@ if (urlParams.get('dir')) {
     data.dir = imageDir + '/' + getDir;
 }
 
-// Recuperation parametre URL 'tri' (numérique ou alphabétique)
+// Recuperation parametre URL 'tri' (numï¿½rique ou alphabï¿½tique)
 if (getCookie('tri')) {
     data.tri = getCookie('tri');
 } else {
@@ -80,11 +80,7 @@ if (getCookie('sens')) {
 }
 
 // Title
-let setTitle = document.querySelector('#hautdepage');
-// Lien de retour en cliquant surle titre si different de index
-// A commenter si retour vers index
-returnLink = `<a href="index.html?name=${getDir.trim()}">${getDir}</a>`;
-
+let setTitle = document.getElementById('hautdepage');
 if (setFixedTitle == 1) {
     // Tile: fixed title defined in User Settings
     setTitle.innerHTML = `<a href="${index}">${fixedTitle}</a>`;

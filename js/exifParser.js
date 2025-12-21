@@ -23,7 +23,7 @@ async function runLimited(tasks, limit = 5) {
                 return;
             }
 
-            // Lance les tâches tant qu'il reste de la place
+            // Lance les taches tant qu'il reste de la place
             while (active < limit && index < tasks.length) {
                 const current = index++;
                 const task = tasks[current];
@@ -34,7 +34,7 @@ async function runLimited(tasks, limit = 5) {
                     .catch(err => { results[current] = { error: err }; })
                     .finally(() => {
                         active--;
-                        next(); // Quand une tâche finit ? on en lance une autre
+                        next(); // Quand une tache finit ? on en lance une autre
                     });
             }
         }

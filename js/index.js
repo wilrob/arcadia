@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Div de la page index
   const central = document.querySelector("#central");
   const head = document.querySelector("#hautdepage");
-  const footer = document.querySelector("#footer");
+  const footer = document.querySelector("footer");
 
   // Page d'accueil par defaut
   const home = "./bio/home.html";
@@ -144,4 +144,3 @@ function imageClear() {
   container.classList.remove("show");
   container.style.display = "none";
 }
-
