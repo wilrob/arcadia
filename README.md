@@ -25,8 +25,7 @@ Clicking the information button (ⓘ) at the bottom of any photo opens a detaile
 * **Keywords & People**: IPTC tags and tagged people in the image.
 * **Technical Specifications**: Dimensions, file size, MIME type, camera model, lens, aperture (f-number), shutter speed, ISO sensitivity, focal length.
 * **Interactive Geolocation**: GPS coordinate extraction with interactive OpenStreetMap integration.
-* **Metadata**: Below is the list of metadata used. These data can be added or edited using Phil Harvey's [ExifTool](https://www.exiftool.org) software.
-* ```text
+* **Metadata**: Below is the list of metadata used. These data can be added or edited using Phil Harvey's [ExifTool](https://www.exiftool.org) software.```text
 * Technical data:
     - Make
     - Model
@@ -50,7 +49,8 @@ Clicking the information button (ⓘ) at the bottom of any photo opens a detaile
     - PersonInImage
 ```
 
-            
+---
+
 
 ### 🔍 Search, Sorting & Navigation
 * **Keyword Filtering**: Multi-keyword tag search using a configurable separator (default `;`).
