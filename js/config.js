@@ -5,16 +5,21 @@ const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 
 /** SETTINGS  */
-// Title
-const fixedTitle = 'Titre fixe de mon album photo';
+// WARNING: These are default values. Don't change the following settings unless you know what you're doing.
+
+// Fixed title for the album page, if setFixedTitle is true
+const fixedTitle = 'Fixed Title of My Photo Album'; // Set your fixed title here
+// Set to true if you want to display the fixedTitle, otherwise the title will be based on the 'dir' parameter in the URL
 const setFixedTitle = false; // Set to true if you want to display the fixedTitle
-// photos directory
+// Default directory where the albums are stored
 const imageDir = 'albums';
-// index page
+// Default album page name
 const index = 'album.html';
-// Search text separator
+// Separator for multiple search terms (#tag or text in XMP comments) in the 'search' parameter of the BLOG view.
 const separator = ';';
-// Affichage r?sultat nb photos trouv?es
+
+
+// display the result in the div with id 'resultat'
 const divResult = document.querySelector('#resultat');
 // Loader
 const loader = document.querySelector('#loader');

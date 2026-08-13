@@ -63,19 +63,16 @@ Arcadia runs on any web server (Apache, Nginx, LiteSpeed, Caddy, Node.js static 
 Global settings are configured inside `js/config.js`:
 
 ```javascript
-/** SETTINGS  */
-// Fixed album title
-const fixedTitle = "Fixed title for my photo album";
-const setFixedTitle = false; // Set to true to force displaying fixedTitle
-
-// Photos directory
-const imageDir = "albums";
-
-// Default index page
-const index = "album.html";
-
-// Tag search separator
-const separator = ";";
+// Fixed title for the album page, if setFixedTitle is true
+const fixedTitle = 'Fixed Title of My Photo Album'; // Set your fixed title here
+// Set to true if you want to display the fixedTitle, otherwise the title will be based on the 'dir' parameter in the URL
+const setFixedTitle = false; // Set to true if you want to display the fixedTitle
+// Default directory where the albums are stored
+const imageDir = 'albums';
+// Default album page name
+const index = 'album.html';
+// Separator for multiple search terms (#tag or text in XMP comments) in the 'search' parameter of the BLOG view.
+const separator = ';';
 ```
 
 ---
