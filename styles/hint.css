@@ -2,6 +2,13 @@
 * https://kushagra.dev/lab/hint/
 * Copyright (c) 2021 Kushagra Gour */
 
+
+.copyleft {
+  display:inline-block;
+  transform: rotate(180deg);
+}
+
+
 /*-------------------------------------*\
 	HINT.css - A CSS tooltip library
 \*-------------------------------------*/
