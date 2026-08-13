@@ -34,6 +34,18 @@ export async function renderGallery(photoData, search) {
   });
   // Affiche la page finale
   finalizeDisplay();
+  // Initialisation unique des ecouteurs d'evenements
+  initUIListeners();
+  if (config.data.search) {
+    applyUrlSearch(config.data.search);
+  }
+  updateImagesVisibility();
+}
+
+let isListenersInitialized = false;
+
+export function initUIListeners() {
+  if (isListenersInitialized) return;
   // Gestion des fichiers a supprimer
   copyImagesToTrash();
   // Gestion de l'edition des EXIF
@@ -42,22 +54,19 @@ export async function renderGallery(photoData, search) {
   tagsManage();
   tagsDelete();
   searchInputManage();
-  if (config.data.search) {
-      applyUrlSearch(config.data.search);
-  }
-  updateImagesVisibility();
+  isListenersInitialized = true;
 }
 /********** GESTION DES TAGS **************/
 // Gere les tags entres dans l'url (search=tag1;tag2)
 function applyUrlSearch(urlSearch) {
-    const input = document.querySelector('#searchText');
-    if (!input) return;
+  const input = document.querySelector('#searchText');
+  if (!input) return;
 
-    // Pre-remplit l'input
-    input.value = urlSearch;
+  // Pre-remplit l'input
+  input.value = urlSearch;
 
-    // Ajoute automatiquement les tags
-    addTagToSearch(urlSearch);
+  // Ajoute automatiquement les tags
+  addTagToSearch(urlSearch);
 }
 
 // Petite fonction utilitaire debounce
@@ -244,11 +253,11 @@ function updateImagesVisibility() {
 function displayNumberPhotos(nbPhotos) {
   const resultat = document.querySelector('#resultat');
   if (resultat) {
-    resultat.innerHTML = `${nbPhotos} ${
-    nbPhotos > 1 
-      ? `${t('pictures')}`
-      : `${t('picture')}`
-  }`;  }
+    resultat.innerHTML = `${nbPhotos} ${nbPhotos > 1
+        ? `${t('pictures')}`
+        : `${t('picture')}`
+      }`;
+  }
 }
 
 /****************************************************************************************** */
@@ -269,6 +278,7 @@ function buildExifCaption(imageName, meta) {
 
   /** Creation de l'attribut data-caption contenant les infos EXIF */
   const WidthxHeight = largeur && hauteur ? `${largeur}x${hauteur}` : '';
+  const Pixels = largeur && hauteur ? `${(largeur * hauteur / 1000000).toFixed(2)}Mp` : '';
   const copy = copyright ? `${copyright}` : '';
   return `
     <div class="modal-caption">
@@ -286,7 +296,7 @@ function buildExifCaption(imageName, meta) {
             ` : ``}
             ${dateFR ? `
             <span id="dateFR" date="${date}">
-              <svg class="Icon"><use href="./icons/sprite.svg#icon-calendar"></use></svg>&nbsp;${dateFormat(dateFR,label)}
+              <svg class="Icon"><use href="./icons/sprite.svg#icon-calendar"></use></svg>&nbsp;${dateFormat(dateFR, label)}
             </span>
             ${label ? `<span id="label" style="display:none;">circa</span>` : ``}
             ` : ``}
@@ -302,8 +312,8 @@ function buildExifCaption(imageName, meta) {
           ${WidthxHeight || size ? `
           <div class="caption-exif">
             <span id="format"><svg class="Icon"><use href="./icons/sprite.svg#icon-photo"></use></svg>&nbsp;
-            ${WidthxHeight ? `<span id="dimensions">${WidthxHeight}</span>&nbsp;-&nbsp;` : ``}
-            ${size ? `<span id="size">${size}</span>` : ``}
+            ${WidthxHeight ? `<span id="dimensions">${WidthxHeight}&nbsp;-&nbsp;${Pixels}</span>` : ``}
+            ${size ? `<span id="size">&nbsp;-&nbsp;${size}</span>` : ``}
             </span>
           </div>` : ``}
             ${modele || materiel || iso || focale35 || fNumber || vitesse ? `
@@ -370,7 +380,7 @@ function buildPhotoHTML(fileName, url, meta, search, dataFancybox) {
   <div class="trait-horiz"></div>
     <div class="plusinfo">
       <div class="titreName">${imageName}</div>
-      <div class="titreDate">${t("date")} ${dateFormat(dateFR,meta.label) || ''}</div>
+      <div class="titreDate">${t("date")} ${dateFormat(dateFR, meta.label) || ''}</div>
     </div>
   `;
 
@@ -401,39 +411,29 @@ function buildPhotoHTML(fileName, url, meta, search, dataFancybox) {
   `;
 }
 
-// Cree la ligne de Tags
-function buildTagsBlock(tagString, search) {
-  if (!tagString) return '';
-  console.log(htmlDecode(tagString))
-  //const oldTag = search !== 'all' ? config.separator + search : '';
-  const tags = htmlDecode(tagString).split(config.separator).sort((a, b) => a.localeCompare(b, 'fr'));
-  //console.log(search);
-  const searchTags = search.split(';').filter(Boolean);
-  const links = tags.map(tg => {
-    const decoded = decode_utf8(tg);
-    // Si tg est deja dans la liste des tags de 'search'
-    if (searchTags.includes(tg)) {
-      // On retourne juste du texte non cliquable
+// Helper pour creer une ligne de metadonnees avec icone
+function buildMetadataBlock(dataString, iconName, search) {
+  if (!dataString) return '';
+  const items = htmlDecode(dataString).split(config.separator).sort((a, b) => a.localeCompare(b, 'fr'));
+  const searchItems = (search || '').split(';').filter(Boolean);
+  const links = items.map(item => {
+    const decoded = decode_utf8(item);
+    if (searchItems.includes(item)) {
       return `#${decoded}`;
     }
-    // Sinon on garde le lien cliquable
-    return `<a title="${tg}" href="#">#${decoded}</a>`;
+    return `<a title="${item}" href="#">#${decoded}</a>`;
   }).join(' ');
-  return `<p class="tag"><svg class="Icon"><use href="./icons/sprite.svg#icon-tag"></use></svg>&nbsp;${links}</p>`;
+  return `<p class="tag"><svg class="Icon"><use href="./icons/sprite.svg#icon-${iconName}"></use></svg>&nbsp;${links}</p>`;
 }
 
-//Cree la ligne de personnes
-function buildPersonsBlock(personString) {
-  if (!personString) return '';
+// Cree la ligne de Tags
+function buildTagsBlock(tagString, search) {
+  return buildMetadataBlock(tagString, 'tag', search);
+}
 
-  //const oldTag = search !== 'all' ? config.separator + search : '';
-  const persons = personString.split(config.separator).sort();
-
-  const links = persons.map(p =>
-    `<a title="${p}" href="#">#${decode_utf8(p)}</a>`
-  ).join(' ');
-
-  return `<p class="tag"><svg class="Icon"><use href="./icons/sprite.svg#icon-person"></use></svg>&nbsp;${links}</p>`;
+// Cree la ligne de personnes
+function buildPersonsBlock(personString, search) {
+  return buildMetadataBlock(personString, 'person', search);
 }
 
 // Tri les photos en fonction des boutons tri et sens

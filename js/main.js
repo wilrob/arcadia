@@ -22,20 +22,20 @@ async function init() {
          *  */
         renderGallery(metaData, search, nbFiles);
 
+        /** fancybox.js
+         * Initialisation de Fancybox apres affichage complet
+         *  */
+        displayFancybox();
+
+        /**
+         * fonction dans util.js
+         * Initialisation des observers apres affichage complet
+         *  */
+        initPhotoObservers(config.data.typeAlbum);
+
     } catch (err) {
         console.error(err);
         config.progressText.textContent = "Erreur de chargement.";
     }
-
-    /** fancybox.js
-     * Initialisation de Fancybox apres affichage complet
-     *  */
-    displayFancybox();
-
-    /**
-     * fonction dans util.js
-     * Initialisation des observers apres affichage complet
-     *  */
-    initPhotoObservers(config.data.typeAlbum);
 }
 document.addEventListener('DOMContentLoaded', init);

@@ -7,17 +7,14 @@ const urlParams = new URLSearchParams(queryString);
 /** SETTINGS  */
 // Title
 const fixedTitle = 'Titre fixe de mon album photo';
-const setFixedTitle = 0 // Set to 1 if you want to display the fixedTitle
+const setFixedTitle = false; // Set to true if you want to display the fixedTitle
 // photos directory
 const imageDir = 'albums';
 // index page
 const index = 'album.html';
-// Si retour different de index quand on clique sur le titre de l'album,
-// decommenter la ligne returnLink ligne 86 dans // Title
-let returnLink = '';
 // Search text separator
 const separator = ';';
-// Affichage résultat nb photos trouvées
+// Affichage r?sultat nb photos trouv?es
 const divResult = document.querySelector('#resultat');
 // Loader
 const loader = document.querySelector('#loader');
@@ -26,16 +23,30 @@ const progressText = document.querySelector('#progressText');
 function setCookie(name, value, days) {
     const d = new Date();
     d.setTime(d.getTime() + days * 864e5);
-    document.cookie = `${name}=${value}; expires=${d.toUTCString()}; path=/`;
+    document.cookie = `${name}=${encodeURIComponent(value)}; expires=${d.toUTCString()}; path=/`;
 }
 
 function getCookie(name) {
-    return (
-        document.cookie
-            .split("; ")
-            .find((row) => row.startsWith(name + "="))
-            ?.split("=")[1] || null
-    );
+    const cookie = document.cookie
+        .split("; ")
+        .find((row) => row.startsWith(name + "="));
+    return cookie ? decodeURIComponent(cookie.slice(name.length + 1)) : null;
+}
+
+function syncParamWithCookie(key, defaultValue = '', days = 3) {
+    const urlVal = urlParams.get(key);
+    if (urlVal) {
+        setCookie(key, urlVal, days);
+        return urlVal;
+    }
+    const cookieVal = getCookie(key);
+    if (cookieVal && cookieVal !== 'undefined') {
+        return cookieVal;
+    }
+    if (defaultValue) {
+        setCookie(key, defaultValue, days);
+    }
+    return defaultValue;
 }
 
 /** data : Object contenant :
@@ -54,48 +65,38 @@ let data = {
     typeAlbum: 'blog'
 };
 
-// Recuperation parametre URL 'dir'
-let getDir = '';
-if (urlParams.get('dir')) {
-    getDir = urlParams.get('dir');
-    setCookie('dir', getDir, 3);
-    data.dir = imageDir + '/' + getDir;
-} else if (getCookie('dir') && typeof getCookie('dir') !== 'undefined' /*&& dirOK == 1*/) {
-    getDir = getCookie('dir');
+// Synchronisation des parametres URL / cookies
+let getDir = syncParamWithCookie('dir', '');
+if (getDir) {
     data.dir = imageDir + '/' + getDir;
 }
 
-// Recuperation parametre URL 'tri' (numérique ou alphabétique)
-if (getCookie('tri')) {
-    data.tri = getCookie('tri');
-} else {
-    setCookie('tri', data.tri, 3);
-}
-
-// Recuperation parametre URL 'sens' (up ou down)
-if (getCookie('sens')) {
-    data.sens = getCookie('sens');
-} else {
-    setCookie('sens', data.sens, 3);
-}
+data.tri = syncParamWithCookie('tri', data.tri);
+data.sens = syncParamWithCookie('sens', data.sens);
 
 // Title
 let setTitle = document.querySelector('#hautdepage');
-// Lien de retour en cliquant surle titre si different de index
-// A commenter si retour vers index
-returnLink = `<a href="index.html?name=${getDir.trim()}">${getDir}</a>`;
 
-if (setFixedTitle == 1) {
-    // Tile: fixed title defined in User Settings
-    setTitle.innerHTML = `<a href="${index}">${fixedTitle}</a>`;
-} else {
-    // Title: photo directory's name
-    setTitle.innerHTML = returnLink !== '' ? returnLink : `<a href="${index}">${getDir}</a>`;
+if (setTitle) {
+    const titleLink = document.createElement('a');
+    if (setFixedTitle) {
+        // Title: fixed title defined in User Settings
+        titleLink.href = index;
+        titleLink.textContent = fixedTitle;
+    } else if (getDir && getDir.trim() !== '') {
+        titleLink.href = `index.html?name=${encodeURIComponent(getDir.trim())}`;
+        titleLink.textContent = getDir;
+    } else {
+        titleLink.href = index;
+        titleLink.textContent = fixedTitle;
+    }
+    setTitle.textContent = '';
+    setTitle.appendChild(titleLink);
 }
 
 // Recuperation parametre URL 'search'
 if (urlParams.get('search')) {
-    // On remplace les espaces entourant le separateur par le separateur 
+    // On remplace les espaces entourant le separateur par le separateur
     const regex = new RegExp(`\\s*${separator}\\s*`, 'g');
     let search = urlParams.get('search').replaceAll(regex, separator);
     // Supprime les espaces en debut et fin et les espaces multiples

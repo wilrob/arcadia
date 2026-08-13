@@ -3,14 +3,14 @@
 ----------------------------- */
 /* Polices personnalisees */
 @font-face {
-  font-family: "SegoeUi";
-  src: url("https://fontsforyou.com/fonts/s/SegoeUi.ttf");
+    font-family: "SegoeUi";
+    src: url("https://fontsforyou.com/fonts/s/SegoeUi.ttf");
 }
 
 /* Police pour les titres */
 @font-face {
-  font-family: "Average";
-  src: url("http://fonts.gstatic.com/s/average/v4/IA8jQA5GFnMtnG2oawAIjw.ttf");
+    font-family: "Average";
+    src: url("https://fonts.gstatic.com/s/average/v4/IA8jQA5GFnMtnG2oawAIjw.ttf");
 }
 
 body {
@@ -41,7 +41,7 @@ body {
     border: none;
     text-align: center;
     opacity: 0.8;
-    transition: opacity var(--transition-fast);
+    transition: opacity var(--transition-fast, 0.2s);
 }
 
 #home:hover {
@@ -49,10 +49,10 @@ body {
 }
 
 .IconLarge {
-  width: 32px;
-  height: 32px;
-  fill: currentColor;
-  vertical-align: middle;
+    width: 32px;
+    height: 32px;
+    fill: currentColor;
+    vertical-align: middle;
 }
 
 .gallery {

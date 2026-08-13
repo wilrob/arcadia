@@ -2,7 +2,7 @@
 // messages.js
 
 // Detection de la langue du navigateur
-const browserLang = navigator.language || navigator.userLanguage;
+const browserLang = typeof navigator !== 'undefined' ? (navigator.language || navigator.userLanguage || 'en') : 'en';
 const userLang = (browserLang.split('-')[0] || 'en').toLowerCase();
 
 // Tableau des messages

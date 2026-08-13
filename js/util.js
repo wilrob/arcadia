@@ -23,6 +23,11 @@ export class Div {
         if (this.contents) el.innerHTML = this.contents;
         if (this.display) el.style.display = this.display;
 
+        if (!this.container) {
+            console.warn(`? Conteneur non sp?cifi?.`);
+            return;
+        }
+
         const container = document.querySelector(`#${this.container}`);
         if (!container) {
             console.warn(`? Conteneur "${this.container}" introuvable.`);
@@ -54,7 +59,7 @@ export class Div {
 }
 
 /* ===========================================================
-   CHARGEMENT DES FICHIERS D?UN RÉPERTOIRE
+   CHARGEMENT DES FICHIERS D'UN R?PERTOIRE
    ----------------------------------------------------------- */
 export async function loadFiles(dir) {
     const response = await fetch(dir);
@@ -294,9 +299,9 @@ function copyToClipBoard(id) {
 
 /* Edition des metadonnees via le modal */
 export function editExif() {
-    const trash = document.querySelectorAll('.editExif');
-    if (trash) {
-        trash.forEach(el => {
+    const editX = document.querySelectorAll('.editExif');
+    if (editX) {
+        editX.forEach(el => {
             el.addEventListener('click', () => {
                 openEditMetadataModal(el.id);
             });
@@ -319,7 +324,8 @@ function openEditMetadataModal(imgId) {
         const modal = document.createElement('div');
         modal.className = 'edit-modal';
         // Conversion dimensions en tableau W x H
-        const dimensions = data.dimensions ? data.dimensions.split('x') : ['', ''];
+        const dimensionsSize = data.dimensions ? data.dimensions.split(' - ') : ['', ''];
+        const dimensions = dimensionsSize[0] ? dimensionsSize[0].split('x') : ['', ''];
         // Conversion date en format UTC
         const dateUTC = data.dateFR ? data.dateFR.dateUTC.toISOString().split('T')[0] : null;
         // Latitude et longitude
@@ -358,13 +364,13 @@ function openEditMetadataModal(imgId) {
             <div class="form-group">
                 <label for="edit-size">Largeur, hauteur</label>
                 <input type="number" id="edit-width"  style="width:5em;" value="${dimensions[0] ? dimensions[0] : ``}">&nbsp;x&nbsp;
-                <input type="number" id="edit-height" style="width:5em;" value="${dimensions[1] ? dimensions[1] : ``}">  
+                <input type="number" id="edit-height" style="width:5em;" value="${dimensions[1] ? dimensions[1] : ``}">
             </div>
             <div class="form-group">
                 <label for="edit-size">Latitude, longitude</label>
-                <input type="text" id="edit-lat" style="width:12em;" value="${lat}">&nbsp;,&nbsp; 
-                <input type="text" id="edit-lon" style="width:12em;" value="${lon}">  
-            </div>  
+                <input type="text" id="edit-lat" style="width:12em;" value="${lat}">&nbsp;,&nbsp;
+                <input type="text" id="edit-lon" style="width:12em;" value="${lon}">
+            </div>
             <div class="form-group">
                 <label for="edit-tags">Tags</label>
                 <input type="text" id="edit-tags"value="${data.tag ? data.tag : ``}">
@@ -492,7 +498,7 @@ function initBlogObserver() {
     });
 }
 
-// --- Mode MOSAÏQUE : survol souris ---
+// --- Mode MOSA?QUE : survol souris ---
 function initMosaicHoverObserver() {
     const photos = document.querySelectorAll('.photoMini');
     photos.forEach(img => {
@@ -507,14 +513,14 @@ function initMosaicHoverObserver() {
 }
 
 export function htmlDecode(str) {
-  const txt = document.createElement("textarea");
-  txt.innerHTML = str;
-  return txt.value;
+    const txt = document.createElement("textarea");
+    txt.innerHTML = str;
+    return txt.value;
 }
 
 
 /***************************************
- *         FONCTIONS INTERNES 
+ *         FONCTIONS INTERNES
  * ************************************/
 
 /* ===========================================================
@@ -605,7 +611,7 @@ function displayMap(lat, lon) {
 
 /**
  * Parse le contenu HTML de data-caption et retourne un objet avec les donnees
- * 
+ *
  * @param {string} captionHTML - Le contenu HTML de l'attribut data-caption
  * @returns {Object} - Un objet avec les donnees extraites
  */
@@ -626,7 +632,7 @@ function parseCaptionHTML(captionHTML) {
                 lon: parseFloat(el.dataset.lon)
             };
         } else if (id === 'dateFR') {
-            // Cas special : on recupere le texte de dateFR et la date au format UTC 
+            // Cas special : on recupere le texte de dateFR et la date au format UTC
             result[id] = {
                 dateFR: el.textContent,
                 dateUTC: new Date(el.getAttribute('date'))
@@ -640,6 +646,75 @@ function parseCaptionHTML(captionHTML) {
     return result;
 }
 
+function renderBlogHeader(data, buttonBlog) {
+    if (!buttonBlog) return '';
+    return `
+                <div class="cadre">
+                    ${data['titre'] ? `<div class="titre">${decode_utf8(data['titre'])}</div>` : ''}
+                    ${data['description'] ? `<div class="desc">${decode_utf8(data['description'])}</div>` : ''}
+                </div>`;
+}
+
+function renderAuthorAndFileInfo(data) {
+    return `
+                <div class="cadre">
+                ${(data['auteur'] || data['dateFR']) ? `
+                    <div>
+                    ${data['auteur'] ? `<svg class="Icon"><use href="./icons/sprite.svg#icon-user"></use></svg>&nbsp;${decode_utf8(data['auteur'])}&nbsp;&nbsp;&nbsp;` : ''}
+                    ${data['dateFR'] ? `<svg class="Icon"><use href="./icons/sprite.svg#icon-calendar"></use></svg>&nbsp;${data['dateFR'].dateFR}` : ''}
+                    </div>
+                ` : ''}
+                ${data['fichier'] ? `
+                    <div>
+                        <svg class="Icon"><use href="./icons/sprite.svg#icon-file"></use></svg>&nbsp;${data['fichier']}
+                    </div>
+                ` : ''}
+                ${data['copyright'] ? `
+                    <div style="padding:2px;">
+                        <svg class="Icon"><use href="./icons/sprite.svg#icon-copy"></use></svg>${data['copyright']}
+                    </div>
+                ` : ''}
+                ${data['credit'] ? `
+                    <div>Cr&eacute;dit : ${data['credit']}</div>
+                ` : ''}
+                </div>`;
+}
+
+function renderCameraSpecs(data) {
+    return `
+                <div class="cadre">
+                ${(data['materiel'] || data['modele']) ? `
+                    <div>
+                        <svg class="Icon"><use href="./icons/sprite.svg#icon-camera"></use></svg>&nbsp;${data['materiel']}&nbsp;&nbsp;&nbsp;${data['modele']}
+                    </div>
+                ` : ''}
+                ${data['format'] ? `
+                    <div>
+                        <svg class="Icon"><use href="./icons/sprite.svg#icon-photo"></use></svg>&nbsp;${data['format']}
+                    </div>
+                ` : ''}
+                ${(data['iso'] || data['focale'] || data['fnumber'] || data['vitesse']) ? `
+                    <div class="objectif">
+                        ${data['iso'] ? `<svg class="Icon"><use href="./icons/sprite.svg#icon-iso"></use></svg>&nbsp;${data['iso']}&nbsp;&nbsp;&nbsp;` : ''}
+                        ${data['focale'] ? `<svg class="Icon"><use href="./icons/sprite.svg#icon-focal"></use></svg>&nbsp;${data['focale']}&nbsp;&nbsp;&nbsp;` : ''}
+                        ${data['fnumber'] ? `<svg class="Icon"><use href="./icons/sprite.svg#icon-aperture"></use></svg>&nbsp;${data['fnumber']}&nbsp;&nbsp;&nbsp;` : ''}
+                        ${data['vitesse'] ? `<svg class="Icon"><use href="./icons/sprite.svg#icon-speed"></use></svg>&nbsp;${data['vitesse']}&nbsp;&nbsp;&nbsp;` : ''}
+                    </div>` : ''}
+                </div>`;
+}
+
+function renderMetaDataHTML(data, buttonBlog) {
+    return `
+        <div class="dataXMP">
+            <div class="detail">
+                ${renderBlogHeader(data, buttonBlog)}
+                ${renderAuthorAndFileInfo(data)}
+                ${renderCameraSpecs(data)}
+                ${data['map-modal'] ? `<div class="cadre loc"></div>` : ''}
+            </div>
+        </div>`;
+}
+
 /**
  * Affiche les metadonnees extraites de data-caption dans la div publication
  * @param {HTMLImageElement} img - L'element image dont on veut afficher les metadonnees
@@ -650,93 +725,24 @@ function displayMetaData(img) {
 
     // Recupere le contenu de l'attribut data-caption
     const captionHTML = parentLink ? parentLink.getAttribute('data-caption') : '';
-    if (captionHTML) {
-        const data = parseCaptionHTML(captionHTML);
-        //console.log(captionHTML);
+    if (!captionHTML) return;
 
-        const publication = document.querySelector('#publication');
-        const divMap = document.querySelector('#map');
-        const buttonBlog = document.querySelector('#buttonBlog');
-        const divPublication = `
-        <div class="dataXMP">
-            <div class="detail">
-                ${buttonBlog ? `
-                <div class="cadre">
-                    ${(data['titre']) ? `
-                    <div class="titre">${decode_utf8(data['titre'])}</div>` : ``}
-                    ${(data['description']) ? `
-                    <div class="desc">${decode_utf8(data['description'])}</div>` : ``}
-                ` : ``}
-                </div>
-                <div class="cadre">
-                ${(data['auteur'] || data['dateFR']) ? `
-                    <div>
-                    ${(data['auteur']) ? `
-                        <svg class="Icon"><use href="./icons/sprite.svg#icon-user"></use></svg>&nbsp;${decode_utf8(data['auteur'])}&nbsp;&nbsp;&nbsp;
-                    ` : ``}
-                    ${(data['dateFR']) ? `
-                        <svg class="Icon"><use href="./icons/sprite.svg#icon-calendar"></use></svg>&nbsp;${data['dateFR'].dateFR}
-                        ` : ``}
-                    </div>
-                ` : ``}
-                ${(data['fichier']) ? `
-                    <div>
-                        <svg class="Icon"><use href="./icons/sprite.svg#icon-file"></use></svg>&nbsp;${data['fichier']}
-                    </div>
-                ` : ``}
-                ${(data['copyright']) ? `
-                    <div style="padding:2px;">
-                        <svg class="Icon"><use href="./icons/sprite.svg#icon-copy"></use></svg>${data['copyright']}
-                    </div>
-                ` : ``}
-                ${(data['credit']) ? `
-                    <div>Cr&eacute;dit : ${data['credit']}</div>
-                ` : ``}
-                </div>
+    const data = parseCaptionHTML(captionHTML);
+    const publication = document.querySelector('#publication');
+    const divMap = document.querySelector('#map');
+    const buttonBlog = document.querySelector('#buttonBlog');
 
-                <div class="cadre">
-                ${(data['materiel'] || data['modele']) ? `
-                    <div>
-                        <svg class="Icon"><use href="./icons/sprite.svg#icon-camera"></use></svg>&nbsp;${data['materiel']}&nbsp;&nbsp;&nbsp;${data['modele']}
-                    </div>
-                ` : ``}
-                ${(data['format']) ? `
-                    <div>
-                        <svg class="Icon"><use href="./icons/sprite.svg#icon-photo"></use></svg>&nbsp;${data['format']}
-                    </div>
-                ` : ``}
-                ${(data['iso'] || data['focale'] || data['fnumber'] || data['vitesse']) ? `
-                    <div class="objectif">
-                        ${(data['iso']) ? `
-                            <svg class="Icon"><use href="./icons/sprite.svg#icon-iso"></use></svg>&nbsp;${data['iso']}&nbsp;&nbsp;&nbsp;
-                        ` : ``} 
-                        ${(data['focale']) ? `
-                            <svg class="Icon"><use href="./icons/sprite.svg#icon-focal"></use></svg>&nbsp;${data['focale']}&nbsp;&nbsp;&nbsp;
-                        ` : ``} 
-                        ${(data['fnumber']) ? `
-                            <svg class="Icon"><use href="./icons/sprite.svg#icon-aperture"></use></svg>&nbsp;${data['fnumber']}&nbsp;&nbsp;&nbsp;
-                        ` : ``} 
-                        ${(data['vitesse']) ? `
-                            <svg class="Icon"><use href="./icons/sprite.svg#icon-speed"></use></svg>&nbsp;${data['vitesse']}&nbsp;&nbsp;&nbsp;
-                        ` : ``} 
-                    </div> ` : ``}
-                </div>
-                ${data['map-modal'] ? `
-                    <div class="cadre loc"></div>
-                ` : ``}                        
-            </div>
-        </div>`;
+    if (publication) {
+        publication.innerHTML = renderMetaDataHTML(data, buttonBlog);
+    }
 
-         publication.innerHTML = divPublication;
-
+    if (divMap) {
         if (data['map-modal']) {
             getLocation(data['map-modal'].lat, data['map-modal'].lon);
             divMap.style.display = 'block';
             displayMap(data['map-modal'].lat, data['map-modal'].lon);
         } else {
-            divMap.style.display = 'none';          
+            divMap.style.display = 'none';
         }
-
-       
     }
 }

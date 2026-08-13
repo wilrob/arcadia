@@ -7,23 +7,22 @@ import { t } from './messages.js';
 
 /**
  * Limiteur de parallelisme pour eviter de surcharger le processeur
- * Execute les tâches par paquet de "limit"
+ * Execute les t?ches par paquet de "limit"
  */
 async function runLimited(tasks, limit = 5) {
     const results = [];
     let index = 0;
-
     return new Promise((resolve) => {
         let active = 0;
 
         function next() {
-            // Fin quand toutes les tâches sont lancees ET terminees
+            // Fin quand toutes les t?ches sont lancees ET terminees
             if (index === tasks.length && active === 0) {
                 resolve(results);
                 return;
             }
 
-            // Lance les tâches tant qu'il reste de la place
+            // Lance les t?ches tant qu'il reste de la place
             while (active < limit && index < tasks.length) {
                 const current = index++;
                 const task = tasks[current];
@@ -34,7 +33,7 @@ async function runLimited(tasks, limit = 5) {
                     .catch(err => { results[current] = { error: err }; })
                     .finally(() => {
                         active--;
-                        next(); // Quand une tâche finit ? on en lance une autre
+                        next(); // Quand une t?che finit ? on en lance une autre
                     });
             }
         }
@@ -73,13 +72,16 @@ async function extractSingleExif(imageUrl) {
     try {
         // 1 seul fetch
         const response = await fetch(imageUrl);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
         const fileBlob = await response.blob();
 
         const mimeType = fileBlob.type.split('/')[1] || "";
         const size =
             fileBlob.size > 1_000_000
-                ? `${(fileBlob.size / 1_000_000).toFixed(1)} Mo`
-                : `${(fileBlob.size / 1_000).toFixed(1)} Ko`;
+                ? `${(fileBlob.size / 1_000_000).toFixed(1)}Mo`
+                : `${(fileBlob.size / 1_000).toFixed(1)}Ko`;
 
         // Extraction EXIF directement depuis le Blob
         const exifTag = await exifr.parse(fileBlob, { xmp: true }) || {};
@@ -112,7 +114,7 @@ async function extractSingleExif(imageUrl) {
                 : exifTag.PersonInImage || '',
             fNumber: exifTag.FNumber ? `${exifTag.FNumber}` : '',
             iso: exifTag.ISO || '',
-            vitesse: exifTag.ExposureTime ? `1/${Math.round(1 / exifTag.ExposureTime)}` : '',
+            vitesse: (exifTag.ExposureTime && exifTag.ExposureTime > 0) ? `1/${Math.round(1 / exifTag.ExposureTime)}` : '',
             focale35: exifTag.FocalLengthIn35mmFormat ? `${exifTag.FocalLengthIn35mmFormat}` : '',
         };
 

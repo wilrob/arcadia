@@ -1,7 +1,7 @@
 /**
  * * Affichage plein ecran/slide Fancybox
 */
-export async function displayFancybox() {
+export function displayFancybox() {
     Fancybox.bind('[data-fancybox]', {
         Carousel: {
             Zoomable: {
@@ -35,7 +35,8 @@ export async function displayFancybox() {
                             const exif = document.querySelectorAll('.data-caption')[0];
                             if (exif) {
                                 // Toogle de 'data-caption' et masquage de la carte
-                                exif.style.display = exif.style.display === 'block' ? 'none' : 'block';
+                                const isVisible = window.getComputedStyle(exif).display !== 'none';
+                                exif.style.display = isVisible ? 'none' : 'block';
                                 // Masquage des tags, personnes et maps
                                 const tag = document.querySelector('#tag');
                                 if (tag) {
@@ -47,7 +48,7 @@ export async function displayFancybox() {
                                 }
                                 const mapModal = document.querySelector('#map-modal');
                                 if (mapModal) {
-                                    document.querySelector('#map-modal').style.display = 'none';
+                                    mapModal.style.display = 'none';
                                 }
                             }
                         },
