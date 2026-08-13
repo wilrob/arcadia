@@ -27,7 +27,7 @@ Clicking the information button (ⓘ) at the bottom of any photo opens a detaile
 * **Interactive Geolocation**: GPS coordinate extraction with interactive OpenStreetMap integration.
 * **Metadata**: Below is the list of metadata used. These data can be added or edited using Phil Harvey's [ExifTool](https://www.exiftool.org) software.
 ```text
-**Technical data**
+* Technical data:
     - Make
     - Model
     - FNumber
@@ -36,10 +36,10 @@ Clicking the information button (ⓘ) at the bottom of any photo opens a detaile
     - FocalLengthIn35mmFormat
     - ImageWidth
     - ImageHeight
-**GPS Data**
+* GPS Data:
     - Latitude
     - Longitude
-**Image information**
+* Image information:
     - Title
     - Description
     - Credit
