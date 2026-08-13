@@ -398,14 +398,15 @@ function buildPhotoHTML(fileName, url, meta, search, dataFancybox) {
     </div>
   `;
 
-  // Affiche l'ensemble photo + titre, description, infos (tags) + supprimer + editer
+  // Affiche l'ensemble photo + titre, description, infos (tags)
+  // Les icones supprimer + editer ne sont pas actives pour l'instant, elles sont commentees dans le code ci-dessous
   // Remarque : la classe divDisplay commune a divImageBlog et divImageMosaic permet
   // la mise a jour dans les deux modes avec updateImagesVisibility()
   return `
     <div class="divImageBlog divDisplay" data-tags="${tag};${personne}">${photo}
         <div class="titre">${titre}</div>
         <div class="desc">${htmlDecode(description)}</div>
-        <div class="option">${infos}${iconTrash}${iconEdit}</div>
+        <div class="option">${infos}<!--${iconTrash}${iconEdit}--></div>
     </div>
   ${(tagBlock !== '' || personsBlock !== '') ? `<div class="tagBlog">${tagBlock}${personsBlock}</div>` : ``}
   `;
