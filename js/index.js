@@ -1,10 +1,6 @@
-document.addEventListener('DOMContentLoaded', () => {
-  chargerListeAlbums();
-});
-
 /**
- * RÃ©cupÃ¨re automatiquement la liste des dossiers d'albums prÃ©sents dans le rÃ©pertoire "albums/"
- * et affiche chaque album sous forme de lien vers la page album.html avec le paramÃ¨tre dir.
+ * Récupère automatiquement la liste des dossiers d'albums présents dans le répertoire "albums/"
+ * et affiche chaque album sous forme de lien vers la page album.html avec le paramètre dir.
  */
 async function chargerListeAlbums() {
   const container = document.getElementById('albums-container');
@@ -13,7 +9,7 @@ async function chargerListeAlbums() {
   try {
     const response = await fetch('albums/');
     if (!response.ok) {
-      throw new Error(`Erreur lors de la rÃ©cupÃ©ration du dossier albums (${response.status})`);
+      throw new Error(`Error recovering albums folder (${response.status})`);
     }
 
     const htmlText = await response.text();
@@ -45,17 +41,21 @@ async function chargerListeAlbums() {
     }
 
     if (albums.size === 0) {
-      container.innerHTML = '<p class="no-albums">Aucun album photo trouvÃ© dans le dossier "albums".</p>';
+      container.innerHTML = '<p class="no-albums">No photo album found in the folder "albums".</p>';
       return;
     }
 
     const albumArray = Array.from(albums).sort((a, b) => a.localeCompare(b, 'fr', { sensitivity: 'base' }));
 
     const listItems = albumArray.map(albumName => {
+      // Construire l'URL de l'album avec le paramètre dir
       const albumUrl = `album.html?dir=${encodeURIComponent(albumName)}`;
+      // dataName is the last parameter of href (album.html?dir=Will%20McBride) and is used to identify the album when clicking on the link
+      const dataName = albumUrl.split('?dir=')[1] || '';
+
       return `
         <li class="album-card">
-          <a href="${albumUrl}" class="album-link" title="Afficher les photos de l'album ${albumName}">
+          <a href="${albumUrl}" data-name="${dataName}" class="artiste album-link" title="Display photos from the album ${albumName}">
             <svg class="IconLarge" aria-hidden="true">
               <use href="./icons/sprite.svg#icon-album"></use>
             </svg>
@@ -68,9 +68,28 @@ async function chargerListeAlbums() {
     container.innerHTML = `<ul class="albums-grid">${listItems}</ul>`;
 
   } catch (error) {
-    console.error('Erreur lors du chargement de la liste des albums :', error);
-    container.innerHTML = '<p class="error">Impossible de charger la liste des albums.</p>';
+    console.error('Error when loading the list of albums :', error);
+    container.innerHTML = '<p class="error">Impossible to load the list of albums.</p>';
   }
+}  
+
+// Appeler displayOnMouseOver() après le chargement de la liste des albums pour ajouter les événements de survol
+document.addEventListener('DOMContentLoaded', () => {
+  chargerListeAlbums().then(() => {
+    displayOnMouseOver();
+  });
+});
+
+// Au survol d'un lien d'album, on affiche les images de l'album correspondant
+function displayOnMouseOver() {
+    document.querySelectorAll('.artiste').forEach(lien => {
+    lien.addEventListener('mouseover', event => {
+      console.log("Mouseover on album link:", event.currentTarget.dataset.name);
+      const name = event.currentTarget.dataset.name;
+      traiterAlbums(name);
+    });
+    //lien.addEventListener('mouseout', imageClear);
+  });
 }
 
 // Charge la page html demandee
@@ -92,9 +111,6 @@ function getHtmlPage(div, page, callback) {
 const baseURL = "albums/"; // Dossier contenant les albums photo
 const extensionsAutorisees = [".jpg", ".jpeg", ".png", ".webp"]; // Extensions d'images autorisees
 
-
-
-
 // === UTILITAIRE ===
 // Fonction pour choisir n elements aleatoires dans un tableau
 function choisirAleatoirement(tab, n) {
@@ -108,7 +124,7 @@ function choisirAleatoirement(tab, n) {
 }
 
 // === PRINCIPAL ===
-// Choisir un album alï¿½atoire parmi les dossiers prï¿½sents dans "albums/"
+// Choisir un album aléatoire parmi les dossiers présents dans "albums/"
 chargerAlbums();
 async function chargerAlbums() {
   try {
@@ -129,19 +145,20 @@ async function chargerAlbums() {
     }
 
     if (albums.size === 0) {
-      console.warn("Aucun album trouve dans le dossier", baseURL);
+      console.warn("No albums found in the folder", baseURL);
     }
-    // Choisir un album alï¿½atoire parmi les albums disponibles
+    // Choisir un album aléatoire parmi les albums disponibles
     const albumChoisi = choisirAleatoirement(Array.from(albums.keys()), 1)[0];
     traiterAlbums(albumChoisi);
   } catch (err) {
-    console.error("Erreur lors du chargement des albums :", err);
+    console.error("Error when loading albums :", err);
   }
 }
 
 // Fonction pour traiter les albums et afficher les images
 async function traiterAlbums(dossier) {
   const url = `${baseURL}${dossier}/`;
+  console.log("Processing album:", url);
   const nomArtiste = dossier.replace(/%20/g, ' ').trim();
   try {
     const response = await fetch(url);
@@ -160,9 +177,9 @@ async function traiterAlbums(dossier) {
       }
     }
 
-    // Vï¿½rifier qu'il y a au moins 4 images
+    // Vérifier qu'il y a au moins 4 images
     if (images.length < 4) {
-      console.warn(`Pas assez d'images dans ${dossier}`);
+      console.warn(`Not enough images in the folder ${dossier}`);
       return;
     }
 
@@ -175,7 +192,7 @@ async function traiterAlbums(dossier) {
     // Afficher les images avec ton systeme existant
     imageDisplay(chemins);
   } catch (err) {
-    console.error("Erreur :", err);
+    console.error("Error :", err);
   }
 
 // Au survol de la table d'images, on affiche un tooltip indiquant "Ouvrir l'album de [nom de l'artiste]" avec la classe CSS "hint--bottom" (de la librairie hint.css) si un nom d'artiste est present et que les images sont affichees dans la table

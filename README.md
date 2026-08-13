@@ -88,7 +88,6 @@ arcadia/
 ├── album.html            # Main gallery view
 ├── gallery.html          # Alternative gallery view
 ├── README.md             # Project documentation
-├── bio/                  # Artist/album biographical pages (.html)
 ├── albums/               # Directory containing image folders
 ├── styles/               # CSS stylesheets (index, album, gallery, fancybox, hint)
 └── js/                   # JavaScript ES modules
