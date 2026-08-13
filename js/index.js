@@ -1,50 +1,77 @@
 document.addEventListener('DOMContentLoaded', () => {
-  // Div de la page index
-  const central = document.querySelector("#central");
-  const head = document.querySelector("#hautdepage");
-
-  // Page d'accueil par defaut
-  const home = "./bio/home.html";
-
-  // On reupere les parameres de l'url
-  const params = new URLSearchParams(document.location.search);
-  const name = params.get("name");
-
-  // Liens HOME et ALBUM
-  const entete = `
-    <a id="home" href="index.html" class="hint--bottom" aria-label="Accueil">
-      <svg class="IconLarge">
-        <use href="./icons/sprite.svg#icon-home"></use>
-      </svg>
-    </a>
-    <a id="lien-album" href="album.html?dir=${name}" class="hint--bottom-right" aria-label="Ouvrir l'album">
-      <svg class="IconLarge">
-        <use href="./icons/sprite.svg#icon-album" fill="#7a1b1b"></use>
-      </svg>
-    </a>`;
-
-  // Si parametre name dans l'url, on affiche la page html (dans dossier bio) 
-  // et on ajoute l'en-tete avec les icones home et album
-  if (name) {
-    // Chargement de la page de bio
-    getHtmlPage(central, `./bio/${name}.html`, () => {
-      head.innerHTML = entete;
-    });
-
-    // Sinon on remplit la div avec la page home.html
-  } else {
-    // Chargement de la page home.html
-    getHtmlPage(central, home, () => {
-      document.querySelectorAll('.artiste').forEach(lien => {
-        lien.addEventListener('mouseover', event => {
-          const name = event.currentTarget.dataset.name;
-          traiterAlbums(name);
-        });
-        //lien.addEventListener('mouseout', imageClear);
-      });
-    });
-  }
+  chargerListeAlbums();
 });
+
+/**
+ * Récupère automatiquement la liste des dossiers d'albums présents dans le répertoire "albums/"
+ * et affiche chaque album sous forme de lien vers la page album.html avec le paramètre dir.
+ */
+async function chargerListeAlbums() {
+  const container = document.getElementById('albums-container');
+  if (!container) return;
+
+  try {
+    const response = await fetch('albums/');
+    if (!response.ok) {
+      throw new Error(`Erreur lors de la récupération du dossier albums (${response.status})`);
+    }
+
+    const htmlText = await response.text();
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(htmlText, 'text/html');
+    const links = Array.from(doc.querySelectorAll('a'));
+
+    const albums = new Set();
+
+    for (const link of links) {
+      const href = link.getAttribute('href') || '';
+      const text = link.textContent?.trim() || '';
+
+      // Exclure les liens du serveur web (tri, parent directory, etc.)
+      if (href.startsWith('?') || href.startsWith('/') || href === '../' || text === 'Parent Directory' || text === '..') {
+        continue;
+      }
+
+      let folderName = '';
+      if (text.endsWith('/') && !text.startsWith('.')) {
+        folderName = text.slice(0, -1).trim();
+      } else if (href.endsWith('/') && !href.startsWith('.')) {
+        folderName = href.slice(0, -1).trim();
+      }
+
+      if (folderName && folderName !== '..' && !folderName.startsWith('.')) {
+        albums.add(decodeURIComponent(folderName));
+      }
+    }
+
+    if (albums.size === 0) {
+      container.innerHTML = '<p class="no-albums">Aucun album photo trouvé dans le dossier "albums".</p>';
+      return;
+    }
+
+    const albumArray = Array.from(albums).sort((a, b) => a.localeCompare(b, 'fr', { sensitivity: 'base' }));
+
+    const listItems = albumArray.map(albumName => {
+      const albumUrl = `album.html?dir=${encodeURIComponent(albumName)}`;
+      return `
+        <li class="album-card">
+          <a href="${albumUrl}" class="album-link" title="Afficher les photos de l'album ${albumName}">
+            <svg class="IconLarge" aria-hidden="true">
+              <use href="./icons/sprite.svg#icon-album"></use>
+            </svg>
+            <span class="album-name">${albumName}</span>
+          </a>
+        </li>
+      `;
+    }).join('');
+
+    container.innerHTML = `<ul class="albums-grid">${listItems}</ul>`;
+
+  } catch (error) {
+    console.error('Erreur lors du chargement de la liste des albums :', error);
+    container.innerHTML = '<p class="error">Impossible de charger la liste des albums.</p>';
+  }
+}
 
 // Charge la page html demandee
 function getHtmlPage(div, page, callback) {
@@ -81,7 +108,7 @@ function choisirAleatoirement(tab, n) {
 }
 
 // === PRINCIPAL ===
-// Choisir un album al�atoire parmi les dossiers pr�sents dans "albums/"
+// Choisir un album al�atoire parmi les dossiers pr�sents dans "albums/"
 chargerAlbums();
 async function chargerAlbums() {
   try {
@@ -104,7 +131,7 @@ async function chargerAlbums() {
     if (albums.size === 0) {
       console.warn("Aucun album trouve dans le dossier", baseURL);
     }
-    // Choisir un album al�atoire parmi les albums disponibles
+    // Choisir un album al�atoire parmi les albums disponibles
     const albumChoisi = choisirAleatoirement(Array.from(albums.keys()), 1)[0];
     traiterAlbums(albumChoisi);
   } catch (err) {
@@ -133,7 +160,7 @@ async function traiterAlbums(dossier) {
       }
     }
 
-    // V�rifier qu'il y a au moins 4 images
+    // V�rifier qu'il y a au moins 4 images
     if (images.length < 4) {
       console.warn(`Pas assez d'images dans ${dossier}`);
       return;
@@ -166,7 +193,7 @@ async function traiterAlbums(dossier) {
       window.location.href = `album.html?dir=${dossier}`;
     } else {
       console.warn("Aucun album a afficher ou nom d'artiste manquant");
-    } 
+    }
     });
 }
 
@@ -174,7 +201,7 @@ async function traiterAlbums(dossier) {
 // Fonction pour afficher les images dans la table
 function imageDisplay(images) {
   const container = document.querySelector("#image");
-  
+
   //console.log(images[0])
   document.querySelector("#image-1").src = images[0];
   document.querySelector("#image-2").src = images[1];
