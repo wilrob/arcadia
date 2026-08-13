@@ -93,9 +93,10 @@ Global settings are configured inside `js/config.js`:
 
 ```javascript
 // Fixed title for the album page, if setFixedTitle is true
-const fixedTitle = 'Fixed Title of My Photo Album'; // Set your fixed title here
-// Set to true if you want to display the fixedTitle, otherwise the title will be based on the 'dir' parameter in the URL
-const setFixedTitle = false; // Set to true if you want to display the fixedTitle
+const fixedTitle = 'My Photo Album'; // Set your fixed title here
+// Set to true if you want to display the fixedTitle
+// Set to false by default: the title will be the name of directory containing the photos
+const setFixedTitle = false; 
 // Default directory where the albums are stored
 const imageDir = 'albums';
 // Default album page name
@@ -112,7 +113,7 @@ const separator = ';';
 arcadia/
 ├── index.html            # Landing / Home page
 ├── album.html            # Main gallery view
-├── gallery.html          # Alternative gallery view
+├── gallery.html          # Alternative gallery view (not used in this configuration)
 ├── README.md             # Project documentation
 ├── albums/               # Directory containing image folders
 ├── styles/               # CSS stylesheets (index, album, gallery, fancybox, hint)
