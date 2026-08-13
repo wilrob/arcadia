@@ -1,68 +1,123 @@
-# arcadia
-This photo album in plain javascript allows you to display the contents of your photo folders as well as the metadata contained in each photo, using exifr<br />
-Photos can be displayed as a blog or thumbnail mosaic.
-<br /><br />
-<!--Try it yourself - <a href="http://arcadia.lbpu3811.odns.fr" target="_blank">demo</a>-->
-<br />
-## Installation
-Copy all the directories and files on your server location.
-Then place one or more folders containing photos in the <code>albums</code> directory.
+# Arcadia 📷
 
-### Settings
-You can add an background image in the <code>styles/images</code> directory. Modify the css file 'styles/styles.css': --background-image: url("images/your_image.jpg");.<br />
-<br />
-By default, the title is the name of the directory selected. If you want to display a fixed title, set the variable setFixedTtitle to 1 in 'js/config.js'.
-<br />
-<code>
+> A modern, lightweight, 100% client-side web photo album built in Vanilla JavaScript to display your photo galleries and explore embedded metadata (EXIF, IPTC, XMP, GPS).
+
+[![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-yellow.svg)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+[![HTML5](https://img.shields.io/badge/HTML5-e34f26.svg)](https://developer.mozilla.org/en-US/docs/Web/HTML)
+[![CSS3](https://img.shields.io/badge/CSS3-1572b6.svg)](https://developer.mozilla.org/en-US/docs/Web/CSS)
+
+**Arcadia** is a databaseless web application that dynamically reads the content of your image folders and extracts all embedded metadata directly inside the browser.
+
+---
+
+## ✨ Features
+
+### 🎨 Display Modes
+* **Blog Mode**: Narrative presentation of each photo with its title, description, keywords/tags, and geolocation.
+* **Mosaic Mode**: Dynamic, responsive thumbnail grid for a quick visual overview.
+* **Lightbox Viewer (Fancybox)**: High-resolution full-screen inspection with touch gestures and zoom support.
+
+### 📊 EXIF / IPTC / XMP Metadata Inspection
+Clicking the information button (ⓘ) at the bottom of any photo opens a detailed modal panel displaying:
+* **General Information**: Title, description, author, copyright/rights, file name, capture date and time.
+* **Keywords & People**: IPTC tags and tagged people in the image.
+* **Technical Specifications**: Dimensions, file size, MIME type, camera model, lens, aperture (f-number), shutter speed, ISO sensitivity, focal length.
+* **Interactive Geolocation**: GPS coordinate extraction with interactive OpenStreetMap integration.
+
+### 🔍 Search, Sorting & Navigation
+* **Keyword Filtering**: Multi-keyword tag search using a configurable separator (default `;`).
+* **Dynamic Sorting**: Alphabetical or date-based sorting (newest/oldest) in ascending or descending order.
+* **Album Selector**: Dynamic folder detection for switching albums easily.
+* **Persistence**: Remembers preferences (album, sort settings, view mode) via URL parameters and cookies.
+
+---
+
+## ⚙️ Installation & Deployment
+
+### 1. Prerequisites
+Arcadia runs on any web server (Apache, Nginx, LiteSpeed, Caddy, Node.js static server, IIS, GitHub Pages, etc.) capable of serving static files.
+* **No database** (MySQL, PostgreSQL, etc.) required.
+* **No server-side language** (PHP, Python, Node.js) required for client rendering.
+
+### 2. Installation
+1. Download or clone the repository to your web server:
+   ```bash
+   git clone https://github.com/your-username/arcadia.git
+   cd arcadia
+   ```
+2. Place your image folders inside the `albums/` directory:
+   ```text
+   albums/
+   ├── Album_Name_1/
+   │   ├── photo1.jpg
+   │   └── photo2.jpg
+   └── Album_Name_2/
+       ├── image1.webp
+       └── image2.png
+   ```
+
+---
+
+## 🔧 Configuration (`js/config.js`)
+
+Global settings are configured inside `js/config.js`:
+
+```javascript
 /** SETTINGS  */
-// Title
-const fixedTitle = 'my_title';
-// Enable/Disable fixed title. Set to 0 to use the photo directory name as title
-const setFixedTitle = 0 // Set to 1 if you want to display the fixedTitle
-// photos directory
-const imageDir = 'albums';
-// index page
-const index = 'album.html';
-</code>
+// Fixed album title
+const fixedTitle = "Fixed title for my photo album";
+const setFixedTitle = false; // Set to true to force displaying fixedTitle
 
-## Use
-The top right menu contains the following:
-<ul>
-<li>a drop-down menu to choose the album to display</li>
-<li>a button to sort photos alphabetically or by date</li>
-<li>a button to reverse the order of photos (A->Z or most recent to oldest) or (Z->A or oldest to most recent)</li>
-<li>a button to switch the display mode blog or mosaic</li>
-<li>a search field to manually select one or more tags</li>
-</ul>
+// Photos directory
+const imageDir = "albums";
 
-### Blog
-In this mode, each photo is displayed with the title, description and tags from the photo metadata.
+// Default index page
+const index = "album.html";
 
-### Mosaic
-In this mode, photos are displayed in mosaic thumbnails.
+// Tag search separator
+const separator = ";";
+```
 
-### Metadata
-For each photo, an information panel displays the metadata:
-<ul>
-    <li>title and description</li>
-    <li>tags and persons</li>
-    <li>author, file name, date</li>
-    <li>credit and rights</li>
-    <li>equipment and model</li>
-    <li>photo width x height, size, mimeType (jpeg, png, etc.)</li>
-    <li>ISO, focal, aperture, speed</li>
-    <li>location & map (OpenStreeMaps)</li>
-</ul>
+---
 
-Metadata can be added or edited using tools such as Photoshop or <a href="https://exiftool.org/gui/" target="_blank">exiftool</a>.
+## 📁 Project Structure
 
-### Fancybox display
-Clicking on a photo will display it in the fancybox interface.
+```text
+arcadia/
+├── index.html            # Landing / Home page
+├── album.html            # Main gallery view
+├── gallery.html          # Alternative gallery view
+├── README.md             # Project documentation
+├── bio/                  # Artist/album biographical pages (.html)
+├── albums/               # Directory containing image folders
+├── styles/               # CSS stylesheets (index, album, gallery, fancybox, hint)
+└── js/                   # JavaScript ES modules
+    ├── config.js         # Global configuration & URL/cookies handler
+    ├── index.js          # Home page controller
+    ├── main.js           # Core gallery rendering logic
+    ├── uiRenderer.js     # DOM renderer & EXIF metadata modal builder
+    ├── fileReader.js     # File reading utilities
+    ├── exifr.full.umd.js # EXIF/IPTC/XMP parser
+    └── fancybox.umd.js   # Lightbox viewer library
+```
 
-## Credits
-I used the awesome EXIF reading library <b><a href="https://github.com/MikeKovarik/exifr">exifr</a></b> to read photo metadata.<br />
-As well as the very nice interface <b><a href="https://fancyapps.com/fancybox/">fancybox</a></b> to display the photos in their original format.
+---
 
-## Contributing
+## 📚 Credits & Libraries
 
-Contributions are welcome. Suggestions, bug, etc.<br />
+* **[exifr](https://github.com/MikeKovarik/exifr)** - Fast photo metadata parser (EXIF, IPTC, XMP, GPS).
+* **[Fancybox](https://fancyapps.com/fancybox/)** - Responsive lightbox viewer.
+* **[Hint.css](https://kushagra.dev/lab/hint/)** - Pure CSS tooltips.
+* **[OpenStreetMap](https://www.openstreetmap.org/)** - Interactive mapping engine.
+
+---
+
+## 🤝 Contributing
+
+Contributions, feature suggestions, and bug reports are welcome via GitHub Issues and Pull Requests!
+
+---
+
+## 📄 License
+
+This project is open-source and released under the MIT License. Feel free to use, modify, and distribute it.
