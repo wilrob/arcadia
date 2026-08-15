@@ -78,7 +78,7 @@ async function chargerListeAlbums() {
           const folderHtml = await folderResponse.text();
           const folderDoc = parser.parseFromString(folderHtml, 'text/html');
           const imageLinks = Array.from(folderDoc.querySelectorAll('a')).filter(link => {
-            const name = link.textContent?.trim().toLowerCase() || '';
+            const name = link.textContent?.trim() || '';
             return extensionsAutorisees.some(ext => name.endsWith(ext));
           });
           // Compte le nombre d'images dans l'album
@@ -255,7 +255,7 @@ async function traiterAlbums(dossier) {
 
     const images = [];
     for (let i = 0; i < liens.length; i++) {
-      const nom = liens[i].textContent.trim().toLowerCase();
+      const nom = liens[i].textContent.trim();
       if (extensionsAutorisees.some(ext => nom.endsWith(ext))) {
         images.push(nom);
       }
