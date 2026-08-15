@@ -35,6 +35,9 @@ const messages = {
     editMetadata: "Modifier les m&eacute;tadonn&eacute;es",
     circa: "vers ",
     date: "Date : ",
+    errorLoadingAlbum: "Impossible de chager la liste des albums.",
+    noAlbums: "Aucun album trouvé...",
+    viewPhoto: "Afficher les photos de l'album ",
   },
   en: {
     loading: "Loading ",
@@ -63,7 +66,10 @@ const messages = {
     openAlbum: "Open Album",
     editMetadata: "Edit metadata",
     circa: "circa ",
-    date: "Date: "
+    date: "Date: ",
+    errorLoadingAlbum: "Impossible to load the list of albums.",
+    noAlbums: "No photo album found...",
+    viewPhoto: "View photos from the album ",
   },
 };
 

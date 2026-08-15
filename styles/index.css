@@ -173,10 +173,17 @@ footer {
 }
 
 ul {
-  list-style-position: inside;
-  list-style-type: square;
+  position: absolute ;
+  left: 2%;
+  list-style-position: outside;
+  list-style-type: none;
   padding-left: var(--space-lg);
   margin-top: 0;
+}
+
+li {
+  margin-bottom: var(--space-md);
+  line-height: 1;
 }
 
 /* -----------------------------
@@ -252,6 +259,10 @@ div.infobox_v3 {
 
 #home:hover {
   opacity: 1;
+}
+
+.album-info {
+  font-size: 0.7em;
 }
 
 /* Lien vers album photos */
