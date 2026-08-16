@@ -315,11 +315,14 @@ div.infobox_v3 {
   margin-left: -220px;
   width: 440px;
   top: 100px;
-  display: none;
-  border-collapse: collapse;
-  /* --- Ajout pour le fade-in --- */
   opacity: 0;
-  transition: opacity 0.6s ease-in;
+  transition: opacity 0.5s ease-out;
+  border-collapse: collapse;
+}
+
+#image.show {
+  opacity: 1;
+  transition: opacity 0.5s ease-in;
 }
 
 #image_central {
@@ -327,10 +330,6 @@ div.infobox_v3 {
   margin-right: auto;
   width: 420px;
   top: 150px;
-}
-
-#image.show {
-  opacity: 1;
 }
 
 .image {

@@ -320,15 +320,16 @@ function imageDisplay(images) {
   container.classList.remove("show");
 
   // On attend la fin du fade-out avant de changer les images et de refaire le fade-in
-  setTimeout(() => {
-    document.querySelector("#image-1").src = images[0];
-    document.querySelector("#image-2").src = images[1];
-    document.querySelector("#image-3").src = images[2];
-    document.querySelector("#image-4").src = images[3];
+  //setTimeout(() => {
+  document.querySelector("#image-1").src = images[0];
+  document.querySelector("#image-2").src = images[1];
+  document.querySelector("#image-3").src = images[2];
+  document.querySelector("#image-4").src = images[3];
 
-    container.style.display = "block";
-    container.style.cursor = "pointer";
+  container.classList.add("show");
 
-    requestAnimationFrame(() => container.classList.add("show"));
-  }, 500); // Ajustez cette valeur pour qu'elle corresponde à la durée de votre transition CSS (transition: opacity Xs)
+  container.style.display = "block";
+  container.style.cursor = "pointer";
+
+  //}, 500); // Ajustez cette valeur pour qu'elle corresponde à la durée de votre transition CSS (transition: opacity Xs)
 }
