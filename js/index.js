@@ -179,6 +179,7 @@ function choisirAleatoirement(tab, n) {
 let albumsListe = [];
 let currentAlbumIndex = 0;
 let carouselInterval = null;
+let currentDisplayedAlbum = null;
 
 chargerAlbums();
 
@@ -245,6 +246,7 @@ async function traiterAlbums(dossier) {
   const url = `${baseURL}${dossier}/`;
   console.log("Processing album:", url);
   const nomArtiste = dossier.replace(/%20/g, ' ').trim();
+  currentDisplayedAlbum = dossier;
   try {
     const response = await fetch(url);
     const html = await response.text();
@@ -302,9 +304,8 @@ function setupImageEvents() {
 
   // Clic sur la table d'images pour ouvrir l'album complet
   imageContainer.addEventListener("click", () => {
-    const dossier = albumsListe[currentAlbumIndex];
     if (document.querySelector("#nom_artiste").textContent && document.querySelector("#image-1").src) {
-      window.location.href = `album.html?dir=${dossier}`;
+      window.location.href = `album.html?dir=${currentDisplayedAlbum}`;
     } else {
       console.warn("Aucun album a afficher ou nom d'artiste manquant");
     }
@@ -319,6 +320,8 @@ function imageDisplay(images) {
   // Fade-out
   container.classList.remove("show");
 
+  // On attend la fin du fade-out avant de changer les images et de refaire le fade-in
+  //setTimeout(() => {
   document.querySelector("#image-1").src = images[0];
   document.querySelector("#image-2").src = images[1];
   document.querySelector("#image-3").src = images[2];
@@ -329,22 +332,5 @@ function imageDisplay(images) {
   container.style.display = "block";
   container.style.cursor = "pointer";
 
-  // Mettre à jour le nom de l'artiste
-  const nomArtiste = albumsListe[currentAlbumIndex].replace(/%20/g, ' ').trim();
-  document.querySelector("#nom_artiste").textContent = nomArtiste;
-
-  // Mettre à jour le lien vers l'album complet
-  const lienAlbum = document.querySelector("#lien-album");
-
-  // Vérifier si le lien existe avant de le mettre à jour
-  if (lienAlbum) {
-    lienAlbum.href = `album.html?dir=${albumsListe[currentAlbumIndex]}`;
-  } else {
-    console.warn("Lien vers l'album non trouvé dans le DOM");
-  }
-
-  // Quand on clique sur une image, on ouvre l'album complet
-  container.addEventListener("click", () => {
-    window.location.href = `album.html?dir=${albumsListe[currentAlbumIndex]}`;
-  });
+  //}, 500); // Ajustez cette valeur pour qu'elle corresponde à la durée de votre transition CSS (transition: opacity Xs)
 }
