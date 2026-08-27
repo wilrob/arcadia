@@ -183,6 +183,26 @@ let currentDisplayedAlbum = null;
 
 chargerAlbums();
 
+// On stoppe le défilement si la souris bouge en dehors des liens ou des images
+let mouseMoveTimeout = null;
+
+document.addEventListener('mousemove', (event) => {
+  // Si la souris est sur un lien .artiste ou sur le bloc #image,
+  // on laisse les gestionnaires mouseover/mouseleave existants s'en charger
+  if (event.target.closest('.artiste, #image')) {
+    return;
+  }
+
+  // Sinon, un mouvement "ailleurs" sur la page met en pause le défilement
+  stopCarousel();
+
+  // Et on le relance après 2 secondes d'inactivité
+  if (mouseMoveTimeout) clearTimeout(mouseMoveTimeout);
+  mouseMoveTimeout = setTimeout(() => {
+    startCarousel();
+  }, 1000);
+});
+
 async function chargerAlbums() {
   try {
     const response = await fetch(baseURL);
