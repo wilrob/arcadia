@@ -11,6 +11,7 @@ async function chargerListeAlbums() {
   // Variable pour compter le nombre d'albums et générer des IDs uniques
   let albumCount = 0;
 
+  
   // Récupère la liste des albums depuis le serveur
   try {
     const response = await fetch('albums/');
