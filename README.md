@@ -94,8 +94,8 @@ Global settings are configured inside `js/config.js`:
 ```javascript
 // Fixed title for the album page, if setFixedTitle is true
 const fixedTitle = 'My Photo Album'; // Set your fixed title here
-// Set to true if you want to display the fixedTitle
-// Set to false by default: the title will be the name of directory containing the photos
+// Set to true if you want to display the fixedTitle on the main page
+// Set to false by default: the title is 'Photo Album'
 const setFixedTitle = false; 
 // Default directory where the albums are stored
 const imageDir = 'albums';
