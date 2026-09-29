@@ -8,9 +8,12 @@ const urlParams = new URLSearchParams(queryString);
 // WARNING: These are default values. Don't change the following settings unless you know what you're doing.
 
 // Fixed title for the album page, if setFixedTitle is true
-const fixedTitle = 'Fixed Title of My Photo Album'; // Set your fixed title here
-// Set to true if you want to display the fixedTitle, otherwise the title will be based on the 'dir' parameter in the URL
-const setFixedTitle = true; // Set to true if you want to display the fixedTitle
+const fixedTitle = 'My Photo Album'; // Set your fixed title here
+
+// Set to true if you want to display the fixedTitle on the main page
+// Set to false by default: the title is 'Photo Album'
+const setFixedTitle = false;
+
 // Default directory where the albums are stored
 const imageDir = 'albums';
 // Default album page name
