@@ -10,7 +10,7 @@ const urlParams = new URLSearchParams(queryString);
 // Fixed title for the album page, if setFixedTitle is true
 const fixedTitle = 'Fixed Title of My Photo Album'; // Set your fixed title here
 // Set to true if you want to display the fixedTitle, otherwise the title will be based on the 'dir' parameter in the URL
-const setFixedTitle = false; // Set to true if you want to display the fixedTitle
+const setFixedTitle = true; // Set to true if you want to display the fixedTitle
 // Default directory where the albums are stored
 const imageDir = 'albums';
 // Default album page name
@@ -79,24 +79,26 @@ if (getDir) {
 data.tri = syncParamWithCookie('tri', data.tri);
 data.sens = syncParamWithCookie('sens', data.sens);
 
+// Titre page principale
+let mainTitle = document.querySelector('h1');
+if (mainTitle) {
+    if (setFixedTitle == true) {
+        // Title: fixed title defined in User Settings
+        mainTitle.textContent = fixedTitle;
+    }
+}
+
 // Title
 let setTitle = document.querySelector('#hautdepage');
-
-if (setTitle) {
+if (setTitle) { 
     const titleLink = document.createElement('a');
-    if (setFixedTitle) {
-        // Title: fixed title defined in User Settings
-        titleLink.href = index;
-        titleLink.textContent = fixedTitle;
-    } else if (getDir && getDir.trim() !== '') {
+    if (getDir && getDir.trim() !== '') {
         titleLink.href = `index.html?name=${encodeURIComponent(getDir.trim())}`;
         titleLink.textContent = getDir;
-    } else {
-        titleLink.href = index;
-        titleLink.textContent = fixedTitle;
+
+        setTitle.textContent = '';
+        setTitle.appendChild(titleLink);
     }
-    setTitle.textContent = '';
-    setTitle.appendChild(titleLink);
 }
 
 // Recuperation parametre URL 'search'

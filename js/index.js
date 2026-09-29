@@ -1,11 +1,12 @@
 import { t } from './messages.js';
+
 /**
  * Récupère automatiquement la liste des dossiers d'albums présents dans le répertoire "albums/"
  * et affiche chaque album sous forme de lien vers la page album.html avec le paramètre dir.
  */
 async function chargerListeAlbums() {
   // Récupère le conteneur où les albums seront affichés
-  const container = document.getElementById('albums-container');
+  const container = document.getElementById('menugauche');
   if (!container) return;
 
   // Variable pour compter le nombre d'albums et générer des IDs uniques
@@ -114,7 +115,7 @@ async function chargerListeAlbums() {
           </svg>
           <span class="album-name">${albumName}</span>
         </a>
-        <span class="album-info"><br />${new Date(lastModified).toLocaleDateString('fr-FR')} - ${imageCount} image${imageCount > 1 ? 's' : ''}</span>
+        <span class="album-info">${new Date(lastModified).toLocaleDateString('fr-FR')} - ${imageCount} image${imageCount > 1 ? 's' : ''}</span>
       </li>
     `;
     })).then(items => items.join(''));
@@ -335,23 +336,32 @@ function setupImageEvents() {
 
 // === AFFICHAGE / EFFACEMENT ===
 // Fonction pour afficher les images dans la table, avec un fade-out puis fade-in
-function imageDisplay(images) {
+function imageDisplay(images, nomArtiste) {
   const container = document.querySelector("#image");
 
-  // Fade-out
-  container.classList.remove("show");
+  // Fade-out sur les class .image avant de les remplacer
+  document.querySelectorAll(`.image`).forEach((img) => img.classList.remove("show"));
 
-  // On attend la fin du fade-out avant de changer les images et de refaire le fade-in
-  //setTimeout(() => {
-  document.querySelector("#image-1").src = images[0];
-  document.querySelector("#image-2").src = images[1];
-  document.querySelector("#image-3").src = images[2];
-  document.querySelector("#image-4").src = images[3];
+  //document.querySelector(`.image`).classList.add("hide");
+  setTimeout(() => {
+    const image1 = document.querySelector("#image-1");
+    image1.src = images[0];
+    const image2 = document.querySelector("#image-2");
+    image2.src = images[1];
+    const image3 = document.querySelector("#image-3");
+    image3.src = images[2];
+    const image4 = document.querySelector("#image-4");
+    image4.src = images[3];
 
-  container.classList.add("show");
+    const imagesElements = [image1, image2, image3, image4];
+    imagesElements.forEach((img) => {
+      img.alt = nomArtiste ? `Photo de ${nomArtiste}` : "";
+      // Ajouter fade-in
+      img.classList.add("show");
+    });
+    container.classList.add("show");
+  }, 300);
 
   container.style.display = "block";
   container.style.cursor = "pointer";
-
-  //}, 500); // Ajustez cette valeur pour qu'elle corresponde à la durée de votre transition CSS (transition: opacity Xs)
 }

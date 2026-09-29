@@ -333,8 +333,8 @@ export async function readPhotoDirectory() {
     const albumPath = config.data.dir !== '' ? config.data.dir : albums.values().next().value;
 
     // Chargement des images
+    console.log("Loading images from album path:", albumPath);
     const imageList = await loadAlbumImages(albumPath);
-
     // Affichage du nombre d'images
     const dirElem = document.querySelector('#directory');
     if (dirElem) {

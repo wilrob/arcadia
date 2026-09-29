@@ -74,6 +74,58 @@ body {
   }
 }
 
+#overlay {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+font-family:Arial, Helvetica, sans-serif;
+background-color: rgba(0, 0, 0, 0.95);
+display: flex;
+justify-content: center;
+align-items: center;
+z-index: 9998;
+}
+#age-verification-popup {
+background-color: #444;
+padding: 30px;
+text-align: center;
+border-radius: 10px;
+box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+max-width: 500px;
+width: 90%;
+color: white;
+z-index: 9999;
+}
+.age-verification-title {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+.age-verification-text {
+  font-size: 1rem;
+  margin-bottom: 20px;
+}
+button:hover {
+opacity: 0.9;
+}
+.enter-btn {
+background-color: #28a745;
+}
+.exit-btn {
+background-color: #dc3545;
+}
+button#enter-btn,
+button#exit-btn {
+padding: 10px 20px;
+margin: 10px;
+border: none;
+border-radius: 5px;
+cursor: pointer;
+font-size: 1rem;
+color: white;
+}
+
 /* Titres */
 
 h2 {
@@ -870,7 +922,7 @@ footer {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  z-index: 10000;
+  z-index: 999;
 }
 
 .spinner {

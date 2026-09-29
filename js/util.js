@@ -24,7 +24,7 @@ export class Div {
         if (this.display) el.style.display = this.display;
 
         if (!this.container) {
-            console.warn(`? Conteneur non sp?cifi?.`);
+            console.warn(`? Conteneur non sp�cifi�.`);
             return;
         }
 
@@ -61,10 +61,29 @@ export class Div {
 /* ===========================================================
    CHARGEMENT DES FICHIERS D'UN R?PERTOIRE
    ----------------------------------------------------------- */
-export async function loadFiles(dir) {
+/*export async function loadFiles(dir) {
+    console.log("Loading files from directory:", dir);
     const response = await fetch(dir);
     return await response.text();
+}*/
+export async function loadFiles(dir) {
+    console.log("Loading files from directory:", dir);
+    const url = `${dir}/`; // Chemin absolu avec "/" final
+    try {
+        const response = await fetch(url, {
+            redirect: 'follow',
+            mode: 'no-cors' // Optionnel : si CORS reste un problème
+        });
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return await response.text();
+    } catch (error) {
+        console.error("Erreur lors du chargement des fichiers :", error);
+        throw error;
+    }
 }
+
 
 /* ===========================================================
    ENCODAGE / DECODAGE UTF-8
